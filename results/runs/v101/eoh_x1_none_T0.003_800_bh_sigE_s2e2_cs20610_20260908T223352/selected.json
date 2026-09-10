@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.015888778550148957,
+    "conf_90002": 0.015308641975308642,
+    "conf_90003": 0.015888778550148957,
+    "conf_90004": 0.017369727047146403,
+    "conf_90005": 0.018933731938216243
+   },
+   "raw": 0.01667793161219384
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    tightness = np.exp(1 / (remaining + 1e-6))  # Exponential tightness preference\n    imbalance = 1 / (1 + np.abs(remaining - bins / 2))  # Linear imbalance penalty\n    scores = tightness * imbalance\n    return scores",
+  "thought": "The new algorithm uses an exponential preference for tightness and a linear penalty for imbalance, aiming to favor bins that are nearly full while avoiding large discrepancies in bin usage."
+ }
+}

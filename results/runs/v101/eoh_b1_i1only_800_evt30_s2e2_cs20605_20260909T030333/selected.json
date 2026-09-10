@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.02929493545183714,
+    "conf_90002": 0.02962962962962963,
+    "conf_90003": 0.03128103277060576,
+    "conf_90004": 0.031265508684863524,
+    "conf_90005": 0.028898854010961636
+   },
+   "raw": 0.03007399210957954
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.32169576059850374,
+    "conf500_90102": 0.3200992555831266,
+    "conf500_90103": 0.3176178660049628,
+    "conf500_90104": 0.3225806451612903,
+    "conf500_90105": 0.3200992555831266
+   },
+   "raw": 0.320418556586202
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    threshold = 0.7 * bins.mean()  # Set a threshold based on average bin capacity\n    tightness = 1 / (bins - item + 1e-8)  # Inverse of free space after placing the item (to prefer tight fits)\n    proximity = np.abs(bins - threshold)  # Proximity to the threshold (to avoid overflows)\n    return tightness - proximity",
+  "thought": "The algorithm scores each bin based on a weighted combination of how close its remaining capacity is to the item size and how far it is from exceeding a certain threshold, encouraging tight packing while avoiding frequent overflows."
+ }
+}

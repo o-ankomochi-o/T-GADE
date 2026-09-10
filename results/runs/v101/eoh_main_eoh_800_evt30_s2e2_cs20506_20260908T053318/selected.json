@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.029791459781529295,
+    "conf_90002": 0.028641975308641977,
+    "conf_90003": 0.03426017874875869,
+    "conf_90004": 0.03176178660049628,
+    "conf_90005": 0.03338315894369706
+   },
+   "raw": 0.03156771187662466
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.00997506234413965,
+    "conf500_90102": 0.009925558312655087,
+    "conf500_90103": 0.007444168734491315,
+    "conf500_90104": 0.009925558312655087,
+    "conf500_90105": 0.007444168734491315
+   },
+   "raw": 0.008942903287686491
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    harmonic = 1.0 / (1.0 + np.abs(remaining % (item / 2)))\n    index_decay = 2 ** (len(bins) - np.arange(len(bins)) - 1)\n    scores = harmonic * index_decay\n    return scores",
+  "thought": "The new algorithm uses an exponential decay for the index to strongly favor earlier bins and a modified harmonic term that prioritizes bins where the remaining capacity after placing the item is a multiple of a smaller factor (e.g., 0.5 * item) to better minimize leftover space."
+ }
+}

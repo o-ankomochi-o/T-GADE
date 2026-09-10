@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.010923535253227408,
+    "conf_90002": 0.012839506172839505,
+    "conf_90003": 0.014399205561072492,
+    "conf_90004": 0.015384615384615385,
+    "conf_90005": 0.014947683109118086
+   },
+   "raw": 0.013698909096174577
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.03740648379052369,
+    "conf500_90102": 0.02481389578163772,
+    "conf500_90103": 0.017369727047146403,
+    "conf500_90104": 0.03722084367245657,
+    "conf500_90105": 0.034739454094292806
+   },
+   "raw": 0.03031008087721144
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    bins_sorted = np.sort(bins)\n    ranks = np.argsort(np.argsort(bins))\n    rank_scores = 1 / (1 + np.sin(np.pi * ranks / len(bins_sorted)))\n    nearest_multiple = np.ceil(bins / item) * item\n    diff_scores = 1 / (1 + item * (nearest_multiple - bins))\n    return rank_scores * diff_scores",
+  "thought": "The new algorithm scores bins based on a harmonic function of their ranks and the inverse of a scaled linear difference between the bin's remaining capacity and the nearest multiple of the item size, promoting compact and efficient packing."
+ }
+}

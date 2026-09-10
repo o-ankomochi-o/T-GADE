@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.031777557100297914,
+    "conf_90002": 0.03160493827160494,
+    "conf_90003": 0.03426017874875869,
+    "conf_90004": 0.03325062034739454,
+    "conf_90005": 0.03288490284005979
+   },
+   "raw": 0.03275563946162317
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.005466482676682982
+  }
+ },
+ "genes": {
+  "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    # Compute the remaining capacity after placing the item in the bin\n    remaining = bins - item\n    # Score bins by how close their remaining capacity is to the item size\n    # (i.e., how well they can potentially fit future items)\n    # And also prioritize bins with higher utilization (lower remaining capacity)\n    # We use a weighted combination of two objectives:\n    # - Proximity to item size (for future flexibility)\n    # - Utilization (for compact packing)\n    proximity_score = 1 / (1 + np.abs(remaining - item))\n    utilization_score = 1 / (1 + remaining)\n    # Combine scores using a weighted sum (weights can be adjusted as needed)\n    scores = 0.5 * proximity_score + 0.5 * utilization_score\n    return scores",
+  "thought": "The algorithm assigns each item to the bin that allows the largest remaining capacity after placement, prioritizing bins with remaining capacity closest to the item size, using a score based on a combination of proximity and bin utilization."
+ }
+}

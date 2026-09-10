@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.038728897715988087,
+    "conf_90002": 0.04049382716049383,
+    "conf_90003": 0.041708043694141016,
+    "conf_90004": 0.03970223325062035,
+    "conf_90005": 0.0393622321873443
+   },
+   "raw": 0.03999904680171752
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.012468827930174564,
+    "conf500_90102": 0.009925558312655087,
+    "conf500_90103": 0.007444168734491315,
+    "conf500_90104": 0.009925558312655087,
+    "conf500_90105": 0.017369727047146403
+   },
+   "raw": 0.011426768067424492
+  }
+ },
+ "genes": {
+  "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    return (item / bins) + (1 / (1 + np.abs(remaining % item)))\n\ndef assign_items(item_sizes: np.ndarray, bin_capacity: int) -> int:\n    \"\"\"Assign items to bins using the novel score function and greedy approach.\n\n    Args:\n        item_sizes: sizes of items to be assigned\n        bin_capacity: capacity of each bin\n    Returns:\n        num_bins: number of bins used\n    \"\"\"\n    bins = []\n    for item in item_sizes:\n        if not bins:\n            bins.append(bin_capacity - item)\n        else:\n            feasible_bins = bin_capacity - bins[bins > item]\n            if feasible_bins.size > 0:\n                scores = score(item, feasible_bins)\n                bins[bins > item][np.argmax(scores)] -= item\n            else:\n                bins.append(bin_capacity - item)\n    return len(bins)",
+  "thought": "The novel score function prioritizes bins by combining the remaining capacity and the harmonic similarity to the item size, encouraging tight packing and reducing fragmentation."
+ }
+}

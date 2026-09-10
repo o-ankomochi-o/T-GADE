@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.006951340615690168,
+    "conf_90002": 0.006913580246913581,
+    "conf_90003": 0.006951340615690168,
+    "conf_90004": 0.006947890818858561,
+    "conf_90005": 0.007473841554559043
+   },
+   "raw": 0.007047598770342303
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.0399002493765586,
+    "conf500_90102": 0.03970223325062035,
+    "conf500_90103": 0.03722084367245657,
+    "conf500_90104": 0.03970223325062035,
+    "conf500_90105": 0.03722084367245657
+   },
+   "raw": 0.038749280644542486
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    remaining = bins - item\n    utilization = (item / (bins + 1e-6)) ** 2  # Quadratic weighting for moderate emphasis on utilization\n    occupancy = np.arange(len(bins)) + 1\n    usage_factor = np.exp(-occupancy / 10)  # Slower decay to favor newer bins\n    tightness = np.log1p(1 / remaining)  # Logarithmic penalty for low remaining space\n    scores = (tightness + usage_factor) / (utilization + 1e-6)\n    return scores",
+  "thought": "New algorithm: This algorithm reduces the exponential decay rate to encourage using newer bins, applies quadratic weighting to utilization, and uses a logarithmic penalty for bins with less remaining space to favor balanced packing."
+ }
+}

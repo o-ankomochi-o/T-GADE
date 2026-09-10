@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.007944389275074478,
+    "conf_90002": 0.008395061728395062,
+    "conf_90003": 0.011916583912611719,
+    "conf_90004": 0.011910669975186104,
+    "conf_90005": 0.01245640259093174
+   },
+   "raw": 0.010524621496439821
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    unused_space = bins - item\n    fill_ratio = (bins - unused_space) / bins\n    mean_optimal = 0.5\n    return 1 / (unused_space + 1e-5) - np.log(1 + (np.abs(fill_ratio - mean_optimal) / mean_optimal) ** 2)",
+  "thought": "A new algorithm scores bins by combining the inverse of unused space with a logarithmic penalty for bins that are either too full or too empty, promoting balanced usage."
+ }
+}

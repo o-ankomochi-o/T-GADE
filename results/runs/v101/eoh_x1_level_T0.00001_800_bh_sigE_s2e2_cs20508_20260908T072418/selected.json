@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.018371400198609732,
+    "conf_90002": 0.019753086419753086,
+    "conf_90003": 0.02035749751737835,
+    "conf_90004": 0.01588089330024814,
+    "conf_90005": 0.018435475834578975
+   },
+   "raw": 0.01855967065411366
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.0199501246882793,
+    "conf500_90102": 0.019851116625310174,
+    "conf500_90103": 0.017369727047146403,
+    "conf500_90104": 0.019851116625310174,
+    "conf500_90105": 0.019851116625310174
+   },
+   "raw": 0.019374640322271243
+  }
+ },
+ "genes": {
+  "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining_capacity = bins - item\n    leftover_reduction = bins - remaining_capacity  # Equals to item size, but can be extended\n    compactness_ratio = remaining_capacity / bins\n    space_reward = np.log(1 / (1 - compactness_ratio + 1e-9))  # Logarithmic reward for compactness\n    space_reward[remaining_capacity == 0] = float('inf')  # Perfect fit gets highest priority\n    scores = space_reward - 0.1 * np.arange(len(bins))  # Add small position penalty\n    return scores",
+  "thought": "The new algorithm assigns an item to the bin that maximizes a hybrid score combining a reward for reducing leftover space and a penalty for increasing bin count, using logarithmic scaling to emphasize larger reductions in empty space."
+ }
+}

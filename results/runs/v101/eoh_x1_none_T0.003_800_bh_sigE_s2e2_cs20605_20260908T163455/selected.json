@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.006454816285998014,
+    "conf_90002": 0.006913580246913581,
+    "conf_90003": 0.007944389275074478,
+    "conf_90004": 0.00794044665012407,
+    "conf_90005": 0.007972097658196313
+   },
+   "raw": 0.0074450660232612915
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.017456359102244388,
+    "conf500_90102": 0.017369727047146403,
+    "conf500_90103": 0.017369727047146403,
+    "conf500_90104": 0.017369727047146403,
+    "conf500_90105": 0.017369727047146403
+   },
+   "raw": 0.017387053458165998
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    overcapacity_penalty = np.exp(- (bins - item))\n    underutilization_bonus = np.log(bins / (item + 1) + 1)\n    index_penalty = 0.0001 * np.arange(len(bins)) ** 3\n    return overcapacity_penalty + underutilization_bonus - index_penalty",
+  "thought": "The new algorithm uses a logarithmic bonus for bins with higher available capacity, a decaying exponential for overcapacity, and a cubic index-based penalty to strongly favor earlier bins."
+ }
+}

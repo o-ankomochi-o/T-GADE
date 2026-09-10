@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.019364448857994043,
+    "conf_90002": 0.020246913580246915,
+    "conf_90003": 0.020854021847070508,
+    "conf_90004": 0.021339950372208438,
+    "conf_90005": 0.01943198804185351
+   },
+   "raw": 0.020247464539874683
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.032418952618453865,
+    "conf500_90102": 0.03225806451612903,
+    "conf500_90103": 0.03225806451612903,
+    "conf500_90104": 0.03225806451612903,
+    "conf500_90105": 0.03225806451612903
+   },
+   "raw": 0.032290242136594
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    exp_position = np.exp(-0.5 * np.arange(len(bins)))\n    mean_cap = np.mean(remaining)\n    distance = np.abs(remaining - mean_cap)\n    scores = (1 / (remaining + 1e-6)) * exp_position / (distance + 1e-6)\n    return scores",
+  "thought": "The new algorithm prioritizes bins by combining the inverse of remaining capacity with a weighted position term to encourage even distribution and reduce total bins, using exponential decay for position instead of harmonic weighting."
+ }
+}

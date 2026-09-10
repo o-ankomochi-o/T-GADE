@@ -1,0 +1,13 @@
+{
+ "logical_calls": 800,
+ "physical_attempts": 800,
+ "calls_refused_after_cap": 32,
+ "samples_recorded": 800,
+ "best_objective_rounded": 0.00634,
+ "train_raw_excess_best_unclipped": 0.006338665861756785,
+ "final_population_size": 8,
+ "usd": 0.148221,
+ "elapsed_s": 6849.7,
+ "c100": 0.007939922768622569,
+ "c500": 0.0357666627475975
+}

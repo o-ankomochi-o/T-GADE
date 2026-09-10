@@ -1,0 +1,66 @@
+{
+ "aborted": null,
+ "arm": "EOH_official_commit_pinned",
+ "best_objective_rounded": 0.01318,
+ "call_failures": 0,
+ "calls_refused_after_cap": 20,
+ "completion_tokens": 152564,
+ "elapsed_s": 6170.4,
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.010427010923535254,
+    "conf_90002": 0.010864197530864197,
+    "conf_90003": 0.015392254220456803,
+    "conf_90004": 0.01488833746898263,
+    "conf_90005": 0.018435475834578975
+   },
+   "raw": 0.014001455195683571
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "evaluations_with_signature": 0,
+ "exclusion": "level",
+ "final_best_objective": 0.04246,
+ "final_population_objectives": [
+  0.11279,
+  0.04246,
+  0.05836,
+  0.11279,
+  1.51534,
+  0.15676,
+  0.2951,
+  0.73599
+ ],
+ "final_population_size": 8,
+ "forced_mutations": null,
+ "forced_overwritten": null,
+ "generations_saved": 101,
+ "history_best_objective": 0.01318,
+ "label": "b2_newest_uniform_800_evt30_s2e2_cs20609",
+ "logical_calls": 800,
+ "num_evaluators": 2,
+ "num_samplers": 2,
+ "physical_attempts": 801,
+ "prompt_tokens": 383560,
+ "randomness_rejects": 2,
+ "registrations": 740,
+ "samples_recorded": 800,
+ "selected_from": "history",
+ "signature_objective_mismatch": 0,
+ "survival": "newest",
+ "temperature": 0.0,
+ "train_raw_excess_best_unclipped": 0.013180400442700496,
+ "usd": 0.146962
+}

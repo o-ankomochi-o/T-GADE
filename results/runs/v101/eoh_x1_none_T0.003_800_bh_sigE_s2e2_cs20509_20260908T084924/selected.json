@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.020854021847070508,
+    "conf_90002": 0.01925925925925926,
+    "conf_90003": 0.022343594836146972,
+    "conf_90004": 0.01687344913151365,
+    "conf_90005": 0.018435475834578975
+   },
+   "raw": 0.019553160181713873
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 4.788029925187033,
+    "conf500_90102": 4.7890818858560795,
+    "conf500_90103": 4.761786600496278,
+    "conf500_90104": 4.769230769230769,
+    "conf500_90105": 4.784119106699752
+   },
+   "raw": 4.778449657493982
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    cluster_sizes = np.array([0, 0.2, 0.5, 0.8, 1.0]) * np.max(bins + item)\n    remaining = bins - item\n    distances = np.abs(remaining[:, None] - cluster_sizes)\n    min_distances = np.min(distances, axis=1)\n    capacity_ratio = remaining / bins  # Favor bins that become closer to full\n    scores = -min_distances * (1 - capacity_ratio)  # Combine distance and fill ratio\n    return scores",
+  "thought": "The new algorithm scores bins based on a weighted combination of the distance to nearest cluster and the current bin's remaining capacity, favoring bins that are both close to a cluster and relatively full, using a penalty-reward system to reduce bin usage."
+ }
+}

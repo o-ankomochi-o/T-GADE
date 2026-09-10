@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.014399205561072492,
+    "conf_90002": 0.01580246913580247,
+    "conf_90003": 0.015392254220456803,
+    "conf_90004": 0.017866004962779156,
+    "conf_90005": 0.015445939212755356
+   },
+   "raw": 0.015781174618573257
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.034912718204488775,
+    "conf500_90102": 0.034739454094292806,
+    "conf500_90103": 0.04466501240694789,
+    "conf500_90104": 0.034739454094292806,
+    "conf500_90105": 0.02977667493796526
+   },
+   "raw": 0.0357666627475975
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    import numpy as np\n\n    fit_score = np.exp(-np.abs(bins - item))\n    mean_bin = np.mean(bins)\n    std_bin = np.std(bins)\n    balance_score = 1 / (np.abs(bins - mean_bin) + std_bin + 1)\n    index_tiebreaker = 1 / (np.arange(len(bins)) + 1) ** 0.5\n    scores = fit_score * 5 + balance_score * 3 + index_tiebreaker\n    return scores",
+  "thought": "The new algorithm uses exponential decay for item fit, normalizes the balance score using bin z-scores, and applies a power decay tiebreaker for the index to prioritize earlier bins more aggressively."
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.012413108242303872,
+    "conf_90002": 0.016296296296296295,
+    "conf_90003": 0.019860973187686197,
+    "conf_90004": 0.017866004962779156,
+    "conf_90005": 0.017937219730941704
+   },
+   "raw": 0.016874720484001442
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.014962593516209476,
+    "conf500_90102": 0.007444168734491315,
+    "conf500_90103": 0.007444168734491315,
+    "conf500_90104": 0.007444168734491315,
+    "conf500_90105": 0.01488833746898263
+   },
+   "raw": 0.01043668743773321
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    return -np.abs(bins / item - np.ceil(bins / item))",
+  "thought": "Your new algorithm scores bins by favoring those where the item fits \"just right\", i.e., balances the need to avoid excessive unused space and to maintain a diverse set of remaining capacities by emphasizing bins with remaining capacity close to a multiple of the item size."
+ }
+}

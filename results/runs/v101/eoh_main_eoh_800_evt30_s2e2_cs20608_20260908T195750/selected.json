@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.014895729890764648,
+    "conf_90002": 0.017777777777777778,
+    "conf_90003": 0.012909632571996028,
+    "conf_90004": 0.02183622828784119,
+    "conf_90005": 0.026905829596412557
+   },
+   "raw": 0.01886503962495844
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.022443890274314215,
+    "conf500_90102": 0.02729528535980149,
+    "conf500_90103": 0.019851116625310174,
+    "conf500_90104": 0.02481389578163772,
+    "conf500_90105": 0.017369727047146403
+   },
+   "raw": 0.022354783017641995
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    import numpy as np\n    num_items_in_bins = np.arange(1, len(bins) + 1)\n    tightness = bins - item\n    harmonic_match = 1 / (tightness % item + 1e-5)\n    underutilization_penalty = item / bins\n    even_distribution_bonus = np.exp(-num_items_in_bins / (len(bins) + 1))\n    return harmonic_match * even_distribution_bonus - underutilization_penalty",
+  "thought": "New algorithm: Use a modified harmonic scoring that rewards bins where remaining capacity is a multiple of the item size, penalizes underutilization linearly, and encourages even distribution using an exponential decay function."
+ }
+}

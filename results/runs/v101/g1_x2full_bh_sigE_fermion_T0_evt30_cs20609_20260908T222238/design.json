@@ -1,0 +1,67 @@
+{
+ "bank": "c86b6c599ee87160fc6a04561634ba1812144bfc7bb7595060dc7b9050fbbb87",
+ "banks": {
+  "c100": "6a839c18bd962e71c600bbc2d56f5105a4c351597aff432544e3cfa9b52516c5",
+  "c500": "2d1085152521e51e8273995ed22dc5475a14d17cb4d48f6a398f8954db973ae9"
+ },
+ "cap_usd_per_run": 1.0,
+ "child_post_ops": "none",
+ "client_seed": 20609,
+ "code_commit": "32b0b1cd25391e7f5c7a1f3e6be4c326f48e7522",
+ "deterministic_only": true,
+ "diversity_carrier": "behaviour",
+ "eval_seed": null,
+ "eval_timeout_s": 30.0,
+ "eval_workers": 4,
+ "execution": {
+  "allow_fallbacks": false,
+  "max_tokens": 2048,
+  "min_interval_s": 1.0,
+  "provider_order": [
+   "SiliconFlow"
+  ],
+  "t_sample": 0.8,
+  "transport_retries": 2
+ },
+ "gen0_integrity": false,
+ "generations": 88,
+ "hybrid_weights": "0.8,0.1,0.1",
+ "integrity_kind": "syntax",
+ "integrity_mode": "skip",
+ "label": "g1_x2full_bh_sigE_fermion_T0_evt30_cs20609",
+ "llm_workers": 4,
+ "model": "qwen/qwen3-32b",
+ "mutation_template": "mix",
+ "n": 8,
+ "objective": "train_c100",
+ "occupancy": "fermion",
+ "offline": false,
+ "operator_model_override": false,
+ "operator_policy": "eoh",
+ "operator_spec": "init=i1; cross=e1|e2 (random); mutate=mix x sampling temperature {'weak': 0.5, 'mid': 0.8, 'strong': 1.1}; integrity=syntax; prompt prefix /no_think",
+ "parent_alloc": "uniform",
+ "parent_policy": "mutate_all",
+ "penalties_raw": {
+  "c100": 1.481409839148161,
+  "c500": 11.41932389869
+ },
+ "probe_len": 64,
+ "repeat": 1,
+ "repeat_mode": "paired",
+ "repeat_seeds": [
+  {
+   "client_seed": 20609,
+   "repeat": 1,
+   "solver_seed": 101
+  }
+ ],
+ "rng_schedule_version": "per_op_v2",
+ "sandbox_protocol": {
+  "image": "sha256:19de0a8ab2d5edc4eb21697ed5a4dec44f7dcf5d2e74d35a16400c8259cdab19",
+  "protocol": "binary-f64-v1"
+ },
+ "seed": 101,
+ "signature_source": "energy",
+ "strength": "mid",
+ "temperature": 0.0
+}

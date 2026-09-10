@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.007447864945382324,
+    "conf_90002": 0.006419753086419753,
+    "conf_90003": 0.010427010923535254,
+    "conf_90004": 0.01141439205955335,
+    "conf_90005": 0.01245640259093174
+   },
+   "raw": 0.009633084721164484
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.014962593516209476,
+    "conf500_90102": 0.007444168734491315,
+    "conf500_90103": 0.01240694789081886,
+    "conf500_90104": 0.01240694789081886,
+    "conf500_90105": 0.007444168734491315
+   },
+   "raw": 0.010932965353365964
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    if item == 0:\n        return np.zeros_like(bins)\n\n    prime_numbers = np.array([2, 3, 5, 7, 11, 13, 17])\n    ratios = bins / item\n    distance_to_prime = np.min(np.abs(ratios[:, np.newaxis] - prime_numbers), axis=1)\n    closest_prime = prime_numbers[np.argmin(np.abs(ratios[:, np.newaxis] - prime_numbers), axis=1)]\n    harmonic_term = 2 / (ratios + closest_prime + 1e-6)\n    weighted_harmonic = harmonic_term / (distance_to_prime + 1e-6)\n    weighted_harmonic[bins > 3 * item] *= 0.1  # Penalty for bins too large\n    weighted_harmonic[bins == item] = float('inf')  # Perfect fit gets highest priority\n    return weighted_harmonic",
+  "thought": "The new algorithm scores bins based on the inverse harmonic mean of the ratio and the distance to the nearest prime, with a penalty for bins that are significantly larger than the item and an elevation for bins that are just slightly larger (close to 1)."
+ }
+}

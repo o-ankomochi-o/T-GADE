@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.012413108242303872,
+    "conf_90002": 0.008395061728395062,
+    "conf_90003": 0.011916583912611719,
+    "conf_90004": 0.013399503722084368,
+    "conf_90005": 0.01195814648729447
+   },
+   "raw": 0.011616480818537897
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    similarity = np.exp(-1.2 * np.abs(remaining - item) / item)\n    compactness = 1 / (1 + 2 * (remaining ** 2))\n    scores = similarity + 3 * compactness\n    return scores",
+  "thought": "The new algorithm uses a modified exponential similarity and inverse quadratic compactness with different weights to prioritize bins closer in size and maximize space utilization."
+ }
+}

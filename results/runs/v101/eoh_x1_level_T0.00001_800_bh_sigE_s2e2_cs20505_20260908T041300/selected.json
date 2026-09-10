@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.006951340615690168,
+    "conf_90002": 0.008888888888888889,
+    "conf_90003": 0.009433962264150943,
+    "conf_90004": 0.008933002481389578,
+    "conf_90005": 0.007972097658196313
+   },
+   "raw": 0.008435858381663178
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    utilization = (bins - item) / bins\n    uses = np.arange(len(bins))\n    decay = np.exp(-uses / 8)  # Faster decay to prioritize earlier bins\n    completion_bonus = np.where(item == bins, 10.0 * (len(bins) + 1), 0.0)  # Linear bonus\n    space_penalty = (item / bins) ** 2.5  # Stronger space penalty\n    scores = utilization * decay + completion_bonus - 0.5 * space_penalty\n    return scores",
+  "thought": "Use a bin-packing optimized score with adjusted exponential decay, a linear completion bonus, and a higher space penalty coefficient to favor early bin closures and penalize inefficient spacing more strongly."
+ }
+}

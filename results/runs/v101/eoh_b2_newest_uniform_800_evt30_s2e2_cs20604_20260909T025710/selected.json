@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.02830188679245283,
+    "conf_90002": 0.027654320987654323,
+    "conf_90003": 0.030784508440913606,
+    "conf_90004": 0.028784119106699754,
+    "conf_90005": 0.027902341803687097
+   },
+   "raw": 0.02868543542628152
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.00997506234413965,
+    "conf500_90102": 0.007444168734491315,
+    "conf500_90103": 0.01240694789081886,
+    "conf500_90104": 0.01240694789081886,
+    "conf500_90105": 0.009925558312655087
+   },
+   "raw": 0.010431737034584753
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    exponent = 1 + np.log(item) / np.log(np.max(bins))\n    return 1 / (1 + (np.abs((bins / item) - np.round(bins / item)) ** exponent))",
+  "thought": "New algorithm: The score function now uses a modified harmonic alignment with a dynamic exponent that increases with item size, penalizing bins where the item fits with a non-integer ratio more severely for larger items."
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.012909632571996028,
+    "conf_90002": 0.016296296296296295,
+    "conf_90003": 0.01737835153922542,
+    "conf_90004": 0.01588089330024814,
+    "conf_90005": 0.016940707523667164
+   },
+   "raw": 0.01588117624628661
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    harmonic_similarity = (item / remaining) / (1 + np.exp(np.abs(item - remaining) ** 2))\n    novelty_factor = 1 / (1 + np.log(1 + np.arange(len(bins))))\n    return harmonic_similarity * novelty_factor",
+  "thought": "New algorithm: A modified approach that uses an exponential-decaying harmonic similarity to sharply penalize poor fits and a logarithmic novelty factor to gently encourage considering less recently used bins."
+ }
+}

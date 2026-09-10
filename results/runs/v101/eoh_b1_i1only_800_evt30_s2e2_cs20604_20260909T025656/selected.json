@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.020854021847070508,
+    "conf_90002": 0.025185185185185185,
+    "conf_90003": 0.024826216484607744,
+    "conf_90004": 0.020843672456575684,
+    "conf_90005": 0.02391629297458894
+   },
+   "raw": 0.023125077789605614
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.009925558312655087,
+    "conf500_90104": 0.009925558312655087,
+    "conf500_90105": 0.01240694789081886
+   },
+   "raw": 0.008940428086112263
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    return np.where(bins == item, np.inf, bins % item)",
+  "thought": "The novel score function assigns a higher priority to bins whose remaining capacity more closely matches the item's size, promoting tighter packing and minimizing unused space."
+ }
+}

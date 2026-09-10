@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.008440913604766634,
+    "conf_90002": 0.006419753086419753,
+    "conf_90003": 0.009433962264150943,
+    "conf_90004": 0.010918114143920596,
+    "conf_90005": 0.01245640259093174
+   },
+   "raw": 0.009533829138037932
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.014962593516209476,
+    "conf500_90102": 0.009925558312655087,
+    "conf500_90103": 0.01488833746898263,
+    "conf500_90104": 0.01488833746898263,
+    "conf500_90105": 0.009925558312655087
+   },
+   "raw": 0.012918077015896983
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    max_bin_capacity = bins.max()\n    buffer_factor = 0.2  # cubic buffer factor\n    dynamic_buffer = buffer_factor * item * (bins / max_bin_capacity) ** 3  # cubic decay\n    multiples = np.floor((bins - dynamic_buffer) / item)\n    target = (multiples + 1) * item\n    scores = 1 - np.log1p(np.abs(bins - target)) / np.log1p(item)  # logarithmic decrease for emphasis\n    return scores",
+  "thought": "A revised bin assignment algorithm that uses a cubic buffer decay and a logarithmic preference for bins whose remaining capacity is closer to the next multiple of the item size, enhancing sensitivity to packing efficiency."
+ }
+}

@@ -1,0 +1,13 @@
+{
+ "repeat": 1,
+ "certified": false,
+ "markers": [
+  "_UNCERTIFIED_bp_online_seed101.json"
+ ],
+ "train_raw_excess_best": 0.009155850689204168,
+ "c100": 0.009728305623642634,
+ "c500": 0.018873412003490034,
+ "calls": 792,
+ "elapsed_s": 6034.9,
+ "usd": 0.153
+}

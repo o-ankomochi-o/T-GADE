@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.00893743793445879,
+    "conf_90002": 0.012345679012345678,
+    "conf_90003": 0.014399205561072492,
+    "conf_90004": 0.01488833746898263,
+    "conf_90005": 0.014947683109118086
+   },
+   "raw": 0.013103668617195535
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.00997506234413965,
+    "conf500_90102": 0.007444168734491315,
+    "conf500_90103": 0.017369727047146403,
+    "conf500_90104": 0.009925558312655087,
+    "conf500_90105": 0.007444168734491315
+   },
+   "raw": 0.010431737034584753
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    weight1 = 1 / (remaining + 1)\n    weight2 = 1 / (np.abs((item - bins % item) % item) + 1)\n    return (weight1 ** 3.5) + (weight2 ** 1.0)",
+  "thought": "The new algorithm scores bins by emphasizing the inverse of the remaining capacity more strongly and reducing the influence of the distance to the next upper multiple of the item size, using adjusted exponential weights to favor bins that get closer to full without over-prioritizing minimal fragmentation."
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.0407149950347567,
+    "conf_90002": 0.04246913580246914,
+    "conf_90003": 0.04220456802383317,
+    "conf_90004": 0.03970223325062035,
+    "conf_90005": 0.04384653712007972
+   },
+   "raw": 0.04178749384635182
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.005466482676682982
+  }
+ },
+ "genes": {
+  "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    return 1.0 / (1 + (bins - item) * (bins.size + 1 - np.arange(1, bins.size + 1)))",
+  "thought": "The novel score function penalizes bins based on their current remaining capacity and potential future constraints by assigning a higher score to bins with remaining capacity closest to the item size but not too small to avoid creating overly constrained bins."
+ }
+}

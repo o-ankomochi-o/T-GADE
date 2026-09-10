@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.011916583912611719,
+    "conf_90002": 0.009876543209876543,
+    "conf_90003": 0.010923535253227408,
+    "conf_90004": 0.020347394540942927,
+    "conf_90005": 0.01195814648729447
+   },
+   "raw": 0.013004440680790614
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.005466482676682982
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    bin_capacity = 100  # assuming all bins have a fixed capacity of 100\n    remaining = bins - item\n    return np.where(remaining == 0, float('inf'), 1 / (1 + np.abs(remaining - (bin_capacity - remaining))))",
+  "thought": "A novel score function that penalizes bins with remaining capacity just barely enough for the item, while rewarding bins with a remaining capacity that is a balanced complement to the bin's total capacity, encouraging optimal packing."
+ }
+}

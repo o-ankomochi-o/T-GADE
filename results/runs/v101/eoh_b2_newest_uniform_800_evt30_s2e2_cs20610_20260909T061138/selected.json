@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.027805362462760674,
+    "conf_90002": 0.027160493827160494,
+    "conf_90003": 0.02929493545183714,
+    "conf_90004": 0.027791563275434243,
+    "conf_90005": 0.028898854010961636
+   },
+   "raw": 0.028190241805630834
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.012468827930174564,
+    "conf500_90102": 0.007444168734491315,
+    "conf500_90103": 0.007444168734491315,
+    "conf500_90104": 0.007444168734491315,
+    "conf500_90105": 0.009925558312655087
+   },
+   "raw": 0.008945378489260719
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    if bins.size == 0:\n        return np.array([])\n    multiples = bins / item\n    scores = 1 / np.abs(np.round(multiples) - multiples)\n    return scores",
+  "thought": "The new algorithm evaluates bins using a ratio-based scoring system that prioritizes bins with remaining capacity closest to a multiple of the item size, encouraging optimal grouping and minimizing leftover space."
+ }
+}

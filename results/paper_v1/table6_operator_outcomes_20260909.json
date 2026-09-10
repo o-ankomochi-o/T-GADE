@@ -1,0 +1,122 @@
+{
+ "Gen. fermion T=0|eoh_e1": {
+  "pairs": 3304,
+  "better": 0.012106537530266344,
+  "equal": 0.09231234866828088,
+  "worse": 0.8955811138014528,
+  "child_median": 4.250930677130496,
+  "best_parent_median": 3.3152228594426045,
+  "rho_pooled_tie_aware": -0.028486550118937956,
+  "runs": 20
+ },
+ "Gen. fermion T=0|eoh_e2": {
+  "pairs": 3869,
+  "better": 0.02093564228482812,
+  "equal": 0.12173688291548204,
+  "worse": 0.8573274747996898,
+  "child_median": 3.984304255961367,
+  "best_parent_median": 3.2196398027970736,
+  "rho_pooled_tie_aware": 0.030530676039702418,
+  "runs": 20
+ },
+ "Gen. fermion T=0|eoh_m1": {
+  "pairs": 3699,
+  "better": 0.032170856988375233,
+  "equal": 0.15247364152473641,
+  "worse": 0.8153555014868884,
+  "child_median": 3.984304255961367,
+  "best_parent_median": 3.340376295401945,
+  "rho_pooled_tie_aware": 0.12354638341482789,
+  "runs": 20
+ },
+ "Gen. fermion T=0|eoh_m2": {
+  "pairs": 4187,
+  "better": 0.06185813231430619,
+  "equal": 0.17673752089801767,
+  "worse": 0.7614043467876762,
+  "child_median": 3.984304255961367,
+  "best_parent_median": 3.6120334037629522,
+  "rho_pooled_tie_aware": 0.3590505462223589,
+  "runs": 20
+ },
+ "Gen. boson T=0.003|eoh_e1": {
+  "pairs": 3259,
+  "better": 0.027615833077631175,
+  "equal": 0.04418533292420988,
+  "worse": 0.928198833998159,
+  "child_median": 4.376697856927268,
+  "best_parent_median": 1.8714156353757945,
+  "rho_pooled_tie_aware": -0.08615410924238369,
+  "runs": 20
+ },
+ "Gen. boson T=0.003|eoh_e2": {
+  "pairs": 3817,
+  "better": 0.034320146712077546,
+  "equal": 0.05003929787791459,
+  "worse": 0.9156405554100079,
+  "child_median": 4.185531743636183,
+  "best_parent_median": 1.7808632659221297,
+  "rho_pooled_tie_aware": -0.09385448572495171,
+  "runs": 20
+ },
+ "Gen. boson T=0.003|eoh_m1": {
+  "pairs": 3672,
+  "better": 0.08251633986928104,
+  "equal": 0.06835511982570806,
+  "worse": 0.8491285403050108,
+  "child_median": 3.994365630345098,
+  "best_parent_median": 2.0424589998993934,
+  "rho_pooled_tie_aware": -0.008847659649265283,
+  "runs": 20
+ },
+ "Gen. boson T=0.003|eoh_m2": {
+  "pairs": 4207,
+  "better": 0.13049679106251486,
+  "equal": 0.06988352745424292,
+  "worse": 0.7996196814832421,
+  "child_median": 3.984304255961367,
+  "best_parent_median": 2.112888620585572,
+  "rho_pooled_tie_aware": 0.19193894044558257,
+  "runs": 20
+ },
+ "Gen. boson T=0.03|eoh_e1": {
+  "pairs": 3220,
+  "better": 0.09720496894409938,
+  "equal": 0.03540372670807453,
+  "worse": 0.8673913043478261,
+  "child_median": 4.411912667270352,
+  "best_parent_median": 3.5717879062280025,
+  "rho_pooled_tie_aware": -0.010527458683512828,
+  "runs": 20
+ },
+ "Gen. boson T=0.03|eoh_e2": {
+  "pairs": 3853,
+  "better": 0.09784583441474176,
+  "equal": 0.03477809499091617,
+  "worse": 0.8673760705943421,
+  "child_median": 4.225777241171155,
+  "best_parent_median": 3.3604990441694316,
+  "rho_pooled_tie_aware": 0.018813601617725825,
+  "runs": 20
+ },
+ "Gen. boson T=0.03|eoh_m1": {
+  "pairs": 3660,
+  "better": 0.21065573770491802,
+  "equal": 0.053005464480874315,
+  "worse": 0.7363387978142076,
+  "child_median": 4.225777241171155,
+  "best_parent_median": 3.863567763356472,
+  "rho_pooled_tie_aware": 0.14072203882259535,
+  "runs": 20
+ },
+ "Gen. boson T=0.03|eoh_m2": {
+  "pairs": 4208,
+  "better": 0.2352661596958175,
+  "equal": 0.07319391634980989,
+  "worse": 0.6915399239543727,
+  "child_median": 4.225777241171155,
+  "best_parent_median": 3.923936009658931,
+  "rho_pooled_tie_aware": 0.3225669494598427,
+  "runs": 20
+ }
+}

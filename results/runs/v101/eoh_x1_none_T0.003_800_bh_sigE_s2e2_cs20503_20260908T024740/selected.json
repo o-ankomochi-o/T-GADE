@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.005461767626613704,
+    "conf_90002": 0.008395061728395062,
+    "conf_90003": 0.008440913604766634,
+    "conf_90004": 0.007444168734491315,
+    "conf_90005": 0.007972097658196313
+   },
+   "raw": 0.007542801870492606
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.02493765586034913,
+    "conf500_90102": 0.02481389578163772,
+    "conf500_90103": 0.022332506203473945,
+    "conf500_90104": 0.022332506203473945,
+    "conf500_90105": 0.022332506203473945
+   },
+   "raw": 0.023349814050481737
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    index_decay = np.exp(-0.1 * np.arange(len(bins)))  # Exponential decay for later bins\n    fill_penalty = 1 / (remaining**2 + 1e-6)  # Stronger penalty for underfilled bins\n    scores = remaining * index_decay + fill_penalty\n    return scores",
+  "thought": "The new algorithm uses a score function that prioritizes bins with the highest remaining capacity while applying a small exponential decay to favor earlier bins and a quadratic penalty to avoid underfilled bins."
+ }
+}

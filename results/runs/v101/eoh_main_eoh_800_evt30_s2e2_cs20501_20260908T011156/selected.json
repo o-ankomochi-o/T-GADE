@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.007944389275074478,
+    "conf_90002": 0.02074074074074074,
+    "conf_90003": 0.007944389275074478,
+    "conf_90004": 0.009925558312655087,
+    "conf_90005": 0.024414549078226207
+   },
+   "raw": 0.0141939253363542
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.0024937655860349127,
+    "conf500_90102": 0.0024813895781637717,
+    "conf500_90103": 0.0024813895781637717,
+    "conf500_90104": 0.0024813895781637717,
+    "conf500_90105": 0.0024813895781637717
+   },
+   "raw": 0.002483864779738
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    fraction = remaining / bins\n    scores = 1 / (1 + np.abs(fraction - np.round(1 / fraction) * fraction + 1e-6))\n    return scores",
+  "thought": "New algorithm: Use a harmonic-based score function that assigns higher preference to bins whose remaining capacity after placing the item corresponds to a rational fraction of the bin size, thus encouraging placements that divide the bin capacity into simpler, more manageable proportions."
+ }
+}

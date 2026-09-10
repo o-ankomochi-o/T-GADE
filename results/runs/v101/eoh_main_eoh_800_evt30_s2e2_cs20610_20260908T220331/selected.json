@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.010923535253227408,
+    "conf_90002": 0.012839506172839505,
+    "conf_90003": 0.012909632571996028,
+    "conf_90004": 0.01240694789081886,
+    "conf_90005": 0.009965122072745391
+   },
+   "raw": 0.011808948792325438
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.0024937655860349127,
+    "conf500_90102": 0.0024813895781637717,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.0024813895781637717,
+    "conf500_90105": 0.0024813895781637717
+   },
+   "raw": 0.0029801426953707543
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    index = np.arange(len(bins))\n    decay = 1 / (1 + index**2 * 0.5)  # Modified quadratic decay\n    fit_score = np.exp(-2 * (bins - item))  # Exponential fit penalty\n    ratio = np.log(1 + item / bins)  # Logarithmic scaled oscillation\n    oscillation = decay * np.sin(2 * np.pi * ratio * (1 + index / 10))\n    return fit_score + oscillation",
+  "thought": "The new algorithm introduces a modified decay, exponential fit penalty, and logarithmic oscillation scaled by the item-to-bin ratio to prioritize bins that minimize unused space more effectively."
+ }
+}

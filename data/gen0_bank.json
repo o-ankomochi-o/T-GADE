@@ -1,0 +1,48 @@
+{
+ "digests": [
+  "0fc47dea0cf9b6b86238042b8eca7ca93b917ab48b96fe8c7df4324bf3137c74",
+  "260299fc0e386a1ee9bd0219f897d5d84a957f969f16f84b59a3d664139aef0f",
+  "319d42ccbbb1b5ef78b3141fa222d33b537a91b205669d388598f613aca9ea0d",
+  "565914cd168332b18f2616a1a79b4aca3dc6792314ea0c072418a014ff02a248",
+  "906f64ac67e169a26b80d8efa75de42530be0414fe1fece4c469a05f3b922384",
+  "d75622b0abf02f4703149099ac744d0f2f4bc936f78a34911122f5e62c81d822",
+  "e4a3cec3388b8e813776e76136b49502874e8c31ae9bdb885fcced1b61f768ad",
+  "f74aaecd196fdd78e290dc93a91b9666e501d72a1b98658bf54779759ee3f6e4"
+ ],
+ "genotypes": [
+  {
+   "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    target_threshold = bins.mean()  # or define it dynamically as needed\n    return -np.abs((bins - item) - target_threshold)",
+   "thought": "The novel score function assigns a higher priority to bins that, after placing the item, have the remaining capacity closest to a predefined target threshold, promoting compact bin usage and reducing total bins."
+  },
+  {
+   "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current current_item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    alpha = 2  # exponent to amplify the preference for tighter fits\n    return 1 / ((item / bins) ** alpha)",
+   "thought": "Assign the item to the bin with the highest score, calculated as the inverse of the ratio between the item size and the bin's remaining capacity, raised to a power that increases the preference for bins with tighter fits."
+  },
+  {
+   "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    return (bins - item) / (bins + item)",
+   "thought": "The novel score function assigns higher priority to bins that, after placing the item, are closest to their new capacity, promoting balance and reducing the number of bins used."
+  },
+  {
+   "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    return 1 / (1 + (bins - item))",
+   "thought": "The algorithm scores bins based on how closely their remaining capacity matches the item size, prioritizing bins that are just large enough to fit the item, thus promoting tight packing and reducing the number of bins used."
+  },
+  {
+   "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    return 1 / (bins + item)",
+   "thought": "\"description\": \"The algorithm assigns each item to the bin with the highest score, where the score is calculated as the inverse of the remaining capacity after adding the item, encouraging tight packing and minimizing extra space.\""
+  },
+  {
+   "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    # Remaining capacity after placing the item\n    remaining = bins - item\n    # Penalty based on bin index to prefer earlier bins\n    index_penalty = 1 / (np.arange(len(bins)) + 1)\n    # Score is a combination of remaining capacity and index preference\n    scores = remaining * index_penalty\n    return scores",
+   "thought": "The algorithm scores bins using a combination of remaining capacity and a decreasing preference based on the position of the bin, encouraging reuse of earlier bins to promote tighter packing and reduce the total number of bins used."
+  },
+  {
+   "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    return 1 - (item / (bins + 1e-9))",
+   "thought": "The algorithm scores bins by computing the ratio of the item size to the bin's remaining capacity and then subtracts it from 1 to prioritize bins where the item fits best without excessive leftover space."
+  },
+  {
+   "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining_capacity = bins - item\n    score_values = remaining_capacity / (np.abs(np.log(bins)) + 1e-9)\n    return score_values",
+   "thought": "The novel score function prioritizes bins by combining their remaining capacity and penalizing bins with higher frequency of item allocations to encourage balanced bin usage."
+  }
+ ],
+ "sha256": "c86b6c599ee87160fc6a04561634ba1812144bfc7bb7595060dc7b9050fbbb87",
+ "source_ledger_sha256": "9ac28edd163f0c4392f4d2c8fa594e5ac996567408121fe086d67522d632cd61"
+}

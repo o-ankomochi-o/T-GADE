@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.010923535253227408,
+    "conf_90002": 0.020246913580246915,
+    "conf_90003": 0.013902681231380337,
+    "conf_90004": 0.01488833746898263,
+    "conf_90005": 0.024414549078226207
+   },
+   "raw": 0.0168752033224127
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.04738154613466334,
+    "conf500_90102": 0.04466501240694789,
+    "conf500_90103": 0.04714640198511166,
+    "conf500_90104": 0.03970223325062035,
+    "conf500_90105": 0.05707196029776675
+   },
+   "raw": 0.047193430815021996
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    bin_capacities = bins + item\n    fill_ratios = item / bin_capacities\n    harmonic_values = np.array([1 / i for i in range(1, 21)])\n    distances = np.abs(fill_ratios[:, None] - harmonic_values)\n    alignment_score = -np.log1p(np.min(distances, axis=1) * 100)\n    unused_penalty = (bins / bin_capacities) ** 2\n    scores = alignment_score / (1 + unused_penalty)\n    return scores",
+  "thought": "The new algorithm prioritizes bins by considering a logarithmic bonus for fill ratios close to harmonic thresholds, combined with a quadratic penalty for the unused space to discourage leaving large gaps."
+ }
+}

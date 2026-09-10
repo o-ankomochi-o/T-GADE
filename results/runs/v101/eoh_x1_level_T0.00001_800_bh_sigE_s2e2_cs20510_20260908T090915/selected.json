@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.013902681231380337,
+    "conf_90002": 0.01037037037037037,
+    "conf_90003": 0.010923535253227408,
+    "conf_90004": 0.019851116625310174,
+    "conf_90005": 0.0114598903836572
+   },
+   "raw": 0.013301518772789098
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 2.7905236907730675,
+    "conf500_90102": 2.424317617866005,
+    "conf500_90103": 2.5235732009925558,
+    "conf500_90104": 2.166253101736973,
+    "conf500_90105": 2.436724565756824
+   },
+   "raw": 2.468278435425085
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    avg_item_size = np.mean(bins)\n    std_item_size = np.std(bins)\n    new_remaining = bins - item\n    future_utilization = new_remaining / (avg_item_size + 1e-8)\n    future_utilization = np.clip(future_utilization, 0, 1)\n    # Stronger cubic penalty and asymmetrical weight on overfill\n    scores = future_utilization * (1 - future_utilization) * (-np.power(np.abs(0.5 - future_utilization), 3)) * (1 / (std_item_size + 1e-8))\n    return scores",
+  "thought": "A new algorithm that scores bins using a dynamic utilization threshold based on standard deviation and applies a cubic cost function to penalize both underfilled and overfilled bins more severely."
+ }
+}

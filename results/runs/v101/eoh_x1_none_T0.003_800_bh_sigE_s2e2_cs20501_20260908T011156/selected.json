@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.033763654419066536,
+    "conf_90002": 0.03506172839506173,
+    "conf_90003": 0.03475670307845084,
+    "conf_90004": 0.03176178660049628,
+    "conf_90005": 0.03338315894369706
+   },
+   "raw": 0.03374540628735449
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    # Compute harmonic proportions (e.g., 1/2, 1/3, 1/4, 1/5, 1/6) of bin capacity\n    harmonic_levels = np.arange(1, 7)  # Consider up to 1/6 of bin capacity\n    harmonic_masks = np.abs(bins - item * harmonic_levels[:, None]) < item * 0.15  # Score if close to harmonic with larger tolerance\n\n    # Count how many harmonic levels the item size aligns with for each bin\n    harmonic_score = harmonic_masks.sum(axis=0)\n\n    # Add a diversity bonus using a logarithmic function of the bin index to penalize early bins more gently\n    diversity_bonus = 1 / (np.log2(np.arange(len(bins)) + 2))  # logarithmic bonus, starting from bin index 1\n\n    # Combine with a softmax weighting to emphasize bins with higher harmonic_score and recent preference\n    scores = harmonic_score * diversity_bonus\n    scores = np.exp(scores) / np.sum(np.exp(scores))  # Normalize with softmax\n    return scores",
+  "thought": "A new algorithm that uses harmonic-based scoring with different parameters, such as harmonic levels up to 1/6 and a diversity bonus that is logarithmic in the bin index, to balance item placement and encourage tight fits while avoiding overloading a small number of bins."
+ }
+}

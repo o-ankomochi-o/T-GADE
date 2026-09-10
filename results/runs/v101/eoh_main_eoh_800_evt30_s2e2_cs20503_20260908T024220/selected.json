@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.006951340615690168,
+    "conf_90002": 0.011851851851851851,
+    "conf_90003": 0.009930486593843098,
+    "conf_90004": 0.01588089330024814,
+    "conf_90005": 0.015944195316392625
+   },
+   "raw": 0.012111753535605178
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.0024937655860349127,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.0024813895781637717,
+    "conf500_90104": 0.0024813895781637717,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.0034764206110035082
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    ratios = bins / item\n    harmonic_term = (ratios ** 2) / (np.abs(np.sin(np.pi * ratios)) + 1e-6)  # Quadratic harmonic weighting\n    penalty_term = item / bins  # Linear penalty for overutilization\n    scores = 1 / (1 + np.exp(- (harmonic_term - 2.5 * penalty_term)))  # Sigmoid with adjusted penalty strength\n    return scores",
+  "thought": "A new bin assignment algorithm using quadratic weighting for harmonic alignment and a linear penalty to moderately discourage overutilization, combined with a sigmoid to generate smooth bin scores."
+ }
+}

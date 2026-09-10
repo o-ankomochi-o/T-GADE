@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.029791459781529295,
+    "conf_90002": 0.03111111111111111,
+    "conf_90003": 0.03227408142999007,
+    "conf_90004": 0.03176178660049628,
+    "conf_90005": 0.03089187842551071
+   },
+   "raw": 0.031166063469727494
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.12718204488778054,
+    "conf500_90102": 0.12158808933002481,
+    "conf500_90103": 0.11910669975186104,
+    "conf500_90104": 0.12406947890818859,
+    "conf500_90105": 0.12158808933002481
+   },
+   "raw": 0.12270688044157596
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    age = np.arange(len(bins)) + 1\n    waste_reduction = -np.log(remaining + 1e-8) / (bins + 1e-8)\n    age_weight = np.log(age + 1)  # logarithmic increase in preference for older bins\n    scores = waste_reduction + age_weight\n    return scores",
+  "thought": "The new algorithm scores bins based on the \"potential waste reduction\" by combining the logarithmic penalty on leftover space with a dynamic weighting that increases as bins get older, encouraging reuse while avoiding premature filling of large bins."
+ }
+}

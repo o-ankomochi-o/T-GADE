@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.009433962264150943,
+    "conf_90002": 0.011851851851851851,
+    "conf_90003": 0.013902681231380337,
+    "conf_90004": 0.01240694789081886,
+    "conf_90005": 0.014449427005480818
+   },
+   "raw": 0.012408974048736561
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    phi = 0.618  # Golden ratio\n    total_capacity = bins + item\n    new_remaining = bins - item\n    new_utilization = (total_capacity - new_remaining) / total_capacity\n    utilization_diff = (new_utilization - phi) ** 2  # Quadratic penalty for deviation\n    fit_score = 1 / (new_remaining + 1e-9)\n    fit_score = fit_score / (fit_score.max() + 1e-9)\n    scores = fit_score * np.exp(-50 * utilization_diff)  # Stronger emphasis on minimizing deviation\n    return scores",
+  "thought": "The new algorithm scores bins by combining the inverse of the remaining capacity with a quadratic penalty for deviations from the golden ratio utilization, aiming for tighter and more balanced packing."
+ }
+}

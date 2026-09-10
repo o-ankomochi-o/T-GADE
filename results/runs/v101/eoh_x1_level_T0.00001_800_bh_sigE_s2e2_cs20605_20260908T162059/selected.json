@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.008440913604766634,
+    "conf_90002": 0.008395061728395062,
+    "conf_90003": 0.009433962264150943,
+    "conf_90004": 0.008436724565756825,
+    "conf_90005": 0.009466865969108122
+   },
+   "raw": 0.008834705626435516
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    if not hasattr(score, \"item_size_history\"):\n        score.item_size_history = []\n    score.item_size_history.append(item)\n    score.item_size_history = score.item_size_history[-10:]\n    weights = np.geomspace(1, 0.1, num=len(score.item_size_history))\n    avg_item_size = np.average(score.item_size_history, weights=weights)\n    std_item_size = np.std(score.item_size_history)\n\n    similarity = 1 - (np.abs(remaining - avg_item_size) ** 2) / (1 + avg_item_size ** 2)\n\n    capacity_std = np.std(remaining)\n    entropy_reward = np.log(1 + (capacity_std ** 2) / (1 + remaining ** 2))\n\n    entropy_weight = 0.7 if std_item_size > 1.5 else 1.0\n\n    scores = similarity + entropy_weight * entropy_reward\n    return scores",
+  "thought": "A new algorithm that emphasizes recent item trends by using exponential weighting for historical item sizes and increases the entropy weight to further promote bin capacity diversity."
+ }
+}

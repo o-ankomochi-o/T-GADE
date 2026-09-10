@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.014399205561072492,
+    "conf_90002": 0.011851851851851851,
+    "conf_90003": 0.011916583912611719,
+    "conf_90004": 0.020843672456575684,
+    "conf_90005": 0.013951170901843548
+   },
+   "raw": 0.014592496936791058
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    total_capacity = 100  # assuming fixed bin capacity\n    bins_after_placement = bins - item\n    fill_level = (total_capacity - bins_after_placement) / total_capacity\n\n    # Define target intervals for optimal fill level\n    target_low, target_high = 0.4, 0.6\n    mid = (target_low + target_high) / 2\n\n    # Compute harmonic score based on distance to target interval\n    scores = 1 / (1 + np.abs(fill_level - mid) * np.log(1 + bins_after_placement))\n\n    return scores",
+  "thought": "The new algorithm assigns a score based on the harmonic difference between the bin's current fill level and a target interval, using a logarithmic scale to prioritize bins that reduce the overall variance in fill levels."
+ }
+}

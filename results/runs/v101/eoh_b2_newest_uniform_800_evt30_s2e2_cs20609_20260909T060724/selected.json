@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.010427010923535254,
+    "conf_90002": 0.010864197530864197,
+    "conf_90003": 0.015392254220456803,
+    "conf_90004": 0.01488833746898263,
+    "conf_90005": 0.018435475834578975
+   },
+   "raw": 0.014001455195683571
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    util = item / bins\n    mid_util = 0.5  # Prefer moderate utilization\n    score = -np.abs(util - mid_util) * (np.log(bins - item + 1e-6) + 1)\n    return score",
+  "thought": "The new algorithm introduces a preference for bins that are neither completely empty nor close to full by using a quadratic-like score that peaks at a specific utilization level and penalizes both under- and over-utilization."
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.006454816285998014,
+    "conf_90002": 0.007407407407407408,
+    "conf_90003": 0.009433962264150943,
+    "conf_90004": 0.007444168734491315,
+    "conf_90005": 0.006975585450921774
+   },
+   "raw": 0.00754318802859389
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.007444168734491315,
+    "conf500_90103": 0.007444168734491315,
+    "conf500_90104": 0.007444168734491315,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.006955316423581245
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    remaining = bins - item\n    bin_ages = np.arange(1, len(bins) + 1)\n    perfect_fit_bonus = (item == bins).astype(int) * (100 * np.exp(remaining / 100))  # Exponential bonus for perfect fits\n    harmonic_mean = 2 / (1 / (remaining + 1) + 1 / bin_ages)  # Harmonic mean of remaining space and age\n    age_penalty = np.exp(-bin_ages / 10)  # Exponential penalty for older bins to encourage compaction\n    scores = harmonic_mean * age_penalty + perfect_fit_bonus\n    return scores",
+  "thought": "The new algorithm scores bins using a weighted harmonic mean of remaining space and bin age, with an exponential bonus for perfect fits and an age-based penalty to prioritize compactness and recent usage."
+ }
+}

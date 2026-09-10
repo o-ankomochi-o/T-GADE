@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.018371400198609732,
+    "conf_90002": 0.01925925925925926,
+    "conf_90003": 0.019364448857994043,
+    "conf_90004": 0.018858560794044667,
+    "conf_90005": 0.018933731938216243
+   },
+   "raw": 0.01895748020962479
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.029925187032418952,
+    "conf500_90102": 0.02977667493796526,
+    "conf500_90103": 0.02977667493796526,
+    "conf500_90104": 0.02977667493796526,
+    "conf500_90105": 0.02977667493796526
+   },
+   "raw": 0.029806377356856
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    bin_capacity = np.max(bins)  # Assume this is the bin capacity\n    remaining = bins - item\n    compactness = 1.0 / (remaining + 1e-9)\n    balance = 1.0 / (np.abs(remaining - np.mean(remaining)) + 1e-9)\n    proximity = 1.0 / (np.abs(remaining - 0.5 * bin_capacity) + 1e-9)\n    index_decay = np.exp(-0.5 * np.arange(len(bins)))\n    return (compactness + balance + proximity) * index_decay",
+  "thought": "A new algorithm that scores bins using *compactness*, *balance*, and a *capacity proximity factor*, which encourages placing the item in bins whose remaining capacity is closer to a target threshold (e.g., bin capacity)."
+ }
+}

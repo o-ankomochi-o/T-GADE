@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.011420059582919563,
+    "conf_90002": 0.014320987654320988,
+    "conf_90003": 0.014399205561072492,
+    "conf_90004": 0.012903225806451613,
+    "conf_90005": 0.013452914798206279
+   },
+   "raw": 0.013299278680594186
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.04239401496259352,
+    "conf500_90102": 0.04218362282878412,
+    "conf500_90103": 0.03970223325062035,
+    "conf500_90104": 0.04218362282878412,
+    "conf500_90105": 0.04218362282878412
+   },
+   "raw": 0.041729423339913245
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    # Square root bonus for being full\n    fullness_bonus = np.sqrt(bins)\n    # Exponential bonus for bins with no items yet (full capacity == bins.size)\n    is_empty = (bins == bins.max())  # Assuming max represents the bin capacity\n    empty_bonus = np.where(is_empty, np.exp(1 / (item + 1e-6)), 0)\n    # Linear decay bonus for recent usage\n    decay_bonus = len(bins) - np.arange(len(bins))\n    # Combine all components\n    scores = 1 / (remaining + 1e-6) + fullness_bonus + 2 * empty_bonus + 0.5 * decay_bonus\n    return scores",
+  "thought": "A new algorithm that emphasizes **bin fullness using a square root bonus**, introduces **exponential preference for bins with no previous items**, and uses a **linear decay function** for item assignment prioritization."
+ }
+}

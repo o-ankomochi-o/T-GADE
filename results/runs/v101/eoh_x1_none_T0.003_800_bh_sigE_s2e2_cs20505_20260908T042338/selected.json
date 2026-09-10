@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.007447864945382324,
+    "conf_90002": 0.005925925925925926,
+    "conf_90003": 0.006454816285998014,
+    "conf_90004": 0.013895781637717122,
+    "conf_90005": 0.0114598903836572
+   },
+   "raw": 0.009036855835736119
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    post_placement_capacities = bins - item\n    max_bin_capacity = np.max(bins)\n    ideal_capacity = max_bin_capacity / 2\n    # Logarithmic preference toward the ideal capacity\n    scores = np.log(1 + ideal_capacity / np.abs(post_placement_capacities - ideal_capacity + 1e-9))\n    # Penalty for large residual space\n    scores -= 0.01 * post_placement_capacities\n    # Reward for completely filled bins\n    scores += 100 * (post_placement_capacities == 0).astype(float)\n    return scores",
+  "thought": "A new algorithm that uses a logarithmic preference toward the ideal residual space, while applying an increasing penalty for large residual spaces and a substantial reward for bins that will be completely filled."
+ }
+}

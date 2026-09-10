@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.015888778550148957,
+    "conf_90002": 0.01728395061728395,
+    "conf_90003": 0.01787487586891758,
+    "conf_90004": 0.01588089330024814,
+    "conf_90005": 0.016442451420029897
+   },
+   "raw": 0.016674189951325705
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.04488778054862843,
+    "conf500_90102": 0.04466501240694789,
+    "conf500_90103": 0.04466501240694789,
+    "conf500_90104": 0.04466501240694789,
+    "conf500_90105": 0.04466501240694789
+   },
+   "raw": 0.044709566035284
+  }
+ },
+ "genes": {
+  "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    tightness = 1 / ((bins - item) ** 2 + 1e-9)  # Higher penalty as bin becomes tighter using inverse square\n    target_fill = np.mean(bins) + np.std(bins)  # More conservative target fill level\n    proximity = 1 / (1 + (bins - target_fill) ** 8)  # Higher penalty for deviating from target using steeper polynomial\n    position_weight = np.power(0.25, np.arange(len(bins)))  # Faster decay to prioritize earlier bins less\n    normalization = np.log(len(bins) + 1) / np.log(np.arange(len(bins)) + 2)  # Logarithmic normalization to balance fill rates\n    scores = tightness * position_weight * proximity * normalization\n    return scores",
+  "thought": "Propose a score function with a faster exponential decay for position weighting, a higher tightness penalty using inverse square, a more conservative target fill level (mean + std), and logarithmic normalization to encourage balanced bin usage."
+ }
+}

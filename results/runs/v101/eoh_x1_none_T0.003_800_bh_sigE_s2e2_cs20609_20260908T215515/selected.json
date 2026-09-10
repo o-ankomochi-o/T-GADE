@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.007944389275074478,
+    "conf_90002": 0.013827160493827161,
+    "conf_90003": 0.013406156901688183,
+    "conf_90004": 0.01836228287841191,
+    "conf_90005": 0.028400597907324365
+   },
+   "raw": 0.01638811749126522
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.4513715710723192,
+    "conf500_90102": 0.3399503722084367,
+    "conf500_90103": 0.45409429280397023,
+    "conf500_90104": 0.40198511166253104,
+    "conf500_90105": 0.4044665012406948
+   },
+   "raw": 0.41037356979759043
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    num_bins = len(bins)\n    alpha = 0.5 + 0.3 * (1 - item / np.max(bins))  # Dynamic weight based on item size\n    alignment_score = 1 / np.abs((bins / item) - np.round((bins / item)))\n    return alpha * alignment_score + (1 - alpha) * bins",
+  "thought": "The new algorithm dynamically adjusts the weight between harmonic alignment and bin capacity based on the item size, favoring tighter alignment for small items and higher capacity for large ones."
+ }
+}

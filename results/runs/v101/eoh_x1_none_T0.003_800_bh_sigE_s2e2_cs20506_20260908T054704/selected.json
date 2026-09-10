@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.012413108242303872,
+    "conf_90002": 0.011851851851851851,
+    "conf_90003": 0.013902681231380337,
+    "conf_90004": 0.011910669975186104,
+    "conf_90005": 0.013951170901843548
+   },
+   "raw": 0.012805896440513142
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    target_ratio = 0.5  # ideal is to use exactly half the bin\n    ratio = item / bins\n    deviation = np.abs(ratio - target_ratio)\n    compactness = np.exp(-deviation * 10)  # exponential decay for imbalanced ratios\n    return compactness / (np.sqrt(bins - item) + 1e-8)",
+  "thought": "The new algorithm introduces a geometric-based score inspired by the idea of balancing fit and fill, using the distance from the bin's remaining capacity to a target ratio of item-to-bin size, while amplifying the preference for bins that leave a balanced, compact remainder."
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.008440913604766634,
+    "conf_90002": 0.009876543209876543,
+    "conf_90003": 0.010923535253227408,
+    "conf_90004": 0.011910669975186104,
+    "conf_90005": 0.01245640259093174
+   },
+   "raw": 0.010721612926797686
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.005466482676682982
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    load = bins - remaining  # Total load placed in the bin\n    harmonic = 1 / (remaining + 1e-6)\n    stability = np.sin(np.pi * load / bins)\n    scores = harmonic + stability\n    return scores",
+  "thought": "The new algorithm scores bins by combining a harmonic function of the remaining space with a dynamic weighting based on the bin's load history, aiming to balance both bin utilization and long-term packing stability."
+ }
+}

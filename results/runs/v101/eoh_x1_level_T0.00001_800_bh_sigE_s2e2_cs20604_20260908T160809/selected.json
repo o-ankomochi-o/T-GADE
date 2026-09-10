@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.007944389275074478,
+    "conf_90002": 0.006913580246913581,
+    "conf_90003": 0.007944389275074478,
+    "conf_90004": 0.008436724565756825,
+    "conf_90005": 0.008470353761833582
+   },
+   "raw": 0.007941887424930589
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.0024937655860349127,
+    "conf500_90102": 0.0024813895781637717,
+    "conf500_90103": 0.0,
+    "conf500_90104": 0.0024813895781637717,
+    "conf500_90105": 0.0024813895781637717
+   },
+   "raw": 0.0019875868641052456
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    unused_space = bins - item\n    space_decay = np.exp(-0.1 * unused_space)\n    tightness_bonus = np.sqrt(1 / (unused_space + 1e-6))\n    index_penalty = -0.005 * np.arange(len(bins))\n    scores = tightness_bonus + index_penalty - space_decay\n    return scores",
+  "thought": "New algorithm: Score bins using an exponential decay of unused space, a square root-based bonus for tight fits, and a mild linear index penalty to encourage reusing earlier bins."
+ }
+}

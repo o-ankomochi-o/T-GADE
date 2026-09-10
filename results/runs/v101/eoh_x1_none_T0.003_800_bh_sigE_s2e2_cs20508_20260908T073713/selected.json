@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.012909632571996028,
+    "conf_90002": 0.011358024691358024,
+    "conf_90003": 0.012909632571996028,
+    "conf_90004": 0.0228287841191067,
+    "conf_90005": 0.01195814648729447
+   },
+   "raw": 0.01439284408835025
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.02743142144638404,
+    "conf500_90102": 0.02729528535980149,
+    "conf500_90103": 0.02977667493796526,
+    "conf500_90104": 0.02481389578163772,
+    "conf500_90105": 0.02729528535980149
+   },
+   "raw": 0.027322512577117996
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    nearest_multiple = np.ceil(bins / item) * item\n    misalignment = bins / (nearest_multiple - bins)\n    scores = np.exp(-np.abs(misalignment)) * (1 - (bins / item))\n    return scores",
+  "thought": "The common backbone idea in the provided algorithms is to use a logarithmic transformation to assess how well the remaining bin capacities align with integer multiplicative relationships of the item size, and penalize non-integer-like ratios using a cubic function."
+ }
+}

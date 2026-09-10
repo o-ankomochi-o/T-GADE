@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.012413108242303872,
+    "conf_90002": 0.02271604938271605,
+    "conf_90003": 0.014895729890764648,
+    "conf_90004": 0.017369727047146403,
+    "conf_90005": 0.025909317389138018
+   },
+   "raw": 0.018660786390413797
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.05236907730673317,
+    "conf500_90102": 0.03722084367245657,
+    "conf500_90103": 0.04218362282878412,
+    "conf500_90104": 0.03970223325062035,
+    "conf500_90105": 0.05459057071960298
+   },
+   "raw": 0.045213269555639445
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    # Exponential capacity penalty with stronger weight\n    capacity_penalty = bins / (np.max(bins) + 1e-9)\n    capacity_penalty = np.exp(-capacity_penalty)\n\n    # Harmonic alignment with increased weight\n    harmonic_fits = bins / item\n    alignment_score = np.log(1 + 1 / np.abs(1 - np.round(harmonic_fits) / harmonic_fits))\n\n    # Apply softer penalty for non-integer harmonic fits\n    alignment_score[bins % item != 0] *= 0.5\n\n    # Normalize alignment score\n    alignment_score = alignment_score / (np.max(alignment_score) + 1e-9)\n\n    # Combine with new weighted parameters\n    return alignment_score * 0.7 - capacity_penalty * 0.3",
+  "thought": "New algorithm increases the weight of harmonic alignment to 0.7 and applies a stronger exponential capacity penalty with a weight of 0.3, while using a softer penalty of 0.5 for non-integer harmonic fits and normalizing both components."
+ }
+}

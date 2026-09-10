@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.016881827209533268,
+    "conf_90002": 0.007901234567901235,
+    "conf_90003": 0.009930486593843098,
+    "conf_90004": 0.0228287841191067,
+    "conf_90005": 0.015445939212755356
+   },
+   "raw": 0.014597654340627934
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004967729559476
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    occupancy = item / bins\n    scores = np.zeros_like(bins, dtype=np.float64)\n    scores[occupancy < 0.3] = np.exp(occupancy[occupancy < 0.3] * 10) - 1\n    scores[(occupancy >= 0.3) & (occupancy <= 0.85)] = np.exp((1 - occupancy[(occupancy >= 0.3) & (occupancy <= 0.85)]) * 10)\n    scores[occupancy > 0.85] = 10 + (1 / (1 - occupancy[occupancy > 0.85] + 1e-6))\n    return scores",
+  "thought": "The new algorithm introduces exponential bias towards nearly full bins and uses a quadratic penalty for underfilled bins, while maintaining a smooth transition around a mid-range occupancy using a combination of exponential and polynomial functions."
+ }
+}

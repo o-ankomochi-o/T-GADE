@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.014895729890764648,
+    "conf_90002": 0.01580246913580247,
+    "conf_90003": 0.015392254220456803,
+    "conf_90004": 0.01488833746898263,
+    "conf_90005": 0.018435475834578975
+   },
+   "raw": 0.015882853310117108
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.005466482676682982
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining_capacity = bins - item\n    closeness_score = np.exp(-np.abs(remaining_capacity - item) / (item + 1e-6))\n    tightness_score = 1 / (remaining_capacity + 1e-6)  # Reward bins with less remaining space\n    age_discount = (np.arange(len(bins)) + 1) ** (-0.5)  # Polynomial age discount\n    return closeness_score * 0.7 + tightness_score * 0.3 * age_discount",
+  "thought": "The new algorithm prioritizes bins by combining exponential closeness to item size, a linear reward for bins with lower remaining capacity, and a polynomial age discount to balance between efficiency and exploration."
+ }
+}

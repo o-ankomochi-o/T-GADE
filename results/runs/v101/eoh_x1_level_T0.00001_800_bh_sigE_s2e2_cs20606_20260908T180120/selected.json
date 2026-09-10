@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.005958291956305859,
+    "conf_90002": 0.007407407407407408,
+    "conf_90003": 0.007944389275074478,
+    "conf_90004": 0.008436724565756825,
+    "conf_90005": 0.007972097658196313
+   },
+   "raw": 0.007543782172548176
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.0399002493765586,
+    "conf500_90102": 0.03970223325062035,
+    "conf500_90103": 0.03970223325062035,
+    "conf500_90104": 0.03970223325062035,
+    "conf500_90105": 0.04218362282878412
+   },
+   "raw": 0.04023811439144075
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining_after_placement = bins - item\n    space_efficiency = 3 / (remaining_after_placement + 1e-5)\n    underutilization_penalty = -1.5 * np.log(remaining_after_placement / bins.max() + 1e-5)\n    balance_term = -0.5 * np.sqrt(np.abs(bins - np.mean(bins)))\n    num_items_in_bin = np.arange(len(bins)) + 1\n    scores = 0.3 * balance_term + 0.7 * space_efficiency - 0.2 * num_items_in_bin - underutilization_penalty\n    return scores",
+  "thought": "A new algorithm that prioritizes space efficiency more than balance, slightly penalizes crowded bins, and applies a moderate underutilization penalty to encourage better filling."
+ }
+}

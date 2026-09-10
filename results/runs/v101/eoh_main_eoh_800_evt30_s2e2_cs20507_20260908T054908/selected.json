@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.010923535253227408,
+    "conf_90002": 0.012345679012345678,
+    "conf_90003": 0.013406156901688183,
+    "conf_90004": 0.010918114143920596,
+    "conf_90005": 0.014947683109118086
+   },
+   "raw": 0.012508233684059991
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.005466482676682982
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    avg_item_size = 50\n    proximity = np.exp(-np.abs(remaining - item * 1.2) / 10)  # Encourage tighter fits with exponential decay\n    penalty = 1 / (remaining + 1e-6)  # Stronger penalty for small remaining space\n    weight = np.exp(item / avg_item_size)  # Exponential weighting based on item size\n    scores = proximity * penalty * weight\n    return scores",
+  "thought": "The new algorithm prioritizes bins by favoring a tighter fit overall, applying a stronger fragmentation penalty for small remaining gaps, and using a non-linear, exponential weighting based on item size to emphasize larger items more."
+ }
+}

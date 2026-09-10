@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.007944389275074478,
+    "conf_90002": 0.008395061728395062,
+    "conf_90003": 0.009433962264150943,
+    "conf_90004": 0.011910669975186104,
+    "conf_90005": 0.008968609865470852
+   },
+   "raw": 0.009330538621655487
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.022443890274314215,
+    "conf500_90102": 0.01488833746898263,
+    "conf500_90103": 0.01240694789081886,
+    "conf500_90104": 0.019851116625310174,
+    "conf500_90105": 0.017369727047146403
+   },
+   "raw": 0.017392003861314453
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    residual = bins % item\n    exp_penalty = np.exp(-residual)\n    log_penalty = -np.log(residual + 1e-8)\n    proximity_factor = 1 / (1 + np.abs(bins - item))  # inverse of distance from item size\n    scores = exp_penalty * log_penalty * proximity_factor\n    return scores",
+  "thought": "The new algorithm combines the exponential and logarithmic penalty terms into a multiplicative relationship, with a normalization factor based on the bin's proximity to the item size, promoting efficient use of space in a more non-linear way."
+ }
+}

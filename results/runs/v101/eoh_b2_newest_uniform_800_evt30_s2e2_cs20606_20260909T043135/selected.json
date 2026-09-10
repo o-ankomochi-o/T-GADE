@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.013902681231380337,
+    "conf_90002": 0.02666666666666667,
+    "conf_90003": 0.01638530287984111,
+    "conf_90004": 0.013399503722084368,
+    "conf_90005": 0.04384653712007972
+   },
+   "raw": 0.02284013832401044
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.007444168734491315
+   },
+   "raw": 0.005962760592315737
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    if bins.size == 0:\n        return bins\n\n    remaining = bins - item\n    item_ratio = item / bins\n    remaining_ratio = remaining / bins\n    harmonic = 2 / (1 / item_ratio + 1 / remaining_ratio)\n    scores = harmonic + 100 * (remaining == 0)\n    return scores",
+  "thought": "This novel algorithm scores bins based on the harmonic mean of the item-to-bin ratio and the remaining space, with an adjustment for bins that would be completely filled after the assignment, giving them the highest priority."
+ }
+}

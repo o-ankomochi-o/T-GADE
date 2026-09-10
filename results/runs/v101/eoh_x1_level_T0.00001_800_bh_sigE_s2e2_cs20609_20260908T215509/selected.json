@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.009433962264150943,
+    "conf_90002": 0.006419753086419753,
+    "conf_90003": 0.008440913604766634,
+    "conf_90004": 0.01141439205955335,
+    "conf_90005": 0.01245640259093174
+   },
+   "raw": 0.009633084721164484
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.007444168734491315,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.007444168734491315,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.006459038507948491
+  }
+ },
+ "genes": {
+  "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    after_placement = bins - item\n    capacity_ratio = after_placement / bins\n    size_distance = np.abs(after_placement - item) / item\n    return (2 * capacity_ratio * (1 - size_distance)) / (capacity_ratio + (1 - size_distance))",
+  "thought": "The novel algorithm scores bins based on a harmonic mean of the bin's remaining capacity after placement and the distance to the item size, favoring bins that are closer to a balance between being full and avoiding waste."
+ }
+}

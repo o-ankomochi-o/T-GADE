@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.009930486593843098,
+    "conf_90002": 0.013827160493827161,
+    "conf_90003": 0.01638530287984111,
+    "conf_90004": 0.013399503722084368,
+    "conf_90005": 0.015445939212755356
+   },
+   "raw": 0.013797678580470221
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.012468827930174564,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.009925558312655087,
+    "conf500_90104": 0.007444168734491315,
+    "conf500_90105": 0.009925558312655087
+   },
+   "raw": 0.008945378489260719
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    multiples = np.ceil(bins / item)\n    ideal_capacities = multiples * item\n    proximity = -np.abs(ideal_capacities - bins)\n    compactness = -bins / item\n    proximity_weight = 1 - (bins / ideal_capacities)\n    return proximity * (0.7 + proximity_weight * 0.3) + compactness * (0.3 - proximity_weight * 0.3)",
+  "thought": "New algorithm: The algorithm uses a dynamic weighting of proximity to the nearest multiple and compactness, where the weight of proximity increases as the bin capacity decreases, aiming to balance fragmentation and space efficiency."
+ }
+}

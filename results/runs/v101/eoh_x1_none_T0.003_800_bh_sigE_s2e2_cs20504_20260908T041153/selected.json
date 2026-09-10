@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.008440913604766634,
+    "conf_90002": 0.006913580246913581,
+    "conf_90003": 0.00893743793445879,
+    "conf_90004": 0.01141439205955335,
+    "conf_90005": 0.009965122072745391
+   },
+   "raw": 0.00913428918368755
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.017456359102244388,
+    "conf500_90102": 0.022332506203473945,
+    "conf500_90103": 0.01240694789081886,
+    "conf500_90104": 0.017369727047146403,
+    "conf500_90105": 0.02481389578163772
+   },
+   "raw": 0.01887588720506426
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    multiples = np.ceil(bins / item) * item\n    gap = multiples - bins\n    fit_score = 1 / (1 + gap)\n    bin_age = np.arange(1, len(bins) + 1)\n    age_weight = 1 / (1 + bin_age)\n    occupancy = bins / multiples\n    space_penalty = (1 - occupancy) ** 3\n    scores = fit_score * age_weight / (space_penalty + 1e-8)\n    return scores",
+  "thought": "A new algorithm that scores bins using a weighted geometric mean of fit preference (based on gap), a linearly decreasing age weight, and a cubic penalty for unused space relative to the item size."
+ }
+}

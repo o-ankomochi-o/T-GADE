@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.02929493545183714,
+    "conf_90002": 0.027654320987654323,
+    "conf_90003": 0.030784508440913606,
+    "conf_90004": 0.028784119106699754,
+    "conf_90005": 0.028898854010961636
+   },
+   "raw": 0.029083347599613295
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.00997506234413965,
+    "conf500_90102": 0.007444168734491315,
+    "conf500_90103": 0.007444168734491315,
+    "conf500_90104": 0.009925558312655087,
+    "conf500_90105": 0.007444168734491315
+   },
+   "raw": 0.008446625372053738
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    bin_capacity = 150\n    remaining = bins\n    # Avoid division by zero by adding a small epsilon\n    epsilon = 1e-6\n    # Compute the fraction of the bin that the item would fill\n    fill_fraction = item / (remaining + epsilon)\n    # Score based on harmonic-like behavior: high when fill_fraction is a simple rational\n    scores = 1 / (1 + np.abs(np.round(1 / fill_fraction) - 1 / fill_fraction))\n    return scores",
+  "thought": "The new algorithm scores bins based on a harmonic function that rewards bins where the item fits as a \"harmonic resonance\" with the bin\u2019s remaining capacity, i.e., it prefers bins where the item size is a rational fraction of the bin capacity."
+ }
+}

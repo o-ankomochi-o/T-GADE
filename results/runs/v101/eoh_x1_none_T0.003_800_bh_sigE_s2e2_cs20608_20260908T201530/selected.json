@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.006951340615690168,
+    "conf_90002": 0.007901234567901235,
+    "conf_90003": 0.008440913604766634,
+    "conf_90004": 0.009429280397022333,
+    "conf_90005": 0.008968609865470852
+   },
+   "raw": 0.008338275810170244
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.032418952618453865,
+    "conf500_90102": 0.02977667493796526,
+    "conf500_90103": 0.02729528535980149,
+    "conf500_90104": 0.02977667493796526,
+    "conf500_90105": 0.03225806451612903
+   },
+   "raw": 0.03030513047406298
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    compactness_weight = 0.4\n    flexibility_weight = 0.5\n    normalized_remaining = remaining / bins.max()\n    entropy = -np.log(normalized_remaining)\n    position_penalty = -np.exp(np.arange(len(bins)) * 0.3)\n    return compactness_weight * (remaining ** 2) + flexibility_weight * entropy + position_penalty",
+  "thought": "A new algorithm prioritizes bins by balancing the compactness using squared remaining space, the long-term flexibility using normalized entropy, and applying an exponential position penalty to strongly enforce left-packing behavior."
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.005958291956305859,
+    "conf_90002": 0.008395061728395062,
+    "conf_90003": 0.00893743793445879,
+    "conf_90004": 0.008436724565756825,
+    "conf_90005": 0.007972097658196313
+   },
+   "raw": 0.007939922768622569
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.034912718204488775,
+    "conf500_90102": 0.03722084367245657,
+    "conf500_90103": 0.034739454094292806,
+    "conf500_90104": 0.03722084367245657,
+    "conf500_90105": 0.034739454094292806
+   },
+   "raw": 0.0357666627475975
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining_space = bins - item\n    space_utilization = 1 / (remaining_space + 1e-6)\n    underutilization_penalty = (item / bins) ** 2  # Penalize bins with large unused space\n    index_preference = np.exp(-np.arange(len(bins)) / 30)  # Stronger preference for earlier bins\n    return (space_utilization * underutilization_penalty + index_preference) / (space_utilization ** 0.5 + 1e-6)",
+  "thought": "The new algorithm scores bins by emphasizing the minimization of underutilized bins while still maintaining a moderate preference for earlier bins, using a custom decaying function and penalizing bins based on the squared difference between item size and bin capacity."
+ }
+}

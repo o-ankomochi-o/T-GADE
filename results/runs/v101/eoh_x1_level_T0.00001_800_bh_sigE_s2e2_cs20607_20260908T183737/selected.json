@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.008440913604766634,
+    "conf_90002": 0.007407407407407408,
+    "conf_90003": 0.009930486593843098,
+    "conf_90004": 0.01141439205955335,
+    "conf_90005": 0.014449427005480818
+   },
+   "raw": 0.010328525334210262
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.0024937655860349127,
+    "conf500_90102": 0.0024813895781637717,
+    "conf500_90103": 0.0,
+    "conf500_90104": 0.0,
+    "conf500_90105": 0.0024813895781637717
+   },
+   "raw": 0.0014913089484724913
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    avg_remaining = np.mean(bins)\n    entropy = (remaining / avg_remaining) * np.log(remaining / avg_remaining + 1e-10)\n    scores = 1 / (entropy + 1e-10)\n    return scores",
+  "thought": "The new algorithm scores bins based on minimizing the relative entropy (Kullback-Leibler divergence) between the bin's remaining capacity and the item size, while also favoring bins that maintain a balanced distribution of remaining capacities."
+ }
+}

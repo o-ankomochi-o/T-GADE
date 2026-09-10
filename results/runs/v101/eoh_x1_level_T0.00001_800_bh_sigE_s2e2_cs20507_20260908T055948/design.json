@@ -1,0 +1,81 @@
+{
+ "arm": "EOH_official_commit_pinned",
+ "bank": "c86b6c599ee87160fc6a04561634ba1812144bfc7bb7595060dc7b9050fbbb87",
+ "banks": {
+  "c100": "6a839c18bd962e71c600bbc2d56f5105a4c351597aff432544e3cfa9b52516c5",
+  "c500": "2d1085152521e51e8273995ed22dc5475a14d17cb4d48f6a398f8954db973ae9"
+ },
+ "cap_usd_per_run": 0.3,
+ "carrier": "behaviour",
+ "client_seed": 20507,
+ "code_commit": "32b0b1cd25391e7f5c7a1f3e6be4c326f48e7522",
+ "deterministic_only": true,
+ "energy_spec": "E = min(raw_excess, 2.0) / 2.0 (declared linear clip)",
+ "eoh_search_seed": "upstream random.seed(2024), fixed",
+ "eps": 0.001,
+ "eval_timeout_s": 30.0,
+ "exclusion": "level",
+ "execution": {
+  "allow_fallbacks": false,
+  "max_tokens": 2048,
+  "min_interval_s": 1.0,
+  "provider_order": [
+   "SiliconFlow"
+  ],
+  "t_sample": 0.8,
+  "transport_retries": 2
+ },
+ "forced_template": null,
+ "free_energy_mode": "extensive",
+ "hybrid_weights": "0.8,0.1,0.1",
+ "injection": [
+  "Evolution.llm",
+  "evolution._eval_with_timeout",
+  "eoh._eval_with_timeout"
+ ],
+ "label": "x1_level_T0.00001_800_bh_sigE_s2e2_cs20507",
+ "logical_call_cap": 800,
+ "model": "qwen/qwen3-32b",
+ "n_parents": 2,
+ "neighbourhood_failure_rule": "one re-measure, then the run is stopped and marked aborted (v2 #4)",
+ "no_think": true,
+ "note": "commit-pinned EoH implementation connected to the common environment; not a reproduction of the 2024 paper run",
+ "num_evaluators": 2,
+ "num_samplers": 2,
+ "objective": "train_c100",
+ "offline": false,
+ "operator_model_override": false,
+ "operators": [
+  "e1",
+  "e2",
+  "m1",
+  "m2"
+ ],
+ "penalties_raw": {
+  "c100": 1.481409839148161,
+  "c500": 11.41932389869
+ },
+ "pop_size": 8,
+ "probe_len": 64,
+ "raw_upper_bound_train": 1.5153435959352046,
+ "resume": null,
+ "runtime_side_effects": [
+  "BpOnlineAdapter._lazy_imports stubs evolution.InterfaceLLM (constructor ping suppressed), replaced by the shim"
+ ],
+ "sample_budget": 800,
+ "sandbox_image": "sha256:19de0a8ab2d5edc4eb21697ed5a4dec44f7dcf5d2e74d35a16400c8259cdab19",
+ "sandbox_protocol": "binary-f64-v1",
+ "seed": 101,
+ "selection_rule": "history best over valid evaluated samples + seeds (v2 #2); final-population best recorded as secondary",
+ "signature_source": "energy",
+ "survival": "thermo",
+ "survival_energy": "E = min(objective_rounded5, 2.0) / 2.0 (T-GADE clip); parent selection = EoH rank of the same objective",
+ "temperature": 1e-05,
+ "update": "steady-state (upstream), objective-dedup, 5-decimal rounding",
+ "upstream_commit": "472545785c936dcfc863d2bc0d6109cf23c7ce62",
+ "wrappers": [
+  "evaluate_seeds output sorted by objective (multiset unchanged); best tracker seeded",
+  "final selection = min finite objective of the last saved population",
+  "/no_think prompt prefix"
+ ]
+}

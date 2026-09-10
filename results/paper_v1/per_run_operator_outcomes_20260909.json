@@ -1,0 +1,2222 @@
+{
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20501_20260909T052058": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 171,
+"better": 2,
+"equal": 8,
+"worse": 161,
+"child_median_pct": 4.195593118019915,
+"best_parent_median_pct": 3.7830767682865503
+},
+"eoh_e2": {
+"pairs": 201,
+"better": 4,
+"equal": 8,
+"worse": 189,
+"child_median_pct": 4.0245497534963395,
+"best_parent_median_pct": 3.7830767682865503
+},
+"eoh_m1": {
+"pairs": 185,
+"better": 6,
+"equal": 13,
+"worse": 166,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.823322265821523
+},
+"eoh_m2": {
+"pairs": 210,
+"better": 16,
+"equal": 10,
+"worse": 184,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.823322265821523
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20502_20260909T052058": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 157,
+"better": 1,
+"equal": 13,
+"worse": 143,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2576717979676024
+},
+"eoh_e2": {
+"pairs": 196,
+"better": 5,
+"equal": 13,
+"worse": 178,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2576717979676024
+},
+"eoh_m1": {
+"pairs": 185,
+"better": 5,
+"equal": 12,
+"worse": 168,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2576717979676024
+},
+"eoh_m2": {
+"pairs": 212,
+"better": 22,
+"equal": 33,
+"worse": 157,
+"child_median_pct": 1.2979172955025633,
+"best_parent_median_pct": 1.2576717979676024
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20503_20260909T065228": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 172,
+"better": 3,
+"equal": 36,
+"worse": 133,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.9541201328101487
+},
+"eoh_e2": {
+"pairs": 195,
+"better": 6,
+"equal": 32,
+"worse": 157,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.9541201328101487
+},
+"eoh_m1": {
+"pairs": 183,
+"better": 3,
+"equal": 58,
+"worse": 122,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.9541201328101487
+},
+"eoh_m2": {
+"pairs": 208,
+"better": 12,
+"equal": 49,
+"worse": 147,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.9541201328101487
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20504_20260909T065600": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 168,
+"better": 3,
+"equal": 7,
+"worse": 158,
+"child_median_pct": 6.157561122849385,
+"best_parent_median_pct": 1.2274876748163845
+},
+"eoh_e2": {
+"pairs": 193,
+"better": 5,
+"equal": 16,
+"worse": 172,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2274876748163845
+},
+"eoh_m1": {
+"pairs": 182,
+"better": 6,
+"equal": 17,
+"worse": 159,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2677331723513456
+},
+"eoh_m2": {
+"pairs": 209,
+"better": 18,
+"equal": 22,
+"worse": 169,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2677331723513456
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20505_20260909T082103": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 156,
+"better": 0,
+"equal": 2,
+"worse": 154,
+"child_median_pct": 13.195492504276082,
+"best_parent_median_pct": 0.9558305664553778
+},
+"eoh_e2": {
+"pairs": 187,
+"better": 7,
+"equal": 6,
+"worse": 174,
+"child_median_pct": 4.125163497333747,
+"best_parent_median_pct": 0.975953315222864
+},
+"eoh_m1": {
+"pairs": 182,
+"better": 2,
+"equal": 20,
+"worse": 160,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.222456987624513
+},
+"eoh_m2": {
+"pairs": 204,
+"better": 5,
+"equal": 38,
+"worse": 161,
+"child_median_pct": 3.9742428815776236,
+"best_parent_median_pct": 1.2979172955025633
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20506_20260909T094006": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 155,
+"better": 5,
+"equal": 2,
+"worse": 148,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 2.736693832377507
+},
+"eoh_e2": {
+"pairs": 185,
+"better": 3,
+"equal": 2,
+"worse": 180,
+"child_median_pct": 4.0245497534963395,
+"best_parent_median_pct": 2.736693832377507
+},
+"eoh_m1": {
+"pairs": 183,
+"better": 7,
+"equal": 12,
+"worse": 164,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 2.7467552067612506
+},
+"eoh_m2": {
+"pairs": 205,
+"better": 20,
+"equal": 17,
+"worse": 168,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 2.736693832377507
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20507_20260909T094951": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 160,
+"better": 0,
+"equal": 5,
+"worse": 155,
+"child_median_pct": 4.27608411308986,
+"best_parent_median_pct": 3.823322265821523
+},
+"eoh_e2": {
+"pairs": 200,
+"better": 4,
+"equal": 5,
+"worse": 191,
+"child_median_pct": 4.014488379112584,
+"best_parent_median_pct": 3.823322265821523
+},
+"eoh_m1": {
+"pairs": 188,
+"better": 7,
+"equal": 6,
+"worse": 175,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.8434450145889856
+},
+"eoh_m2": {
+"pairs": 213,
+"better": 10,
+"equal": 14,
+"worse": 189,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.8434450145889856
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20508_20260909T113224": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 168,
+"better": 0,
+"equal": 24,
+"worse": 144,
+"child_median_pct": 5.513633162289964,
+"best_parent_median_pct": 3.8333836402052546
+},
+"eoh_e2": {
+"pairs": 190,
+"better": 3,
+"equal": 28,
+"worse": 159,
+"child_median_pct": 8.632659221249629,
+"best_parent_median_pct": 3.8333836402052546
+},
+"eoh_m1": {
+"pairs": 184,
+"better": 4,
+"equal": 44,
+"worse": 136,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.8937518865076903
+},
+"eoh_m2": {
+"pairs": 207,
+"better": 6,
+"equal": 43,
+"worse": 158,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.903813260891445
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20509_20260909T114441": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 167,
+"better": 3,
+"equal": 7,
+"worse": 157,
+"child_median_pct": 5.895965388872122,
+"best_parent_median_pct": 0.8451554482342265
+},
+"eoh_e2": {
+"pairs": 200,
+"better": 5,
+"equal": 17,
+"worse": 178,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 0.8451554482342265
+},
+"eoh_m1": {
+"pairs": 184,
+"better": 3,
+"equal": 18,
+"worse": 163,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 0.8451554482342265
+},
+"eoh_m2": {
+"pairs": 211,
+"better": 16,
+"equal": 38,
+"worse": 157,
+"child_median_pct": 1.2979172955025633,
+"best_parent_median_pct": 0.8652781970017127
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20510_20260909T130629": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 163,
+"better": 4,
+"equal": 17,
+"worse": 142,
+"child_median_pct": 4.235838615554887,
+"best_parent_median_pct": 3.8333836402052546
+},
+"eoh_e2": {
+"pairs": 200,
+"better": 2,
+"equal": 21,
+"worse": 177,
+"child_median_pct": 4.094979374182507,
+"best_parent_median_pct": 3.249823925948291
+},
+"eoh_m1": {
+"pairs": 187,
+"better": 8,
+"equal": 22,
+"worse": 157,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.863567763356472
+},
+"eoh_m2": {
+"pairs": 211,
+"better": 7,
+"equal": 24,
+"worse": 180,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.863567763356472
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20601_20260908T123249": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 171,
+"better": 2,
+"equal": 47,
+"worse": 122,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.300130797866996
+},
+"eoh_e2": {
+"pairs": 190,
+"better": 5,
+"equal": 61,
+"worse": 124,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2979172955025633
+},
+"eoh_m1": {
+"pairs": 180,
+"better": 5,
+"equal": 60,
+"worse": 115,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.556695844652382
+},
+"eoh_m2": {
+"pairs": 207,
+"better": 10,
+"equal": 57,
+"worse": 140,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 2.6461414629238424
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20602_20260908T123250": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 168,
+"better": 2,
+"equal": 13,
+"worse": 153,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.7931381426702933
+},
+"eoh_e2": {
+"pairs": 196,
+"better": 2,
+"equal": 25,
+"worse": 169,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.249823925948291
+},
+"eoh_m1": {
+"pairs": 188,
+"better": 11,
+"equal": 28,
+"worse": 149,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.7629540195190643
+},
+"eoh_m2": {
+"pairs": 211,
+"better": 9,
+"equal": 42,
+"worse": 160,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.7730153939028184
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20603_20260908T141341": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 167,
+"better": 3,
+"equal": 10,
+"worse": 154,
+"child_median_pct": 4.416943354462218,
+"best_parent_median_pct": 1.2073649260488983
+},
+"eoh_e2": {
+"pairs": 189,
+"better": 2,
+"equal": 12,
+"worse": 175,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 1.2073649260488983
+},
+"eoh_m1": {
+"pairs": 186,
+"better": 7,
+"equal": 9,
+"worse": 170,
+"child_median_pct": 4.054733876647557,
+"best_parent_median_pct": 1.3582855418050106
+},
+"eoh_m2": {
+"pairs": 212,
+"better": 17,
+"equal": 13,
+"worse": 182,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.6198812757822743
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20604_20260908T155032": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 172,
+"better": 1,
+"equal": 9,
+"worse": 162,
+"child_median_pct": 6.705906026763266,
+"best_parent_median_pct": 1.2979172955025633
+},
+"eoh_e2": {
+"pairs": 198,
+"better": 6,
+"equal": 56,
+"worse": 136,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2979172955025633
+},
+"eoh_m1": {
+"pairs": 189,
+"better": 7,
+"equal": 53,
+"worse": 129,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2979172955025633
+},
+"eoh_m2": {
+"pairs": 211,
+"better": 10,
+"equal": 78,
+"worse": 123,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2979172955025633
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20605_20260908T171710": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 167,
+"better": 1,
+"equal": 1,
+"worse": 165,
+"child_median_pct": 16.23905825535768,
+"best_parent_median_pct": 0.9155850689204168
+},
+"eoh_e2": {
+"pairs": 194,
+"better": 2,
+"equal": 6,
+"worse": 186,
+"child_median_pct": 7.254250930677133,
+"best_parent_median_pct": 0.92564644330416
+},
+"eoh_m1": {
+"pairs": 188,
+"better": 6,
+"equal": 5,
+"worse": 177,
+"child_median_pct": 4.492403662340274,
+"best_parent_median_pct": 0.935707817687903
+},
+"eoh_m2": {
+"pairs": 212,
+"better": 19,
+"equal": 9,
+"worse": 184,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 0.9558305664553778
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20606_20260908T175114": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 157,
+"better": 1,
+"equal": 6,
+"worse": 150,
+"child_median_pct": 4.266022738706106,
+"best_parent_median_pct": 3.8535063889727406
+},
+"eoh_e2": {
+"pairs": 188,
+"better": 5,
+"equal": 9,
+"worse": 174,
+"child_median_pct": 3.9993963175369753,
+"best_parent_median_pct": 3.8535063889727406
+},
+"eoh_m1": {
+"pairs": 188,
+"better": 5,
+"equal": 20,
+"worse": 163,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.8535063889727406
+},
+"eoh_m2": {
+"pairs": 207,
+"better": 17,
+"equal": 34,
+"worse": 156,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.8535063889727406
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20607_20260908T192435": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 168,
+"better": 2,
+"equal": 59,
+"worse": 107,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.984304255961367
+},
+"eoh_e2": {
+"pairs": 194,
+"better": 2,
+"equal": 81,
+"worse": 111,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.984304255961367
+},
+"eoh_m1": {
+"pairs": 186,
+"better": 1,
+"equal": 79,
+"worse": 106,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.984304255961367
+},
+"eoh_m2": {
+"pairs": 211,
+"better": 9,
+"equal": 109,
+"worse": 93,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.984304255961367
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20608_20260908T205013": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 160,
+"better": 5,
+"equal": 3,
+"worse": 152,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 0.8854009457691933
+},
+"eoh_e2": {
+"pairs": 184,
+"better": 6,
+"equal": 9,
+"worse": 169,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 0.7948485763155224
+},
+"eoh_m1": {
+"pairs": 181,
+"better": 6,
+"equal": 17,
+"worse": 158,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2979172955025633
+},
+"eoh_m2": {
+"pairs": 204,
+"better": 12,
+"equal": 30,
+"worse": 162,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2979172955025633
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20609_20260908T222238": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 174,
+"better": 0,
+"equal": 14,
+"worse": 160,
+"child_median_pct": 7.948485763155247,
+"best_parent_median_pct": 3.8333836402052546
+},
+"eoh_e2": {
+"pairs": 197,
+"better": 3,
+"equal": 26,
+"worse": 168,
+"child_median_pct": 4.064795251031289,
+"best_parent_median_pct": 3.8333836402052546
+},
+"eoh_m1": {
+"pairs": 188,
+"better": 12,
+"equal": 22,
+"worse": 154,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.8535063889727406
+},
+"eoh_m2": {
+"pairs": 211,
+"better": 10,
+"equal": 33,
+"worse": 168,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.8535063889727406
+}
+}
+},
+"g1_x2full_bh_sigE_fermion_T0_evt30_cs20610_20260908T225029": {
+"arm": "Gen. fermion T=0",
+"operators": {
+"eoh_e1": {
+"pairs": 163,
+"better": 2,
+"equal": 22,
+"worse": 139,
+"child_median_pct": 8.652781970017116,
+"best_parent_median_pct": 2.585773216621395
+},
+"eoh_e2": {
+"pairs": 192,
+"better": 4,
+"equal": 38,
+"worse": 150,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.108964684575911
+},
+"eoh_m1": {
+"pairs": 182,
+"better": 8,
+"equal": 49,
+"worse": 125,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.4258979776637446
+},
+"eoh_m2": {
+"pairs": 211,
+"better": 14,
+"equal": 47,
+"worse": 150,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.6925243988328735
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20501_20260909T052058": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 176,
+"better": 1,
+"equal": 19,
+"worse": 156,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 0.7747258275480476
+},
+"eoh_e2": {
+"pairs": 196,
+"better": 2,
+"equal": 19,
+"worse": 175,
+"child_median_pct": 4.094979374182507,
+"best_parent_median_pct": 0.7747258275480476
+},
+"eoh_m1": {
+"pairs": 184,
+"better": 9,
+"equal": 14,
+"worse": 161,
+"child_median_pct": 3.9893349431532323,
+"best_parent_median_pct": 0.92564644330416
+},
+"eoh_m2": {
+"pairs": 212,
+"better": 25,
+"equal": 18,
+"worse": 169,
+"child_median_pct": 3.9641815071938806,
+"best_parent_median_pct": 0.8854009457691989
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20502_20260909T052058": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 171,
+"better": 7,
+"equal": 1,
+"worse": 163,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 0.9558305664553778
+},
+"eoh_e2": {
+"pairs": 198,
+"better": 5,
+"equal": 0,
+"worse": 193,
+"child_median_pct": 4.08994868699064,
+"best_parent_median_pct": 0.9558305664553778
+},
+"eoh_m1": {
+"pairs": 188,
+"better": 15,
+"equal": 5,
+"worse": 168,
+"child_median_pct": 4.125163497333736,
+"best_parent_median_pct": 1.1268739309789764
+},
+"eoh_m2": {
+"pairs": 213,
+"better": 23,
+"equal": 5,
+"worse": 185,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.3482241674212674
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20503_20260909T065326": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 162,
+"better": 4,
+"equal": 5,
+"worse": 153,
+"child_median_pct": 5.579032095784289,
+"best_parent_median_pct": 1.1168125565952334
+},
+"eoh_e2": {
+"pairs": 191,
+"better": 3,
+"equal": 12,
+"worse": 176,
+"child_median_pct": 4.27608411308986,
+"best_parent_median_pct": 1.1168125565952334
+},
+"eoh_m1": {
+"pairs": 180,
+"better": 10,
+"equal": 13,
+"worse": 157,
+"child_median_pct": 4.100010061374384,
+"best_parent_median_pct": 1.6198812757822743
+},
+"eoh_m2": {
+"pairs": 210,
+"better": 15,
+"equal": 20,
+"worse": 175,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.6198812757822743
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20504_20260909T081520": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 157,
+"better": 5,
+"equal": 9,
+"worse": 143,
+"child_median_pct": 4.416943354462218,
+"best_parent_median_pct": 2.3040547338766455
+},
+"eoh_e2": {
+"pairs": 177,
+"better": 3,
+"equal": 12,
+"worse": 162,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 2.3040547338766455
+},
+"eoh_m1": {
+"pairs": 178,
+"better": 15,
+"equal": 14,
+"worse": 149,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 2.6964483348425463
+},
+"eoh_m2": {
+"pairs": 202,
+"better": 25,
+"equal": 17,
+"worse": 160,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 2.6964483348425463
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20505_20260909T082224": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 167,
+"better": 4,
+"equal": 1,
+"worse": 162,
+"child_median_pct": 4.004427004728853,
+"best_parent_median_pct": 3.7629540195190643
+},
+"eoh_e2": {
+"pairs": 194,
+"better": 5,
+"equal": 2,
+"worse": 187,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.7629540195190643
+},
+"eoh_m1": {
+"pairs": 185,
+"better": 13,
+"equal": 14,
+"worse": 158,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.8031995170540367
+},
+"eoh_m2": {
+"pairs": 208,
+"better": 34,
+"equal": 17,
+"worse": 157,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.8384143273971203
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20506_20260909T094329": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 162,
+"better": 2,
+"equal": 4,
+"worse": 156,
+"child_median_pct": 6.222960056343699,
+"best_parent_median_pct": 0.9206157561122884
+},
+"eoh_e2": {
+"pairs": 192,
+"better": 1,
+"equal": 5,
+"worse": 186,
+"child_median_pct": 4.1553476204849655,
+"best_parent_median_pct": 0.935707817687903
+},
+"eoh_m1": {
+"pairs": 188,
+"better": 7,
+"equal": 8,
+"worse": 173,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.0463829359090429
+},
+"eoh_m2": {
+"pairs": 214,
+"better": 23,
+"equal": 10,
+"worse": 181,
+"child_median_pct": 3.8535063889727406,
+"best_parent_median_pct": 1.0463829359090429
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20507_20260909T095644": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 159,
+"better": 2,
+"equal": 6,
+"worse": 151,
+"child_median_pct": 6.650568467652684,
+"best_parent_median_pct": 1.9418452560619848
+},
+"eoh_e2": {
+"pairs": 194,
+"better": 5,
+"equal": 8,
+"worse": 181,
+"child_median_pct": 4.276084113089849,
+"best_parent_median_pct": 1.8714156353757945
+},
+"eoh_m1": {
+"pairs": 185,
+"better": 12,
+"equal": 11,
+"worse": 162,
+"child_median_pct": 4.054733876647557,
+"best_parent_median_pct": 2.122949994969315
+},
+"eoh_m2": {
+"pairs": 213,
+"better": 25,
+"equal": 11,
+"worse": 177,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 2.122949994969315
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20508_20260909T113313": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 169,
+"better": 8,
+"equal": 5,
+"worse": 156,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.8836905121239584
+},
+"eoh_e2": {
+"pairs": 199,
+"better": 8,
+"equal": 9,
+"worse": 182,
+"child_median_pct": 4.004427004728853,
+"best_parent_median_pct": 3.8836905121239584
+},
+"eoh_m1": {
+"pairs": 184,
+"better": 24,
+"equal": 16,
+"worse": 144,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.923936009658931
+},
+"eoh_m2": {
+"pairs": 209,
+"better": 53,
+"equal": 16,
+"worse": 140,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.923936009658931
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20509_20260909T130251": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 173,
+"better": 6,
+"equal": 8,
+"worse": 159,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.8434450145889856
+},
+"eoh_e2": {
+"pairs": 200,
+"better": 12,
+"equal": 7,
+"worse": 181,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.823322265821523
+},
+"eoh_m1": {
+"pairs": 187,
+"better": 34,
+"equal": 11,
+"worse": 142,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.8836905121239584
+},
+"eoh_m2": {
+"pairs": 212,
+"better": 23,
+"equal": 20,
+"worse": 169,
+"child_median_pct": 4.034611127880071,
+"best_parent_median_pct": 3.8836905121239584
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20510_20260909T131849": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 149,
+"better": 12,
+"equal": 20,
+"worse": 117,
+"child_median_pct": 9.749471777844851,
+"best_parent_median_pct": 3.6422175269141697
+},
+"eoh_e2": {
+"pairs": 181,
+"better": 9,
+"equal": 30,
+"worse": 142,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.8714156353757945
+},
+"eoh_m1": {
+"pairs": 184,
+"better": 12,
+"equal": 32,
+"worse": 140,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 2.666264211691317
+},
+"eoh_m2": {
+"pairs": 214,
+"better": 21,
+"equal": 31,
+"worse": 162,
+"child_median_pct": 4.014488379112584,
+"best_parent_median_pct": 2.6461414629238424
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20601_20260908T123249": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 168,
+"better": 4,
+"equal": 3,
+"worse": 161,
+"child_median_pct": 4.286145487473592,
+"best_parent_median_pct": 1.6400040245497547
+},
+"eoh_e2": {
+"pairs": 198,
+"better": 12,
+"equal": 9,
+"worse": 177,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.5896971526310506
+},
+"eoh_m1": {
+"pairs": 184,
+"better": 22,
+"equal": 15,
+"worse": 147,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 2.002213502364421
+},
+"eoh_m2": {
+"pairs": 213,
+"better": 40,
+"equal": 17,
+"worse": 156,
+"child_median_pct": 3.9138746352751768,
+"best_parent_median_pct": 1.8211087634570906
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20602_20260908T140452": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 166,
+"better": 3,
+"equal": 16,
+"worse": 147,
+"child_median_pct": 4.160378307676831,
+"best_parent_median_pct": 1.2073649260488983
+},
+"eoh_e2": {
+"pairs": 187,
+"better": 1,
+"equal": 27,
+"worse": 159,
+"child_median_pct": 4.054733876647557,
+"best_parent_median_pct": 1.2073649260488983
+},
+"eoh_m1": {
+"pairs": 181,
+"better": 9,
+"equal": 21,
+"worse": 151,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2878559211188318
+},
+"eoh_m2": {
+"pairs": 205,
+"better": 14,
+"equal": 26,
+"worse": 165,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.2878559211188318
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20603_20260908T141600": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 142,
+"better": 2,
+"equal": 4,
+"worse": 136,
+"child_median_pct": 5.07093268940537,
+"best_parent_median_pct": 1.006137438374082
+},
+"eoh_e2": {
+"pairs": 172,
+"better": 7,
+"equal": 10,
+"worse": 155,
+"child_median_pct": 4.386759231310999,
+"best_parent_median_pct": 1.006137438374082
+},
+"eoh_m1": {
+"pairs": 174,
+"better": 4,
+"equal": 12,
+"worse": 158,
+"child_median_pct": 4.542710534258978,
+"best_parent_median_pct": 1.006137438374082
+},
+"eoh_m2": {
+"pairs": 210,
+"better": 21,
+"equal": 7,
+"worse": 182,
+"child_median_pct": 4.074856625415032,
+"best_parent_median_pct": 1.006137438374082
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20604_20260908T161335": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 156,
+"better": 3,
+"equal": 7,
+"worse": 146,
+"child_median_pct": 12.169232317134526,
+"best_parent_median_pct": 1.6903108964684646
+},
+"eoh_e2": {
+"pairs": 188,
+"better": 10,
+"equal": 10,
+"worse": 168,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.6903108964684646
+},
+"eoh_m1": {
+"pairs": 185,
+"better": 11,
+"equal": 14,
+"worse": 160,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 2.1028272462018287
+},
+"eoh_m2": {
+"pairs": 214,
+"better": 20,
+"equal": 15,
+"worse": 179,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.8512928866083085
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20605_20260908T171741": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 144,
+"better": 2,
+"equal": 2,
+"worse": 140,
+"child_median_pct": 4.925042760841135,
+"best_parent_median_pct": 1.4387765368749441
+},
+"eoh_e2": {
+"pairs": 172,
+"better": 7,
+"equal": 5,
+"worse": 160,
+"child_median_pct": 4.014488379112585,
+"best_parent_median_pct": 1.418653788107458
+},
+"eoh_m1": {
+"pairs": 178,
+"better": 8,
+"equal": 11,
+"worse": 159,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.529328906328609
+},
+"eoh_m2": {
+"pairs": 206,
+"better": 16,
+"equal": 11,
+"worse": 179,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.529328906328609
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20606_20260908T185757": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 173,
+"better": 0,
+"equal": 6,
+"worse": 167,
+"child_median_pct": 41.553476204849595,
+"best_parent_median_pct": 0.7143575812456004
+},
+"eoh_e2": {
+"pairs": 195,
+"better": 2,
+"equal": 1,
+"worse": 192,
+"child_median_pct": 59.85511620887413,
+"best_parent_median_pct": 0.7143575812456004
+},
+"eoh_m1": {
+"pairs": 185,
+"better": 7,
+"equal": 8,
+"worse": 170,
+"child_median_pct": 23.634168427407182,
+"best_parent_median_pct": 0.935707817687903
+},
+"eoh_m2": {
+"pairs": 213,
+"better": 16,
+"equal": 12,
+"worse": 185,
+"child_median_pct": 4.074856625415043,
+"best_parent_median_pct": 0.8854009457691989
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20607_20260908T192914": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 167,
+"better": 8,
+"equal": 8,
+"worse": 151,
+"child_median_pct": 16.812556595230912,
+"best_parent_median_pct": 2.5052822215514614
+},
+"eoh_e2": {
+"pairs": 196,
+"better": 12,
+"equal": 11,
+"worse": 173,
+"child_median_pct": 8.003823322265829,
+"best_parent_median_pct": 2.5052822215514614
+},
+"eoh_m1": {
+"pairs": 182,
+"better": 22,
+"equal": 12,
+"worse": 148,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 2.5404970318945566
+},
+"eoh_m2": {
+"pairs": 203,
+"better": 51,
+"equal": 13,
+"worse": 139,
+"child_median_pct": 3.8937518865076903,
+"best_parent_median_pct": 2.5052822215514614
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20608_20260908T205221": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 164,
+"better": 5,
+"equal": 8,
+"worse": 151,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.1492101821108833
+},
+"eoh_e2": {
+"pairs": 196,
+"better": 4,
+"equal": 1,
+"worse": 191,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 2.937921320052324
+},
+"eoh_m1": {
+"pairs": 185,
+"better": 14,
+"equal": 3,
+"worse": 168,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.1492101821108833
+},
+"eoh_m2": {
+"pairs": 210,
+"better": 21,
+"equal": 5,
+"worse": 184,
+"child_median_pct": 4.094979374182507,
+"best_parent_median_pct": 3.1492101821108833
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20609_20260908T222850": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 175,
+"better": 9,
+"equal": 12,
+"worse": 154,
+"child_median_pct": 5.07093268940537,
+"best_parent_median_pct": 2.666264211691317
+},
+"eoh_e2": {
+"pairs": 197,
+"better": 10,
+"equal": 9,
+"worse": 178,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 2.2135023644229803
+},
+"eoh_m1": {
+"pairs": 188,
+"better": 17,
+"equal": 10,
+"worse": 161,
+"child_median_pct": 4.150316933293087,
+"best_parent_median_pct": 3.1894556796458327
+},
+"eoh_m2": {
+"pairs": 212,
+"better": 32,
+"equal": 10,
+"worse": 170,
+"child_median_pct": 4.084917999798774,
+"best_parent_median_pct": 3.1894556796458327
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.003_evt30_cs20610_20260908T235129": {
+"arm": "Gen. boson T=0.003",
+"operators": {
+"eoh_e1": {
+"pairs": 159,
+"better": 3,
+"equal": 0,
+"worse": 156,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.863567763356472
+},
+"eoh_e2": {
+"pairs": 194,
+"better": 13,
+"equal": 4,
+"worse": 177,
+"child_median_pct": 3.994365630345098,
+"best_parent_median_pct": 3.863567763356472
+},
+"eoh_m1": {
+"pairs": 187,
+"better": 38,
+"equal": 7,
+"worse": 142,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.873629137740227
+},
+"eoh_m2": {
+"pairs": 214,
+"better": 51,
+"equal": 13,
+"worse": 150,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.8836905121239584
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20501_20260909T052058": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 167,
+"better": 8,
+"equal": 2,
+"worse": 157,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 1.6400040245497602
+},
+"eoh_e2": {
+"pairs": 192,
+"better": 9,
+"equal": 2,
+"worse": 181,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 1.2979172955025633
+},
+"eoh_m1": {
+"pairs": 185,
+"better": 22,
+"equal": 8,
+"worse": 155,
+"child_median_pct": 4.084917999798774,
+"best_parent_median_pct": 2.9580440688197984
+},
+"eoh_m2": {
+"pairs": 210,
+"better": 31,
+"equal": 19,
+"worse": 160,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 2.9580440688197984
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20502_20260909T064916": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 165,
+"better": 14,
+"equal": 12,
+"worse": 139,
+"child_median_pct": 4.27608411308986,
+"best_parent_median_pct": 3.5717879062280025
+},
+"eoh_e2": {
+"pairs": 197,
+"better": 16,
+"equal": 7,
+"worse": 174,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.5717879062280025
+},
+"eoh_m1": {
+"pairs": 183,
+"better": 38,
+"equal": 15,
+"worse": 130,
+"child_median_pct": 4.094979374182507,
+"best_parent_median_pct": 3.984304255961367
+},
+"eoh_m2": {
+"pairs": 205,
+"better": 48,
+"equal": 23,
+"worse": 134,
+"child_median_pct": 4.054733876647557,
+"best_parent_median_pct": 3.984304255961367
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20503_20260909T065417": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 167,
+"better": 44,
+"equal": 9,
+"worse": 114,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.984304255961367
+},
+"eoh_e2": {
+"pairs": 197,
+"better": 49,
+"equal": 9,
+"worse": 139,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.984304255961367
+},
+"eoh_m1": {
+"pairs": 185,
+"better": 49,
+"equal": 14,
+"worse": 122,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 4.225777241171155
+},
+"eoh_m2": {
+"pairs": 213,
+"better": 80,
+"equal": 21,
+"worse": 112,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 4.316329610624809
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20504_20260909T081916": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 164,
+"better": 16,
+"equal": 1,
+"worse": 147,
+"child_median_pct": 4.668477714055738,
+"best_parent_median_pct": 2.143072743736801
+},
+"eoh_e2": {
+"pairs": 194,
+"better": 10,
+"equal": 7,
+"worse": 177,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 1.972029379213203
+},
+"eoh_m1": {
+"pairs": 184,
+"better": 23,
+"equal": 11,
+"worse": 150,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.209578428413319
+},
+"eoh_m2": {
+"pairs": 207,
+"better": 31,
+"equal": 15,
+"worse": 161,
+"child_median_pct": 4.326390985008564,
+"best_parent_median_pct": 2.4046684777140537
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20505_20260909T083009": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 170,
+"better": 23,
+"equal": 7,
+"worse": 140,
+"child_median_pct": 4.869705201730554,
+"best_parent_median_pct": 3.9339973840426623
+},
+"eoh_e2": {
+"pairs": 196,
+"better": 33,
+"equal": 6,
+"worse": 157,
+"child_median_pct": 4.27608411308986,
+"best_parent_median_pct": 3.9339973840426623
+},
+"eoh_m1": {
+"pairs": 187,
+"better": 53,
+"equal": 9,
+"worse": 125,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 4.366636482543513
+},
+"eoh_m2": {
+"pairs": 212,
+"better": 55,
+"equal": 18,
+"worse": 139,
+"child_median_pct": 4.427004728845961,
+"best_parent_median_pct": 4.467250226380921
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20506_20260909T094816": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 154,
+"better": 3,
+"equal": 1,
+"worse": 150,
+"child_median_pct": 5.14136231009156,
+"best_parent_median_pct": 0.9860146896066072
+},
+"eoh_e2": {
+"pairs": 183,
+"better": 9,
+"equal": 1,
+"worse": 173,
+"child_median_pct": 4.094979374182507,
+"best_parent_median_pct": 0.9457691920716348
+},
+"eoh_m1": {
+"pairs": 182,
+"better": 11,
+"equal": 2,
+"worse": 169,
+"child_median_pct": 5.327497736190768,
+"best_parent_median_pct": 1.468960660026162
+},
+"eoh_m2": {
+"pairs": 214,
+"better": 30,
+"equal": 16,
+"worse": 168,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.5192675319448659
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20507_20260909T112125": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 152,
+"better": 3,
+"equal": 2,
+"worse": 147,
+"child_median_pct": 15.977462521380428,
+"best_parent_median_pct": 0.965891940839121
+},
+"eoh_e2": {
+"pairs": 188,
+"better": 7,
+"equal": 3,
+"worse": 178,
+"child_median_pct": 12.803098903310191,
+"best_parent_median_pct": 0.965891940839121
+},
+"eoh_m1": {
+"pairs": 184,
+"better": 19,
+"equal": 9,
+"worse": 156,
+"child_median_pct": 5.659523090854211,
+"best_parent_median_pct": 1.4991447831773796
+},
+"eoh_m2": {
+"pairs": 210,
+"better": 41,
+"equal": 14,
+"worse": 155,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 1.3079786698863065
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20508_20260909T113740": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 156,
+"better": 19,
+"equal": 7,
+"worse": 130,
+"child_median_pct": 4.487372975148407,
+"best_parent_median_pct": 3.8937518865076903
+},
+"eoh_e2": {
+"pairs": 186,
+"better": 29,
+"equal": 8,
+"worse": 149,
+"child_median_pct": 4.266022738706106,
+"best_parent_median_pct": 3.8937518865076903
+},
+"eoh_m1": {
+"pairs": 179,
+"better": 40,
+"equal": 10,
+"worse": 129,
+"child_median_pct": 4.477311600764676,
+"best_parent_median_pct": 3.994365630345098
+},
+"eoh_m2": {
+"pairs": 208,
+"better": 66,
+"equal": 17,
+"worse": 125,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.994365630345098
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20509_20260909T130602": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 162,
+"better": 13,
+"equal": 1,
+"worse": 148,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 2.4549753496327575
+},
+"eoh_e2": {
+"pairs": 197,
+"better": 11,
+"equal": 8,
+"worse": 178,
+"child_median_pct": 4.185531743636183,
+"best_parent_median_pct": 2.3644229801790924
+},
+"eoh_m1": {
+"pairs": 184,
+"better": 35,
+"equal": 7,
+"worse": 142,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 2.666264211691317
+},
+"eoh_m2": {
+"pairs": 211,
+"better": 40,
+"equal": 15,
+"worse": 156,
+"child_median_pct": 4.185531743636183,
+"best_parent_median_pct": 2.666264211691317
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20510_20260909T131925": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 169,
+"better": 28,
+"equal": 3,
+"worse": 138,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.923936009658931
+},
+"eoh_e2": {
+"pairs": 197,
+"better": 33,
+"equal": 6,
+"worse": 158,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.944058758426394
+},
+"eoh_m1": {
+"pairs": 178,
+"better": 56,
+"equal": 5,
+"worse": 117,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 4.054733876647557
+},
+"eoh_m2": {
+"pairs": 211,
+"better": 58,
+"equal": 6,
+"worse": 147,
+"child_median_pct": 4.286145487473592,
+"best_parent_median_pct": 4.054733876647557
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20601_20260908T123250": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 150,
+"better": 18,
+"equal": 3,
+"worse": 129,
+"child_median_pct": 6.08210081497133,
+"best_parent_median_pct": 3.903813260891445
+},
+"eoh_e2": {
+"pairs": 190,
+"better": 14,
+"equal": 6,
+"worse": 170,
+"child_median_pct": 5.236945366737103,
+"best_parent_median_pct": 3.903813260891445
+},
+"eoh_m1": {
+"pairs": 180,
+"better": 49,
+"equal": 10,
+"worse": 121,
+"child_median_pct": 4.130194184525601,
+"best_parent_median_pct": 3.984304255961367
+},
+"eoh_m2": {
+"pairs": 207,
+"better": 48,
+"equal": 11,
+"worse": 148,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.984304255961367
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20602_20260908T140516": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 162,
+"better": 20,
+"equal": 11,
+"worse": 131,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.873629137740227
+},
+"eoh_e2": {
+"pairs": 191,
+"better": 20,
+"equal": 7,
+"worse": 164,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.873629137740227
+},
+"eoh_m1": {
+"pairs": 186,
+"better": 59,
+"equal": 10,
+"worse": 117,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.984304255961367
+},
+"eoh_m2": {
+"pairs": 212,
+"better": 44,
+"equal": 20,
+"worse": 148,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.984304255961367
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20603_20260908T154305": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 168,
+"better": 17,
+"equal": 5,
+"worse": 146,
+"child_median_pct": 11.158064191568567,
+"best_parent_median_pct": 3.8535063889727406
+},
+"eoh_e2": {
+"pairs": 194,
+"better": 19,
+"equal": 5,
+"worse": 170,
+"child_median_pct": 5.211791930777739,
+"best_parent_median_pct": 3.8031995170540367
+},
+"eoh_m1": {
+"pairs": 184,
+"better": 41,
+"equal": 4,
+"worse": 139,
+"child_median_pct": 4.281114800281726,
+"best_parent_median_pct": 3.9641815071938806
+},
+"eoh_m2": {
+"pairs": 213,
+"better": 59,
+"equal": 5,
+"worse": 149,
+"child_median_pct": 4.245899989938619,
+"best_parent_median_pct": 3.9641815071938806
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20604_20260908T161624": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 163,
+"better": 14,
+"equal": 8,
+"worse": 141,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.863567763356472
+},
+"eoh_e2": {
+"pairs": 197,
+"better": 23,
+"equal": 14,
+"worse": 160,
+"child_median_pct": 4.185531743636183,
+"best_parent_median_pct": 3.863567763356472
+},
+"eoh_m1": {
+"pairs": 183,
+"better": 40,
+"equal": 19,
+"worse": 124,
+"child_median_pct": 4.165408994868697,
+"best_parent_median_pct": 3.984304255961367
+},
+"eoh_m2": {
+"pairs": 213,
+"better": 62,
+"equal": 31,
+"worse": 120,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.984304255961367
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20605_20260908T174808": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 166,
+"better": 14,
+"equal": 3,
+"worse": 149,
+"child_median_pct": 4.235838615554887,
+"best_parent_median_pct": 2.9681054432035414
+},
+"eoh_e2": {
+"pairs": 192,
+"better": 9,
+"equal": 10,
+"worse": 173,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 2.9681054432035414
+},
+"eoh_m1": {
+"pairs": 181,
+"better": 29,
+"equal": 11,
+"worse": 141,
+"child_median_pct": 4.0245497534963395,
+"best_parent_median_pct": 3.380621792936918
+},
+"eoh_m2": {
+"pairs": 209,
+"better": 37,
+"equal": 12,
+"worse": 160,
+"child_median_pct": 4.115102122949993,
+"best_parent_median_pct": 3.6925243988328735
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20606_20260908T191842": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 170,
+"better": 19,
+"equal": 12,
+"worse": 139,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.913874635275188
+},
+"eoh_e2": {
+"pairs": 200,
+"better": 18,
+"equal": 10,
+"worse": 172,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.9339973840426623
+},
+"eoh_m1": {
+"pairs": 186,
+"better": 63,
+"equal": 11,
+"worse": 112,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.984304255961367
+},
+"eoh_m2": {
+"pairs": 212,
+"better": 67,
+"equal": 21,
+"worse": 124,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 4.04970318945568
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20607_20260908T203950": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 165,
+"better": 6,
+"equal": 5,
+"worse": 154,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 2.002213502364421
+},
+"eoh_e2": {
+"pairs": 192,
+"better": 8,
+"equal": 6,
+"worse": 178,
+"child_median_pct": 4.094979374182507,
+"best_parent_median_pct": 1.987121440788812
+},
+"eoh_m1": {
+"pairs": 184,
+"better": 30,
+"equal": 9,
+"worse": 145,
+"child_median_pct": 3.994365630345098,
+"best_parent_median_pct": 3.7629540195190643
+},
+"eoh_m2": {
+"pairs": 208,
+"better": 50,
+"equal": 7,
+"worse": 151,
+"child_median_pct": 3.984304255961367,
+"best_parent_median_pct": 3.7629540195190643
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20608_20260908T211306": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 158,
+"better": 12,
+"equal": 8,
+"worse": 138,
+"child_median_pct": 7.988731260690209,
+"best_parent_median_pct": 3.108964684575911
+},
+"eoh_e2": {
+"pairs": 199,
+"better": 25,
+"equal": 6,
+"worse": 168,
+"child_median_pct": 4.225777241171155,
+"best_parent_median_pct": 3.108964684575911
+},
+"eoh_m1": {
+"pairs": 185,
+"better": 46,
+"equal": 7,
+"worse": 132,
+"child_median_pct": 4.155347620484965,
+"best_parent_median_pct": 3.8333836402052546
+},
+"eoh_m2": {
+"pairs": 212,
+"better": 48,
+"equal": 8,
+"worse": 156,
+"child_median_pct": 4.094979374182507,
+"best_parent_median_pct": 3.8333836402052546
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20609_20260908T223401": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 157,
+"better": 15,
+"equal": 7,
+"worse": 135,
+"child_median_pct": 7.908240265620287,
+"best_parent_median_pct": 3.8031995170540367
+},
+"eoh_e2": {
+"pairs": 191,
+"better": 21,
+"equal": 8,
+"worse": 162,
+"child_median_pct": 4.849582452963068,
+"best_parent_median_pct": 3.7830767682865503
+},
+"eoh_m1": {
+"pairs": 182,
+"better": 50,
+"equal": 16,
+"worse": 116,
+"child_median_pct": 4.291176174665457,
+"best_parent_median_pct": 4.004427004728853
+},
+"eoh_m2": {
+"pairs": 209,
+"better": 60,
+"equal": 20,
+"worse": 129,
+"child_median_pct": 4.235838615554887,
+"best_parent_median_pct": 4.105040748566261
+}
+}
+},
+"g1_x2full_bh_sigE_boson_T0.03_evt30_cs20610_20260909T000345": {
+"arm": "Gen. boson T=0.03",
+"operators": {
+"eoh_e1": {
+"pairs": 135,
+"better": 7,
+"equal": 7,
+"worse": 121,
+"child_median_pct": 15.947278398229209,
+"best_parent_median_pct": 2.4247912264815397
+},
+"eoh_e2": {
+"pairs": 180,
+"better": 14,
+"equal": 5,
+"worse": 161,
+"child_median_pct": 4.824429017003727,
+"best_parent_median_pct": 2.4348526008652827
+},
+"eoh_m1": {
+"pairs": 178,
+"better": 18,
+"equal": 7,
+"worse": 153,
+"child_median_pct": 4.748968709125671,
+"best_parent_median_pct": 3.0989033101921795
+},
+"eoh_m2": {
+"pairs": 212,
+"better": 35,
+"equal": 9,
+"worse": 168,
+"child_median_pct": 4.08994868699064,
+"best_parent_median_pct": 3.0989033101921795
+}
+}
+}
+}

@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.010923535253227408,
+    "conf_90002": 0.007407407407407408,
+    "conf_90003": 0.010427010923535254,
+    "conf_90004": 0.008933002481389578,
+    "conf_90005": 0.01096163428001993
+   },
+   "raw": 0.009730518069115915
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.08977556109725686,
+    "conf500_90102": 0.10173697270471464,
+    "conf500_90103": 0.1141439205955335,
+    "conf500_90104": 0.02481389578163772,
+    "conf500_90105": 0.14640198511166252
+   },
+   "raw": 0.09537446705816105
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    geometric_targets = item * (2 ** np.arange(1, 10))  # Assume 9 upcoming similar items\n    log_distances = np.abs(np.log(bins[:, None]) - np.log(geometric_targets[None, :]))\n    best_geometric_match = np.min(log_distances, axis=1)\n    perfect_fit_bonus = (bins == item).astype(float) * 10\n    next_fit_bonus = (bins == item * 2).astype(float) * 5\n    scores = -best_geometric_match + perfect_fit_bonus + next_fit_bonus\n    return scores",
+  "thought": "The new algorithm assigns priority scores based on the \"harmonic potential\" of bin capacities to form a harmonic series with the current and potentially upcoming item sizes, using logarithmic spacing to encourage alignment with a geometric progression."
+ }
+}

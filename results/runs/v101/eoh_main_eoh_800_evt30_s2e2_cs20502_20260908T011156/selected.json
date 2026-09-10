@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.04021847070506455,
+    "conf_90002": 0.04197530864197531,
+    "conf_90003": 0.0407149950347567,
+    "conf_90004": 0.03970223325062035,
+    "conf_90005": 0.04185351270553064
+   },
+   "raw": 0.04089290406758951
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.005466482676682982
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    capacity_preference = 1.0 / (remaining ** 2 + 1e-9)\n    index_bonus = np.sqrt(np.arange(len(bins)))\n    scores = capacity_preference + index_bonus\n    return scores",
+  "thought": "The new algorithm prioritizes bins using a quadratic preference for bins with less remaining capacity and applies a square root index bonus to encourage early bin reuse."
+ }
+}

@@ -1,0 +1,11 @@
+{
+ "run": "g1_x2full_bh_sigE_fermion_T0_evt30_cs20608_20260908T205013",
+ "history_best_energy": 0.0033202535466344816,
+ "history_best_gen": 42,
+ "history_best_id": "m1045",
+ "n_evaluated": 2145,
+ "final_best_energy": 0.0033202535466344816,
+ "history_best_c100": 0.010723132662692921,
+ "history_best_c500": 0.03377907588349226,
+ "code_sha256": "7c09cd98fded24766057aebaa2db68b2af1973b84df87ead2145a7908aa4801f"
+}

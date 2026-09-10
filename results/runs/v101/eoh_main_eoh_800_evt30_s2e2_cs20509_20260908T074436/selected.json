@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.03922542204568024,
+    "conf_90002": 0.04197530864197531,
+    "conf_90003": 0.04220456802383317,
+    "conf_90004": 0.0401985111662531,
+    "conf_90005": 0.04285002491280518
+   },
+   "raw": 0.0412907669581094
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.005466482676682982
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    # Exponential preference: strongly favor bins where the item fits well\n    exponential = np.exp(item / (remaining + 1e-6))\n    # Linear index preference to gently favor earlier bins\n    index_preference = 1 / (1 + np.arange(len(bins)))\n    # Final score combines exponential and index preference\n    scores = exponential * index_preference\n    return scores",
+  "thought": "A new algorithm that scores bins using an exponential function based on the ratio of the item size to the bin's remaining capacity, and applies a linear decay to the index preference to encourage reuse of previous bins."
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.02631578947368421,
+    "conf_90002": 0.02666666666666667,
+    "conf_90003": 0.03028798411122145,
+    "conf_90004": 0.027791563275434243,
+    "conf_90005": 0.027404085700049825
+   },
+   "raw": 0.02769321784541128
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.00997506234413965,
+    "conf500_90102": 0.009925558312655087,
+    "conf500_90103": 0.01488833746898263,
+    "conf500_90104": 0.01240694789081886,
+    "conf500_90105": 0.009925558312655087
+   },
+   "raw": 0.011424292865850264
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    return 1 / np.abs(np.sin((bins - item) / item * np.pi))",
+  "thought": "The new algorithm scores bins based on a harmonic function that assigns higher priority to bins where the item's size and the bin's remaining capacity form a more harmonious (i.e., divisible or proportionate) relationship, promoting better space utilization."
+ }
+}

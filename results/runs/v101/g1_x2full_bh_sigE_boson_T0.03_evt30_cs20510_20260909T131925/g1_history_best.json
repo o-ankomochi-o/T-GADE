@@ -1,0 +1,11 @@
+{
+ "run": "g1_x2full_bh_sigE_boson_T0.03_evt30_cs20510_20260909T131925",
+ "history_best_energy": 0.016299426501660115,
+ "history_best_gen": 75,
+ "history_best_id": "m1872",
+ "n_evaluated": 2171,
+ "final_best_energy": 0.016299426501660115,
+ "history_best_c100": 0.034343992789600764,
+ "history_best_c500": 0.009935459118952,
+ "code_sha256": "fb732c195d9c71fc8e33333fd8030563b79446e54cf117c94326e98185680e73"
+}

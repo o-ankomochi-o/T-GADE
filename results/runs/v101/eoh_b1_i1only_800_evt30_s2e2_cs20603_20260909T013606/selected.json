@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.027805362462760674,
+    "conf_90002": 0.028148148148148148,
+    "conf_90003": 0.029791459781529295,
+    "conf_90004": 0.029280397022332507,
+    "conf_90005": 0.028400597907324365
+   },
+   "raw": 0.028685193064418996
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.014962593516209476,
+    "conf500_90102": 0.009925558312655087,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.009925558312655087,
+    "conf500_90105": 0.01488833746898263
+   },
+   "raw": 0.010932965353365964
+  }
+ },
+ "genes": {
+  "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    new_capacities = bins - item\n    return 1 / (1 + np.abs(new_capacities - np.round(new_capacities / item) * item))",
+  "thought": " The novel score function prioritizes bins by maximizing the proximity of the remaining capacity to a power-of-two threshold after item placement, encouraging tighter packing. "
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.010923535253227408,
+    "conf_90002": 0.015308641975308642,
+    "conf_90003": 0.018867924528301886,
+    "conf_90004": 0.016377171215880892,
+    "conf_90005": 0.015445939212755356
+   },
+   "raw": 0.015384642437094836
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.01240694789081886,
+    "conf500_90103": 0.01240694789081886,
+    "conf500_90104": 0.009925558312655087,
+    "conf500_90105": 0.009925558312655087
+   },
+   "raw": 0.010429261833010526
+  }
+ },
+ "genes": {
+  "code": "import numpy as np\n\ndef score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    return 1 / (1 + (np.ceil(bins / item) - bins / item) ** 2)",
+  "thought": "The new algorithm scores bins based on how close the remaining capacity is to a perfect multiple of item size, using a quadratic penalty to strongly prefer bins with more uniform packing potential."
+ }
+}

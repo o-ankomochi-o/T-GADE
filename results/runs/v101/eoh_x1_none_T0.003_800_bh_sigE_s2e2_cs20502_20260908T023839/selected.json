@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.02432969215491559,
+    "conf_90002": 0.027654320987654323,
+    "conf_90003": 0.027805362462760674,
+    "conf_90004": 0.02630272952853598,
+    "conf_90005": 0.026407573492775286
+   },
+   "raw": 0.026499935725328373
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.06982543640897755,
+    "conf500_90102": 0.0794044665012407,
+    "conf500_90103": 0.06451612903225806,
+    "conf500_90104": 0.07196029776674938,
+    "conf500_90105": 0.06699751861042183
+   },
+   "raw": 0.0705407696639295
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    utilization = (item / bins) if bins.ndim == 1 else item / bins.sum(axis=1)\n    utilization_history = np.cumsum(utilization)\n    fit_tightness = 1 / remaining\n    scores = np.divide(fit_tightness + utilization_history, 2) * np.cos(np.pi * utilization_history / 2)\n    return scores",
+  "thought": "The new algorithm scores bins using a weighted harmonic mean of the inverse remaining space and the bin\u2019s utilization history, with a cosine-based damping function to avoid overfilling."
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.00893743793445879,
+    "conf_90002": 0.007407407407407408,
+    "conf_90003": 0.00893743793445879,
+    "conf_90004": 0.013399503722084368,
+    "conf_90005": 0.0114598903836572
+   },
+   "raw": 0.010028335476413311
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.004987531172069825,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.0024813895781637717,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.004471451643843246
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    ideal_fill = bins.max() / 2\n    resonance = np.exp(-((remaining - ideal_fill) ** 2) / (2 * (ideal_fill / 4) ** 2))\n    tightness = 1 / (remaining + 1e-8)\n    scores = resonance * tightness\n    return scores",
+  "thought": "The new algorithm assigns a score to each bin based on a combination of harmonic resonance and exponential decay, favoring bins that can host the item with minimal residual space while avoiding over-packing by introducing a resonance factor that peaks at ideal fill levels."
+ }
+}

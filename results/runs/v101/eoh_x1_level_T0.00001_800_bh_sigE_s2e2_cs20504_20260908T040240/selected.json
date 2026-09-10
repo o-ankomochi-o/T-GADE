@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.009930486593843098,
+    "conf_90002": 0.005925925925925926,
+    "conf_90003": 0.007944389275074478,
+    "conf_90004": 0.015384615384615385,
+    "conf_90005": 0.01096163428001993
+   },
+   "raw": 0.010029410291895764
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 1.256857855361596,
+    "conf500_90102": 1.2406947890818858,
+    "conf500_90103": 1.2903225806451613,
+    "conf500_90104": 1.2779156327543424,
+    "conf500_90105": 1.317617866004963
+   },
+   "raw": 1.2766817447695897
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    remaining = bins - item\n    exact_fit = bins == item\n    harmonic_levels = np.ceil(bins / item)\n    distance_to_harmony = np.abs(bins - item * harmonic_levels)\n    penalty = (distance_to_harmony / item) ** 2  # Polynomial penalty for residual space\n    bonus = 1 / (1 + harmonic_levels)  # Inverse bonus for harmonic alignment\n    scores = (10 * exact_fit + 5) / (1 + penalty + bonus)  # Rational function to merge preferences\n    return scores",
+  "thought": "A new algorithm scores bins by emphasizing the efficiency of packing sequences using a polynomial penalty for residual space, a bonus for bins that align with harmonic-like proportions, and a multiplicative preference for exact fits using a rational function."
+ }
+}

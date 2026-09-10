@@ -1,0 +1,30 @@
+{
+ "endpoint": {
+  "c100": {
+   "penalty": false,
+   "per_instance": {
+    "conf_90001": 0.039721946375372394,
+    "conf_90002": 0.04,
+    "conf_90003": 0.0407149950347567,
+    "conf_90004": 0.0401985111662531,
+    "conf_90005": 0.04185351270553064
+   },
+   "raw": 0.04049779305638256
+  },
+  "c500": {
+   "penalty": false,
+   "per_instance": {
+    "conf500_90101": 0.007481296758104738,
+    "conf500_90102": 0.004962779156327543,
+    "conf500_90103": 0.004962779156327543,
+    "conf500_90104": 0.004962779156327543,
+    "conf500_90105": 0.004962779156327543
+   },
+   "raw": 0.005466482676682982
+  }
+ },
+ "genes": {
+  "code": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n    \"\"\"Score each bin for assigning the current item. Higher score = preferred bin.\n\n    Args:\n        item: size of the current item to assign\n        bins: remaining capacities of feasible bins (all >= item size)\n    Returns:\n        scores: priority scores for each bin\n    \"\"\"\n    step = len(bins) - 1  # Assuming one bin is added per step; adjust if needed\n    alpha = 1 + step / 10  # Increasing penalty factor with each step\n    return 1 / (1 + (bins - item) ** alpha)",
+  "thought": "The algorithm scores bins by the inverse of the difference between the bin's remaining capacity and the item's size, raised to a power that increases with each assignment step, to encourage tighter packing as the process continues."
+ }
+}

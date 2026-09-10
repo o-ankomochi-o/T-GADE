@@ -1,0 +1,2 @@
+EoH upstream commit 472545785c936dcfc863d2bc0d6109cf23c7ce62 (MIT License, see LICENSE).
+Only eoh/src and examples/bp_online (problem definition and evaluation) are vendored.
