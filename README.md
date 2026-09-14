@@ -1,7 +1,19 @@
 # T-GADE: Thermodynamical Generative-AI-Driven Evolution of LLM Artifacts
 
+<p align="center">
+  <a href="https://arxiv.org/abs/2609.12286"><img src="https://img.shields.io/badge/arXiv-2609.12286-b31b1b.svg" alt="arXiv:2609.12286"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/Python-3.11%2B-3776ab.svg" alt="Python 3.11+">
+  <img src="https://img.shields.io/badge/runs-140-555555.svg" alt="140 recorded runs">
+</p>
+
+<p align="center">
+  <b><a href="https://arxiv.org/abs/2609.12286">📄 Paper (arXiv:2609.12286)</a></b>
+  &nbsp;·&nbsp; Kyoko Ogawa and Naoki Mori
+</p>
+
 Code and run records for the paper *T-GADE: Thermodynamical Generative-AI-Driven Evolution of LLM Artifacts*
-(Ogawa and Mori, arXiv, 2026; identifier to be added).
+(Ogawa and Mori, arXiv:2609.12286, 2026).
 
 T-GADE selects populations of LLM-generated artifacts by minimising a population free energy
 `F_T(P) = <E>_P - T H(P)`, where `<E>_P` is the mean evaluator-derived energy and `H(P)` a per-individual
@@ -181,4 +193,14 @@ and copyright notice (`third_party/EoH/LICENSE`).
 
 ## Citation
 
-To be added once the arXiv identifier is assigned.
+```bibtex
+@misc{ogawa2026tgade,
+  title         = {T-GADE: Thermodynamical Generative-AI-Driven Evolution of LLM Artifacts},
+  author        = {Ogawa, Kyoko and Mori, Naoki},
+  year          = {2026},
+  eprint        = {2609.12286},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  url           = {https://arxiv.org/abs/2609.12286}
+}
+```
