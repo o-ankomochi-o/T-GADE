@@ -34,6 +34,9 @@ class BudgetExceeded(RuntimeError):
 
 
 def _read_key() -> str:
+    import os  # noqa: PLC0415
+    if os.environ.get("OPENROUTER_API_KEY"):  # lets a launcher pass the key without a key file in the tree
+        return os.environ["OPENROUTER_API_KEY"].strip()
     for line in (_REPO / ".env").read_text(encoding="utf-8").splitlines():
         if line.startswith("OPENROUTER_API_KEY="):
             return line.split("=", 1)[1].strip()
@@ -41,8 +44,10 @@ def _read_key() -> str:
 
 
 def _default_transport(payload: dict, key: str, timeout: int) -> dict:
+    import os  # noqa: PLC0415
+    base = os.environ.get("TGADE_LLM_BASE_URL", "https://openrouter.ai/api/v1").rstrip("/")  # self-hosted OpenAI-compatible server (vLLM) when set; 2026-09-30
     req = urllib.request.Request(
-        "https://openrouter.ai/api/v1/chat/completions",
+        base + "/chat/completions",
         data=json.dumps(payload).encode("utf-8"),
         headers={"Authorization": f"Bearer {key}",
                  "Content-Type": "application/json"},
@@ -79,7 +84,8 @@ class OpenRouterClient:
                  chat_overhead_tokens: int = 512, seed: "int | None" = None,
                  global_budget=None, min_interval_s: float = 0.0,
                  provider_order: "list | None" = None, allow_fallbacks: bool = True,
-                 usage_accounting: bool = True, transport=None):
+                 usage_accounting: bool = True, transport=None,
+                 reasoning_effort: "str | None" = None):
         def _num(name, v, *, integer=False, minimum=0.0):
             # bool is an int subclass; reject it and non-finite/negative
             # values at construction.
@@ -95,6 +101,11 @@ class OpenRouterClient:
         _num("temperature", temperature)
         _num("price_in_usd_per_m", price_in_usd_per_m)
         _num("price_out_usd_per_m", price_out_usd_per_m)
+        import os as _os  # noqa: PLC0415
+        if price_in_usd_per_m == 0 and price_out_usd_per_m == 0 and not _os.environ.get("TGADE_LLM_BASE_URL"):
+            # fail closed: zero prices are only valid against an explicitly configured self-hosted endpoint; never route a
+            # zero-priced run to the default paid endpoint (2026-09-30)
+            raise ValueError("zero prices require TGADE_LLM_BASE_URL (self-hosted endpoint); refusing to use the default paid endpoint")
         _num("max_tokens", max_tokens, integer=True, minimum=1)
         _num("max_input_bytes", max_input_bytes, integer=True, minimum=1)
         _num("chat_overhead_tokens", chat_overhead_tokens, integer=True)
@@ -113,6 +124,7 @@ class OpenRouterClient:
         self.chat_overhead_tokens = chat_overhead_tokens
         self.seed = seed  # BASE for the per-call seed schedule (see below)
         self.usage_accounting = usage_accounting
+        self.reasoning_effort = reasoning_effort  # None = provider default (payload unchanged)
         self.spent_usd = 0.0
         self.calls = 0
         self.attempt_log: list[dict] = []
@@ -184,6 +196,8 @@ class OpenRouterClient:
             seed_sent = int.from_bytes(hashlib.sha256(
                 f"{self.seed}:{logical}".encode("utf-8")).digest()[:4], "big")
             payload["seed"] = seed_sent
+        if self.reasoning_effort:
+            payload["reasoning"] = {"effort": self.reasoning_effort}
         if self.usage_accounting:
             payload["usage"] = {"include": True}
         key = _read_key()

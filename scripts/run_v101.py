@@ -47,7 +47,7 @@ def _git_head() -> "str | None":
     import subprocess  # noqa: PLC0415
     try:
         r = subprocess.run(["git", "rev-parse", "HEAD"], cwd=str(REPO), capture_output=True,
-                           text=True, timeout=20)
+                           text=True, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return r.stdout.strip() or None
     except Exception:
         return None
@@ -123,6 +123,10 @@ def _spend_by_role(res) -> dict:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--label", required=True)
+    ap.add_argument("--task", default="bp_online", choices=["bp_online"], help="problem adapter: online bin packing")
+    ap.add_argument("--signature-mode", default="internal", choices=["internal", "probe"],
+                    help="tsp_ga_crossover: GA-internal signature (pilot) or the common parent-pair probe (confirmatory)")
+    ap.add_argument("--max-tokens", type=int, default=None, help="override the prereg max_tokens (both arms must match)")
     ap.add_argument("--confirm-paid", action="store_true")
     ap.add_argument("--offline", action="store_true", help="mock adapter + scripted LLM ($0 plumbing check)")
     ap.add_argument("--bank", default=str(DEFAULT_BANK))
@@ -152,8 +156,10 @@ def main(argv=None) -> int:
                          "reproducibility); paired: repeat r uses client seed +1000(r-1) and "
                          "solver seed +10(r-1) (independent repeats; pair the same offsets across arms)")
     ap.add_argument("--integrity", default="full", choices=["full", "skip"])
-    ap.add_argument("--integrity-kind", default="syntax", choices=["syntax", "align_thought", "align_thought_meas", "align_code"],
+    ap.add_argument("--integrity-kind", default="syntax", choices=["syntax", "align_thought", "align_thought_meas", "align_code", "align_thought_eg", "align_code_eg", "improve"],
                     help="Step-6 integrity repair: legacy syntax-only, or description<->code alignment")
+    ap.add_argument("--host-max-tokens", type=int, default=None,
+                    help="hox5: separate host client (Step 1/6) with this max_tokens; operator client keeps --max-tokens")
     ap.add_argument("--gen0-integrity", action="store_true", help="apply Step-6 repair to the gen0 bank too")
     ap.add_argument("--parent-policy", default="mutate_all",
                     choices=["mutate_all", "keep_originals_mutate_duplicates"],
@@ -162,6 +168,7 @@ def main(argv=None) -> int:
     ap.add_argument("--price-in", type=float, default=None)
     ap.add_argument("--price-out", type=float, default=None)
     ap.add_argument("--provider", default=None, help="pin one OpenRouter provider for the override model (no fallbacks); default: fallbacks allowed")
+    ap.add_argument("--reasoning-effort", default=None, help="reasoning models only: pin OpenRouter reasoning.effort (e.g. low); default: provider default")
     ap.add_argument("--objective", default="train_c100", choices=["train_c100", "regime_max"],
                     help="energy: canonical C=100 train set, or robust two-capacity Q=max(mean excess C100 bank, C500 bank)")
     ap.add_argument("--diversity-carrier", default="behaviour", choices=["behaviour", "nl", "hybrid"],
@@ -192,15 +199,27 @@ def main(argv=None) -> int:
         cseed = None
         client_factory = lambda client_seed: ScriptableLLM()  # noqa: E731
     else:
-        sys.path.insert(0, str(REPO / "third_party/EoH/examples/bp_online"))
-        from grant_evo.bench.adapters.bp_online import BpOnlineAdapter  # noqa: PLC0415
         from grant_evo.bench.clients import OpenRouterClient  # noqa: PLC0415
-        adapter = BpOnlineAdapter(train_k=5, items=5000, mutation_template=a.mutation_template,
-                                  diversity_carrier=a.diversity_carrier, objective=a.objective,
-                                  integrity_kind=a.integrity_kind, eval_timeout=a.eval_timeout,
-                                  signature_source=a.signature_source, deterministic_only=a.deterministic_only,
-                                  hybrid_weights=tuple(float(x) for x in a.hybrid_weights.split(",")), probe_len=a.probe_len, eval_seed=a.eval_seed)
-        banks = {"c100": _load_bank("confirmation_bank.json"), "c500": _load_bank("confirmation_bank_c500.json")}
+        if a.task in ("tsp_construct", "tsp_ga_crossover", "tsp_ga_suite"):
+            from grant_evo.bench.adapters.tsp_construct import TspConstructAdapter, load_bank as _load_tsp_bank  # noqa: PLC0415
+            from grant_evo.bench.adapters.tsp_ga_crossover import TspGaCrossoverAdapter  # noqa: PLC0415
+            from grant_evo.bench.adapters.tsp_ga_suite import TspGaSuiteAdapter, TspGaCrossoverProbeAdapter  # noqa: PLC0415
+            _A = {"tsp_construct": TspConstructAdapter, "tsp_ga_suite": TspGaSuiteAdapter,
+                  "tsp_ga_crossover": TspGaCrossoverProbeAdapter if a.signature_mode == "probe" else TspGaCrossoverAdapter}[a.task]
+            adapter = _A(mutation_template=a.mutation_template, integrity_kind=a.integrity_kind,
+                         eval_timeout=a.eval_timeout, eval_seed=a.eval_seed,
+                         deterministic_only=a.deterministic_only)
+            banks = {"train50": _load_tsp_bank("train_bank.json"), "val50": _load_tsp_bank("validation_bank.json"),
+                     "transfer100": _load_tsp_bank("transfer_bank.json")}
+        else:
+            sys.path.insert(0, str(REPO / "third_party/EoH/examples/bp_online"))
+            from grant_evo.bench.adapters.bp_online import BpOnlineAdapter  # noqa: PLC0415
+            adapter = BpOnlineAdapter(train_k=5, items=5000, mutation_template=a.mutation_template,
+                                      diversity_carrier=a.diversity_carrier, objective=a.objective,
+                                      integrity_kind=a.integrity_kind, eval_timeout=a.eval_timeout,
+                                      signature_source=a.signature_source, deterministic_only=a.deterministic_only,
+                                      hybrid_weights=tuple(float(x) for x in a.hybrid_weights.split(",")), probe_len=a.probe_len, eval_seed=a.eval_seed)
+            banks = {"c100": _load_bank("confirmation_bank.json"), "c500": _load_bank("confirmation_bank_c500.json")}
         bank = _load_gen0_bank(Path(a.bank))
         P = PREREG_PARAMS
         if a.model and (a.price_in is None or a.price_out is None):
@@ -215,15 +234,16 @@ def main(argv=None) -> int:
         def client_factory(client_seed):
             return OpenRouterClient(OP_MODEL, temperature=P["t_sample"], budget_usd=a.cap_usd,
                                     retries=P["transport_retries"], min_interval_s=P["min_interval_s"],
-                                    max_tokens=P["max_tokens"], price_in_usd_per_m=OP_PIN,
+                                    max_tokens=(a.max_tokens or P["max_tokens"]), price_in_usd_per_m=OP_PIN,
                                     price_out_usd_per_m=OP_POUT,
                                     max_input_bytes=P["max_input_bytes"],
                                     chat_overhead_tokens=P["chat_overhead_tokens"],
                                     provider_order=OP_PROV, allow_fallbacks=OP_FB,
-                                    seed=client_seed)
-    penalties = {k: _bank_penalty(b) for k, b in banks.items()}
+                                    seed=client_seed, reasoning_effort=a.reasoning_effort)
+    _pen = getattr(adapter, "bank_penalty", None) or _bank_penalty  # task-specific worst-case endpoint value
+    penalties = {k: _pen(b) for k, b in banks.items()}
 
-    design = {"label": a.label, "offline": a.offline, "seed": a.seed,
+    design = {"label": a.label, "task": a.task, "offline": a.offline, "seed": a.seed,
               "client_seed": None if a.offline else cseed, "bank": None if bank is None else bank["sha256"],
               "n": a.n, "generations": a.generations, "temperature": a.temperature,
               "occupancy": a.occupancy, "strength": a.strength,
@@ -235,15 +255,17 @@ def main(argv=None) -> int:
               "child_post_ops": a.child_post_ops, "integrity_mode": a.integrity, "gen0_integrity": a.gen0_integrity, "llm_workers": a.llm_workers, "rng_schedule_version": ("per_op_v2" if a.llm_workers >= 1 else "shared_v1"),
               "parent_policy": a.parent_policy, "mutation_template": a.mutation_template, "diversity_carrier": a.diversity_carrier, "hybrid_weights": a.hybrid_weights, "probe_len": a.probe_len, "eval_seed": a.eval_seed, "objective": a.objective, "integrity_kind": a.integrity_kind,
               "operator_spec": getattr(adapter, "operator_spec", None),
-              "eval_workers": a.eval_workers, "cap_usd_per_run": a.cap_usd, "repeat": a.repeat,
+              "eval_workers": a.eval_workers, "cap_usd_per_run": a.cap_usd, "repeat": a.repeat, "signature_mode": a.signature_mode, "max_tokens_override": a.max_tokens, "host_max_tokens": a.host_max_tokens,
               "repeat_mode": a.repeat_mode,
               "repeat_seeds": [{"repeat": r, "solver_seed": a.seed + (10 * (r - 1) if a.repeat_mode == "paired" else 0),
                                 "client_seed": None if cseed is None else cseed + (1000 * (r - 1) if a.repeat_mode == "paired" else 0)}
                                for r in range(1, a.repeat + 1)],
               "model": None if a.offline else OP_MODEL, "operator_model_override": bool(a.model),
-              "execution": None if a.offline else {k: PREREG_PARAMS[k] for k in
-                                                   ("provider_order", "allow_fallbacks", "min_interval_s",
-                                                    "transport_retries", "max_tokens", "t_sample")},
+              "execution": None if a.offline else {
+                  **{k: PREREG_PARAMS[k] for k in ("min_interval_s", "transport_retries", "max_tokens", "t_sample")},
+                  # effective values: an operator-model override pins its own provider and prices
+                  "provider_order": OP_PROV, "allow_fallbacks": OP_FB,
+                  "price_in_usd_per_m": OP_PIN, "price_out_usd_per_m": OP_POUT, "reasoning_effort": a.reasoning_effort},
               "banks": {k: v.get("_sha256") for k, v in banks.items()}, "penalties_raw": penalties,
               "sandbox_protocol": _sandbox_version(), "code_commit": _git_head()}
     write_seal(root / "design.json", _atomic_json(root / "design.json", design))
@@ -261,8 +283,16 @@ def main(argv=None) -> int:
         if bank is not None:
             cfg_kwargs.update(gen0_bank_sha256=bank["sha256"], gen0_bank_digests=tuple(bank["digests"]))
         cfg = BenchConfig(**cfg_kwargs)
+        if a.integrity_kind.endswith("_eg"):
+            adapter.eg_log_path = str(rdir / "eg_log.jsonl")  # probe/fallback evidence per repair, keyed by loci digest
         t0 = time.time()
-        res = BenchRun(adapter, cfg, client_factory(rs["client_seed"]), gen0_bank=bank,
+        llm = client_factory(rs["client_seed"])
+        if a.host_max_tokens and not a.offline:  # hox5: operator -> --max-tokens, host (default role) -> --host-max-tokens
+            _mt = a.max_tokens
+            a.max_tokens = a.host_max_tokens
+            llm = {"operator": llm, "default": client_factory(rs["client_seed"] + 500000)}
+            a.max_tokens = _mt
+        res = BenchRun(adapter, cfg, llm, gen0_bank=bank,
                        eval_workers=a.eval_workers).run()
         elapsed = time.time() - t0
         markers = sorted(p.name for p in tdir.iterdir() if p.name.startswith("_"))
@@ -288,7 +318,7 @@ def main(argv=None) -> int:
                        {"genes": genes, "digest": summary["best_digest"], "endpoint": endpoint}))
         print(json.dumps({"repeat": r, "certified": certified, "markers": markers,
                           "train_raw_excess_best": summary["train_raw_excess_best"],
-                          "c100": endpoint["c100"]["raw"], "c500": endpoint["c500"]["raw"],
+                          **{k: v["raw"] for k, v in endpoint.items()},
                           "calls": summary["llm_calls"], "elapsed_s": summary["elapsed_s"],
                           "usd": round(sum(v["usd"] for v in summary["spend_by_role"].values()), 4)}))
     print("DONE", root)

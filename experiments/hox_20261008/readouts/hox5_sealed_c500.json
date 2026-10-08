@@ -1,0 +1,306 @@
+{
+ "bank": "sealed_c500.json",
+ "bank_sha256": "6cc1d23305b90c542b817d348e7cd6295f1aa0e121704f2da6ad9236a2a03fbb",
+ "worst_case": 11.444353233848036,
+ "runs": [
+  {
+   "label": "hox5_bp_20261005_0201_g_T0003_cs85001",
+   "arm": "g_T0003",
+   "seed": 85001,
+   "train_pct": 0.503068719187041,
+   "value": 0.004977741293539214,
+   "failed": false,
+   "code_sha256": "d4b6f48011b87fab579fa99c180ea873dd335450397c7689999c7531acf80f30"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0003_cs85002",
+   "arm": "g_T0003",
+   "seed": 85002,
+   "train_pct": 0.4930073448032979,
+   "value": 0.004477741293539214,
+   "failed": false,
+   "code_sha256": "e532145b48a78445f1de053b16ee5dbcccc19fa6cacfae5a137358a1f7a0ae01"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0003_cs85003",
+   "arm": "g_T0003",
+   "seed": 85003,
+   "train_pct": 0.5936210886407061,
+   "value": 11.444353233848036,
+   "failed": false,
+   "code_sha256": "60c4aca4f7f70e4b2b9ae4a889ea837aff7291c5dc85221d6c3c219f2e50a592"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0003_cs85004",
+   "arm": "g_T0003",
+   "seed": 85004,
+   "train_pct": 0.4930073448032979,
+   "value": 0.004481463377906459,
+   "failed": false,
+   "code_sha256": "d61374106d9b0ee9897f06634cbfd0c4ea14eb320361460a31a9e1f9a12bbad7"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0003_cs85005",
+   "arm": "g_T0003",
+   "seed": 85005,
+   "train_pct": 0.543314216722002,
+   "value": 1.1130140310493088,
+   "failed": false,
+   "code_sha256": "971624eb00f19bfb3aabb6c47a321688a8eb7f5e9606a73ff3baea5c2e86ea5d"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0003_cs85006",
+   "arm": "g_T0003",
+   "seed": 85006,
+   "train_pct": 0.5634369654894882,
+   "value": 0.02438625571255714,
+   "failed": false,
+   "code_sha256": "376ca31e575a5cb0e0754e0ff3a3c36fb3300fe0b10e886ce1c9b1b8e4c0ab2a"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0003_cs85007",
+   "arm": "g_T0003",
+   "seed": 85007,
+   "train_pct": 0.5835597142569744,
+   "value": 0.004481463377906459,
+   "failed": false,
+   "code_sha256": "efe0447b5e4c3dfb420a469aa9b7f5ef05bb5db03a3c35c73b03adbd69e6570d"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0003_cs85008",
+   "arm": "g_T0003",
+   "seed": 85008,
+   "train_pct": 0.5936210886407061,
+   "value": 0.004977741293539214,
+   "failed": false,
+   "code_sha256": "f33af3b8f8e596b4eba4bd2ec1a43f887f3dbb9c26d15f4a419500207cc6e786"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0003_cs85009",
+   "arm": "g_T0003",
+   "seed": 85009,
+   "train_pct": 0.5936210886407061,
+   "value": 0.2608239919384705,
+   "failed": false,
+   "code_sha256": "8d0f56e3662f4cd5ea506578496c85b90bf0595e9da43597631e499237b0998d"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0003_cs85010",
+   "arm": "g_T0003",
+   "seed": 85010,
+   "train_pct": 0.6439279605594102,
+   "value": 3.3624010771156154,
+   "failed": false,
+   "code_sha256": "00ec04dfcc3428947cecda819c19fa10cc9a0fd23f40c40fa187f2cc63d1d6a7"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T003_cs85001",
+   "arm": "g_T003",
+   "seed": 85001,
+   "train_pct": 0.6338665861756785,
+   "value": 0.022893662981420287,
+   "failed": false,
+   "code_sha256": "0e8974c365e55ba990b8fa7c0fb3297570eb95941d43a0a6e4ba708ba7506b42"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T003_cs85002",
+   "arm": "g_T003",
+   "seed": 85002,
+   "train_pct": 0.6137438374081923,
+   "value": 0.0014925927311368525,
+   "failed": false,
+   "code_sha256": "9e7c1e0f05d84c1cf31debd1c16d58c658a6596b55a17779a72aeda7ef563b7a"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T003_cs85003",
+   "arm": "g_T003",
+   "seed": 85003,
+   "train_pct": 0.6439279605594102,
+   "value": 0.0014925927311368525,
+   "failed": false,
+   "code_sha256": "02160f7d7105d66d155ab8b9f92416e16d40938f1b4ed28a152a12ce20fe69d7"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T003_cs85004",
+   "arm": "g_T003",
+   "seed": 85004,
+   "train_pct": 0.5231914679545271,
+   "value": 0.0014889074538197344,
+   "failed": false,
+   "code_sha256": "e7ebaa853d67daffc8fbb9a4362fa13834f24974b2171432769f9b5ea0011bd8"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T003_cs85005",
+   "arm": "g_T003",
+   "seed": 85005,
+   "train_pct": 0.5231914679545271,
+   "value": 0.004477741293539214,
+   "failed": false,
+   "code_sha256": "938efcb33819955b1c654e62c15675d83e9ef9cbc9bc9eb9d9f4e5a827c7a456"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T003_cs85006",
+   "arm": "g_T003",
+   "seed": 85006,
+   "train_pct": 0.6137438374081923,
+   "value": 0.004977741293539214,
+   "failed": false,
+   "code_sha256": "799bf05b906a2f3ddb0d07396e6bea225bde06b7b4b6adf8ea6d59c6f30bfe66"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T003_cs85007",
+   "arm": "g_T003",
+   "seed": 85007,
+   "train_pct": 0.513130093570784,
+   "value": 0.0014925927311368525,
+   "failed": false,
+   "code_sha256": "66530b8441c2bbb298b4dfa5a48ee4955c63e4a67abbd80ac2cb3e2d540a2d56"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T003_cs85008",
+   "arm": "g_T003",
+   "seed": 85008,
+   "train_pct": 0.5936210886407061,
+   "value": 0.2608239919384705,
+   "failed": false,
+   "code_sha256": "1f1a74e2053bed135b76c9b2690d69650a30229e3415472c0844190d8fa8586e"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T003_cs85009",
+   "arm": "g_T003",
+   "seed": 85009,
+   "train_pct": 0.6640507093268964,
+   "value": 0.01643198945126067,
+   "failed": false,
+   "code_sha256": "5cfc2429fcc401068da25394d856863ffa27063348361f68b1313bb93272968e"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T003_cs85010",
+   "arm": "g_T003",
+   "seed": 85010,
+   "train_pct": 0.543314216722002,
+   "value": 0.024886218905507015,
+   "failed": false,
+   "code_sha256": "ef1d4adee5dd71a6ac035bff035baf9e7c4d69733808b942fde74fa89e9a8b3e"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0_cs85001",
+   "arm": "g_T0",
+   "seed": 85001,
+   "train_pct": 0.6338665861756785,
+   "value": 11.444353233848036,
+   "failed": false,
+   "code_sha256": "e4ec184fbc635e5f0b9fdc595b8d73ea3d2ae4bead3dedd89584f2c0facf5731"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0_cs85002",
+   "arm": "g_T0",
+   "seed": 85002,
+   "train_pct": 0.6036824630244492,
+   "value": 0.0004938271604938272,
+   "failed": false,
+   "code_sha256": "54f56c5ca885d53cdba30037473daf257ee814a73f3b3a232ecd31fb13d7e9aa"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0_cs85003",
+   "arm": "g_T0",
+   "seed": 85003,
+   "train_pct": 0.6137438374081923,
+   "value": 0.004481463377906459,
+   "failed": false,
+   "code_sha256": "e1390ed017af6617ed16343ec89de812874503d105bb6ac79a4dc1dab7bd1b4f"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0_cs85004",
+   "arm": "g_T0",
+   "seed": 85004,
+   "train_pct": 0.6841734580943826,
+   "value": 0.01094442684794829,
+   "failed": false,
+   "code_sha256": "d9da2b6ae501b69103a8210abed7097970b0515699b91e93536657a12201bfb0"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0_cs85005",
+   "arm": "g_T0",
+   "seed": 85005,
+   "train_pct": 0.6439279605594102,
+   "value": 0.0014925927311368525,
+   "failed": false,
+   "code_sha256": "287e36fab985066f6310acb9be7b75f9fd8aa224fd32e6757fd2c6745d34529c"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0_cs85006",
+   "arm": "g_T0",
+   "seed": 85006,
+   "train_pct": 0.6439279605594102,
+   "value": 0.004481463377906459,
+   "failed": false,
+   "code_sha256": "8f3419e5b82de6b7e947e777e005d7b775531de4b7043a1276eb76896313e285"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0_cs85007",
+   "arm": "g_T0",
+   "seed": 85007,
+   "train_pct": 0.6137438374081923,
+   "value": 0.004977741293539214,
+   "failed": false,
+   "code_sha256": "bdace03a01593eaef48bfc5a09af7e920ee38a15c3d9720a50bf1e33aeda74bd"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0_cs85008",
+   "arm": "g_T0",
+   "seed": 85008,
+   "train_pct": 0.5936210886407061,
+   "value": 0.0059690808918439866,
+   "failed": false,
+   "code_sha256": "ef4df2289f02629e4c9d3cb4baaec0dc09a72269023f4fe4eb0d2c42555af572"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0_cs85009",
+   "arm": "g_T0",
+   "seed": 85009,
+   "train_pct": 0.6137438374081923,
+   "value": 0.004977741293539214,
+   "failed": false,
+   "code_sha256": "6b1f56a9199197730824ecbc5c5a0c626e7c0ca8ed12f74e5ca7e561c2e3ebba"
+  },
+  {
+   "label": "hox5_bp_20261005_0201_g_T0_cs85010",
+   "arm": "g_T0",
+   "seed": 85010,
+   "train_pct": 0.5734983398732313,
+   "value": 0.00398146337790646,
+   "failed": false,
+   "code_sha256": "cee98f12554a0809a743c6e11f7c718909f1b9f8beee5b953e8af2c88121ff9e"
+  }
+ ],
+ "tests": [
+  {
+   "pair": "g_T0003 vs g_T0",
+   "n": 10,
+   "wins": 4,
+   "losses": 6,
+   "p": 0.275390625,
+   "median_x_pct": 1.4682,
+   "median_y_pct": 0.473
+  },
+  {
+   "pair": "g_T003 vs g_T0",
+   "n": 10,
+   "wins": 4,
+   "losses": 6,
+   "p": 0.845703125,
+   "median_x_pct": 0.4728,
+   "median_y_pct": 0.473
+  },
+  {
+   "pair": "g_T003 vs g_T0003",
+   "n": 10,
+   "wins": 8,
+   "losses": 2,
+   "p": 0.10546875,
+   "median_x_pct": 0.4728,
+   "median_y_pct": 1.4682
+  }
+ ]
+}

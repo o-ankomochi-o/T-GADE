@@ -57,7 +57,7 @@ NO_THINK = "/no_think\n"  # declared wrapper, identical to the T-GADE adapter
 def _git_head(cwd: Path) -> "str | None":
     try:
         return subprocess.run(["git", "rev-parse", "HEAD"], cwd=str(cwd), capture_output=True,
-                              text=True, timeout=20).stdout.strip() or None
+                              text=True, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.strip() or None
     except Exception:
         return None
 
@@ -70,8 +70,10 @@ class LLMShim:
     (never counted as paid failures), exception cost taken from
     BudgetExceeded.usage."""
 
-    def __init__(self, client, max_calls: int, out: Path, no_think: bool, version=None):
+    def __init__(self, client, max_calls: int, out: Path, no_think: bool, version=None,
+                 ledger_name: str = "call_ledger_eoh.jsonl", call_prefix: str = "eoh"):
         self.client, self.max_calls, self.no_think = client, max_calls, no_think
+        self.call_prefix = call_prefix  # "repair" for the HoxLM host shim (separate ledger, calls on top of --calls)
         self.calls = self.refused = self.failures = self.physical_attempts = 0
         self._lock = threading.Lock()  # P1: cap/seq/ledger atomic under samplers>1
         self.version = version  # callable -> population version (registration count) seen by this call's sampler
@@ -80,7 +82,7 @@ class LLMShim:
         self.prompt_tokens = self.completion_tokens = 0
         (out / "responses").mkdir(exist_ok=True)
         self._resp_dir = out / "responses"
-        self._fh = open(out / "call_ledger_eoh.jsonl", "w", encoding="utf-8", newline="\n")
+        self._fh = open(out / ledger_name, "w", encoding="utf-8", newline="\n")
 
     def _durable(self, obj: dict) -> None:
         self._fh.write(json.dumps(obj, ensure_ascii=False) + "\n")
@@ -98,7 +100,7 @@ class LLMShim:
         # T80 §1); only a client that reports no attempts at all counts as 1.
         self.physical_attempts += len(att) if isinstance(att, list) else 1
 
-    def get_response(self, prompt_content: str) -> str:
+    def get_response(self, prompt_content: str, **opts) -> str:
         prompt = (NO_THINK if self.no_think else "") + prompt_content
         psha = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
         with self._lock:  # cap check + seq + started row are one atomic step
@@ -113,11 +115,17 @@ class LLMShim:
             self._durable({"event": "call_started", "ts": time.time(), "seq": seq, "prompt_sha256": psha,
                            "pop_version": pv, "thread": threading.current_thread().name})
         self.tls.seq, self.tls.pop_version = seq, pv
-        call_id = f"eoh-{seq}"  # distinct provider seed per logical call (the client derives its seed from call_id)
+        # distinct provider seed per logical call (the client derives its seed from call_id); a host repair may pass its
+        # own content-derived call_id and temperature (EoH operator calls pass no opts: unchanged "eoh-<seq>")
+        call_id = opts.pop("call_id", None) or f"{self.call_prefix}-{seq}"
         t0 = time.time()
         try:
-            res = self.client(prompt, call_id=call_id)
+            res = self.client(prompt, call_id=call_id, **opts)
         except Exception as exc:  # BudgetExceeded etc.; transport retries already happened inside
+            if type(exc).__name__ == "ReplayMismatch":  # S0 replay: never continue with an empty generation
+                with self._lock:
+                    self._durable({"event": "replay_mismatch", "seq": seq, "call_id": call_id, "error": str(exc)})
+                raise
             usage = dict(getattr(exc, "usage", None) or {})
             with self._lock:
                 self.failures += 1
@@ -191,14 +199,42 @@ class OfflineClient:
          "    gap = (bins - item).astype(float)\n    return gap - np.where(gap == gap.max(), 1000.0, 0.0)\n"),
     )
 
-    def __init__(self, variety: bool = False):
-        self.variety, self.n = variety, 0
+    VARIETY_TSP = (
+        ("Nearest neighbour: go to the closest unvisited node.", "    return unvisited_nodes[np.argmin(distance_matrix[current_node][unvisited_nodes])]\n"),
+        ("Second nearest: prefer the second closest unvisited node when available.",
+         "    d = distance_matrix[current_node][unvisited_nodes]\n    o = np.argsort(d, kind='stable')\n    return unvisited_nodes[o[1] if len(o) > 1 else o[0]]\n"),
+        ("Nearest with return penalty: distance plus a tenth of the distance back to the destination.",
+         "    d = distance_matrix[current_node][unvisited_nodes] + 0.1 * distance_matrix[unvisited_nodes][:, destination_node]\n    return unvisited_nodes[np.argmin(d)]\n"),
+        ("Farthest insertion flavour: pick the unvisited node whose nearest other unvisited node is farthest.",
+         "    if len(unvisited_nodes) == 1:\n        return unvisited_nodes[0]\n    sub = distance_matrix[np.ix_(unvisited_nodes, unvisited_nodes)] + np.eye(len(unvisited_nodes)) * 1e9\n    return unvisited_nodes[np.argmax(sub.min(axis=1))]\n"),
+        ("Nearest among the closest three by lookahead of one step.",
+         "    d = distance_matrix[current_node][unvisited_nodes]\n    cand = np.argsort(d, kind='stable')[:3]\n    best, bv = cand[0], 1e18\n    for c in cand:\n        node = unvisited_nodes[c]\n        rest = unvisited_nodes[unvisited_nodes != node]\n        v = d[c] + (distance_matrix[node][rest].min() if rest.size else 0.0)\n        if v < bv:\n            best, bv = c, v\n    return unvisited_nodes[best]\n"),
+    )
+    VARIETY_TSPGA = (
+        ("Order crossover: copy a segment of parent 1 and fill the rest in parent 2 order.",
+         "    n = len(parent1)\n    a, b = sorted(rng.integers(0, n, size=2))\n    child = -np.ones(n, dtype=np.int64)\n    child[a:b + 1] = parent1[a:b + 1]\n    used = set(child[a:b + 1].tolist())\n    fill = [v for v in np.roll(parent2, -(b + 1)) if v not in used]\n    idx = [(b + 1 + k) % n for k in range(n - (b - a + 1))]\n    child[idx] = fill\n    return child\n"),
+        ("Greedy edge crossover: follow the shorter unused parent edge, else the nearest unused node.",
+         "    n = len(parent1)\n    nxt1 = np.empty(n, dtype=np.int64); nxt1[parent1] = np.roll(parent1, -1)\n    nxt2 = np.empty(n, dtype=np.int64); nxt2[parent2] = np.roll(parent2, -1)\n    cur = int(rng.integers(0, n)); used = np.zeros(n, dtype=bool); used[cur] = True; c = [cur]\n    for _ in range(n - 1):\n        cand = [v for v in (int(nxt1[cur]), int(nxt2[cur])) if not used[v]]\n        if cand:\n            cur = min(cand, key=lambda v: distance_matrix[cur, v])\n        else:\n            d = distance_matrix[cur].copy(); d[used] = np.inf; cur = int(np.argmin(d))\n        used[cur] = True; c.append(cur)\n    return np.array(c, dtype=np.int64)\n"),
+    )
+    VARIETY_TSPGA2 = (
+        ("Order crossover with inversion mutation and no local improvement.",
+         "    n = len(parent1)\n    a, b = sorted(rng.integers(0, n, size=2))\n    child = -np.ones(n, dtype=np.int64)\n    child[a:b + 1] = parent1[a:b + 1]\n    used = set(child[a:b + 1].tolist())\n    fill = [v for v in np.roll(parent2, -(b + 1)) if v not in used]\n    idx = [(b + 1 + k) % n for k in range(n - (b - a + 1))]\n    child[idx] = fill\n    return child\n\ndef mutate(tour, distance_matrix, rng):\n    n = len(tour)\n    x, y = sorted(rng.integers(0, n, size=2))\n    t = tour.copy()\n    t[x:y + 1] = t[x:y + 1][::-1]\n    return t\n\ndef local_improve(tour, distance_matrix, rng):\n    return tour\n"),
+        ("Order crossover with inversion mutation and a single first-improvement 2-opt move.",
+         "    n = len(parent1)\n    a, b = sorted(rng.integers(0, n, size=2))\n    child = -np.ones(n, dtype=np.int64)\n    child[a:b + 1] = parent1[a:b + 1]\n    used = set(child[a:b + 1].tolist())\n    fill = [v for v in np.roll(parent2, -(b + 1)) if v not in used]\n    idx = [(b + 1 + k) % n for k in range(n - (b - a + 1))]\n    child[idx] = fill\n    return child\n\ndef mutate(tour, distance_matrix, rng):\n    n = len(tour)\n    x, y = sorted(rng.integers(0, n, size=2))\n    t = tour.copy()\n    t[x:y + 1] = t[x:y + 1][::-1]\n    return t\n\ndef local_improve(tour, distance_matrix, rng):\n    t = tour.copy(); n = len(t)\n    for i in range(0, n - 2):\n        for j in range(i + 2, n - 1):\n            a, b, c, d = t[i], t[i + 1], t[j], t[j + 1]\n            if distance_matrix[a, c] + distance_matrix[b, d] < distance_matrix[a, b] + distance_matrix[c, d] - 1e-9:\n                t[i + 1:j + 1] = t[i + 1:j + 1][::-1]\n                return t\n    return t\n"),
+    )
+    SIG = {"bp_online": "def score(item: int, bins: np.ndarray) -> np.ndarray:\n",
+           "tsp_ga_crossover": "def crossover(parent1: np.ndarray, parent2: np.ndarray, distance_matrix: np.ndarray, rng: np.random.Generator) -> np.ndarray:\n",
+           "tsp_ga_suite": "def crossover(parent1: np.ndarray, parent2: np.ndarray, distance_matrix: np.ndarray, rng: np.random.Generator) -> np.ndarray:\n",
+           "tsp_construct": "def select_next_node(current_node: int, destination_node: int, unvisited_nodes: np.ndarray, distance_matrix: np.ndarray) -> int:\n"}
+
+    def __init__(self, variety: bool = False, task: str = "bp_online"):
+        self.variety, self.n, self.task = variety, 0, task
 
     def __call__(self, prompt: str, **opts) -> LLMResult:
-        desc, body = self.VARIETY[self.n % len(self.VARIETY) if self.variety else 0]
+        table = {"tsp_construct": self.VARIETY_TSP, "tsp_ga_crossover": self.VARIETY_TSPGA, "tsp_ga_suite": self.VARIETY_TSPGA2}.get(self.task, self.VARIETY)
+        desc, body = table[self.n % len(table) if self.variety else 0]
         self.n += 1
-        return LLMResult(text=("{" + desc + "}\n```python\nimport numpy as np\n\n"
-                               "def score(item: int, bins: np.ndarray) -> np.ndarray:\n" + body + "```\n"),
+        return LLMResult(text=("{" + desc + "}\n```python\nimport numpy as np\n\n" + self.SIG[self.task] + body + "```\n"),
                          usage={"prompt_tokens": 0, "completion_tokens": 0, "charged_usd": 0.0,
                                 "attempts": [{"ok": True, "charged_usd": 0.0}]})
 
@@ -206,8 +242,15 @@ class OfflineClient:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--label", required=True)
+    ap.add_argument("--task", default="bp_online", choices=["bp_online"], help="problem: online bin packing")
+    ap.add_argument("--signature-mode", default="internal", choices=["internal", "probe"],
+                    help="tsp_ga_crossover: GA-internal signature (pilot) or the common parent-pair probe (confirmatory)")
+    ap.add_argument("--max-tokens", type=int, default=None, help="override the prereg max_tokens (both arms must match)")
     ap.add_argument("--confirm-paid", action="store_true")
     ap.add_argument("--offline", action="store_true", help="offline client through the shim, real sandbox ($0)")
+    ap.add_argument("--replay-from", default=None,
+                    help="S0 identity check: replay the recorded responses of this run directory in call order "
+                         "(fail-closed on any deviation; requires --samplers 1 --evaluators 1; no key, $0)")
     ap.add_argument("--bank", default=str(DEFAULT_BANK))
     ap.add_argument("--seed", type=int, default=101)
     ap.add_argument("--client-seed", type=int, default=None, help="default 40000+seed")
@@ -221,8 +264,16 @@ def main(argv=None) -> int:
     ap.add_argument("--price-in", type=float, default=None)
     ap.add_argument("--price-out", type=float, default=None)
     ap.add_argument("--provider", default=None, help="pin one OpenRouter provider for the override model (no fallbacks); default: fallbacks allowed")
-    ap.add_argument("--objective", default="train_c100", choices=["train_c100", "regime_max"],
-                    help="EoH objective: canonical C=100 train set, or robust two-capacity max(mean excess C100 bank, C500 bank) (same evaluator as the T-GADE arm)")
+    ap.add_argument("--reasoning-effort", default=None, help="reasoning models only: pin OpenRouter reasoning.effort (e.g. low); default: provider default")
+    ap.add_argument("--objective", default="train_c100", choices=["train_c100", "regime_max", "noisy_c100"],
+                    help="EoH objective: canonical C=100 train set, robust two-capacity max(mean excess C100 bank, C500 bank) (same evaluator as the T-GADE arm), "
+                         "or noisy_c100 = noisy-observation online bin packing (NOISY prereg 2026-10-01)")
+    ap.add_argument("--noise-sigma", type=float, default=5.0, help="noisy_c100: observation noise sd in item units (C = 100)")
+    ap.add_argument("--noise-kappa", type=float, default=5.0, help="noisy_c100: overflow penalty in bin-equivalents")
+    ap.add_argument("--noise-mode", default="sto", choices=["sto", "det"], help="noisy_c100: new noise seed per evaluation (sto) or fixed seed (det)")
+    ap.add_argument("--noise-seed-base", type=int, default=900000)
+    ap.add_argument("--noise-items", type=int, default=1000, help="noisy_c100: items per train instance (5 instances)")
+    ap.add_argument("--panel-size", type=int, default=10, help="noisy_c100: realisations per fixed panel (selection seeds 9100xx, reporting seeds 9200xx)")
     # survival rule swap, everything else EoH verbatim
     ap.add_argument("--survival", default="eoh", choices=["eoh", "thermo", "newest"],
                     help="'thermo' = removal-type thermodynamic rule (grant_evo.bench.eoh_thermo) in place of population_management")
@@ -251,6 +302,17 @@ def main(argv=None) -> int:
     ap.add_argument("--evaluators", type=int, default=1, help="EoH evaluator threads")
     ap.add_argument("--offline-variety", action="store_true",
                     help="offline client cycles through distinct valid heuristics (X1 identity test)")
+    ap.add_argument("--oracle-ref", default=str(REPO / "data" / "oracle_bp_online_ref.json"),
+                    help="host-repair oracle: reference heuristic shown to the host (positive control only)")
+    ap.add_argument("--host-max-tokens", type=int, default=8192,
+                    help="output allowance of the HOST client (operators keep --max-tokens); host replies are longer than operator replies")
+    ap.add_argument("--host-repair", default="none",
+                    choices=["none", "align_thought", "align_code", "align_thought_eg", "align_code_eg", "improve", "improve_nocard", "oracle", "oracle_inject"],
+                    help="HoxLM: the host repairs each offspring before EoH evaluates and registers it; own call ledger, "
+                         "repair calls are added on top of --calls (the USD cap covers both)")
+    ap.add_argument("--child-source", default="operators", choices=["operators", "mask"],
+                    help="mask: child = description of parent A + code of parent B (EoH rank selection, no operator call); "
+                         "the host reconstructs it, so the host is the only LLM user (requires --host-repair)")
     ap.add_argument("--out", default=None)
     ap.add_argument("--resume-from", default=None,
                     help="not supported in this release (refused); kept for command-line compatibility"
@@ -264,9 +326,16 @@ def main(argv=None) -> int:
     OP_POUT = a.price_out if a.model else P["price_out_usd_per_m"]
     OP_PROV = ([a.provider] if a.provider else None) if a.model else P["provider_order"]
     OP_FB = (not a.provider) if a.model else P["allow_fallbacks"]
-    if not a.offline and not a.confirm_paid:
+    if not a.offline and not a.replay_from and not a.confirm_paid:
         print("REFUSED: paid run needs --confirm-paid (or use --offline)")
         return 2
+    if a.host_repair != "none" and a.replay_from:
+        print("REFUSED: --host-repair cannot be replayed (repair calls are not in the recorded operator stream)")
+        return 2
+    if a.child_source == "mask" and a.host_repair == "none":
+        print("REFUSED: --child-source mask needs --host-repair")
+        return 2
+    ikind = a.host_repair if a.host_repair != "none" else "syntax"
     samples = a.samples or a.calls
 
     from grant_evo.bench.adapters.bp_online import BpOnlineAdapter, EVAL_TIMEOUT, uses_randomness  # noqa: PLC0415  (stubs InterfaceLLM)
@@ -294,32 +363,60 @@ def main(argv=None) -> int:
     seeds_path = out / "seeds.json"
     seeds_path.write_text(json.dumps(seeds, indent=1), encoding="utf-8", newline="\n")
 
-    adapter = BpOnlineAdapter(train_k=5, items=5000, objective=a.objective, diversity_carrier=a.carrier,
-                              hybrid_weights=tuple(float(x) for x in a.hybrid_weights.split(",")),
-                              probe_len=a.probe_len, eval_timeout=a.eval_timeout,
-                              signature_source=a.signature_source,
-                              deterministic_only=a.deterministic_only)  # shared evaluator + endpoint banks (+ X1 rows)
-    inst, lb = adapter._instances_payload()
-    try:  # raw excess upper bound of the train evaluator (one item per bin); the survival energy clip
-        # inst = {dataset: {instance: {...}}}, lb = {dataset: mean L1 bound}; one item per bin
-        raw_upper_bound = float(np.mean([(np.mean([len(i["items"]) for i in insts.values()]) - float(lb[ds])) / float(lb[ds])
-                                         for ds, insts in inst.items()]))
-    except Exception:  # noqa: BLE001
-        raw_upper_bound = None
+    if a.task in ("tsp_construct", "tsp_ga_crossover", "tsp_ga_suite"):
+        from grant_evo.bench.adapters.tsp_construct import TspConstructAdapter  # noqa: PLC0415
+        from grant_evo.bench.adapters.tsp_ga_crossover import TspGaCrossoverAdapter  # noqa: PLC0415
+        from grant_evo.bench.adapters.tsp_ga_suite import TspGaSuiteAdapter, TspGaCrossoverProbeAdapter  # noqa: PLC0415
+        _A = {"tsp_construct": TspConstructAdapter, "tsp_ga_suite": TspGaSuiteAdapter,
+              "tsp_ga_crossover": TspGaCrossoverProbeAdapter if a.signature_mode == "probe" else TspGaCrossoverAdapter}[a.task]
+        adapter = _A(eval_timeout=a.eval_timeout, deterministic_only=a.deterministic_only, integrity_kind=ikind)
+        inst, lb = {}, {}
+        raw_upper_bound = None  # ratio L/L_ref has no finite worst case; the survival clip stays min(ratio, 2)/2
+    else:
+        adapter = BpOnlineAdapter(train_k=5, items=(a.noise_items if a.objective == "noisy_c100" else 5000), objective=a.objective,
+                                  diversity_carrier=a.carrier,
+                                  hybrid_weights=tuple(float(x) for x in a.hybrid_weights.split(",")),
+                                  probe_len=a.probe_len, eval_timeout=a.eval_timeout,
+                                  signature_source=a.signature_source,
+                                  deterministic_only=a.deterministic_only,
+                                  noise_sigma=a.noise_sigma, noise_kappa=a.noise_kappa, noise_mode=a.noise_mode,
+                                  noise_seed_base=a.noise_seed_base, integrity_kind=ikind)  # shared evaluator + endpoint banks (+ X1 rows)
+        inst, lb = adapter._instances_payload()
+        try:  # raw excess upper bound of the train evaluator (one item per bin); the survival energy clip
+            # inst = {dataset: {instance: {...}}}, lb = {dataset: mean L1 bound}; one item per bin
+            raw_upper_bound = float(np.mean([(np.mean([len(i["items"]) for i in insts.values()]) - float(lb[ds])) / float(lb[ds])
+                                             for ds, insts in inst.items()]))
+        except Exception:  # noqa: BLE001
+            raw_upper_bound = None
     audit_lock = threading.Lock()
     audit_fh = open(out / "eval_audit.jsonl", "a", encoding="utf-8", newline="\n")
-    eval_state = {"n": 0, "sig_meta": {}}  # code sha -> {eval_id, raw} of the evaluation that produced the cached signature
+    eval_state = {"n": 0, "sig_meta": {}, "noisy_meta": {}}  # code sha -> {eval_id, raw} of the evaluation that produced the cached signature; noisy: {noise_seed, raw, per_instance}
 
     def sandbox_raw(code: str) -> "float | None":
+        if a.task in ("tsp_construct", "tsp_ga_crossover", "tsp_ga_suite"):  # ratio L_train / L_ref; determinism gate + signature cache inside the adapter
+            v = adapter.raw_train(code)
+            with audit_lock:
+                eval_state["n"] += 1
+                eval_state["sig_meta"][hashlib.sha256(code.encode("utf-8")).hexdigest()] = {"eval_id": eval_state["n"], "raw": v}
+            return v
         if adapter.deterministic_only and uses_randomness(code):  # determinism gate, same rule as adapter.energy
             adapter.randomness_rejects += 1
             return None
         if a.objective == "regime_max":  # same robust objective as the T-GADE arm (raw, unclipped)
             comp = adapter._regime_raw(code)
             return None if comp is None else float(max(comp.values()))
-        res = run_sandboxed({"op": "energy", "code": code, "capacity": 100, "instances": inst, "lb": lb,
-                             **({"signature": True} if adapter.signature_source == "energy" else {})},
-                            timeout=adapter.eval_timeout)
+        if a.objective == "noisy_c100":  # NOISY prereg: noisy-observation evaluator; new noise seed per evaluation (sto) or fixed (det)
+            nseed = adapter.next_noise_seed()
+            res = run_sandboxed(adapter.noisy_payload(code, nseed, signature=adapter.signature_source == "energy"),
+                                timeout=adapter.eval_timeout)
+            with audit_lock:
+                eval_state["noisy_meta"][hashlib.sha256(code.encode("utf-8")).hexdigest()] = {
+                    "noise_seed": nseed, "raw": None if res is None else res.get("value"),
+                    "per_instance": None if res is None else res.get("per_instance")}
+        else:
+            res = run_sandboxed({"op": "energy", "code": code, "capacity": 100, "instances": inst, "lb": lb,
+                                 **({"signature": True} if adapter.signature_source == "energy" else {})},
+                                timeout=adapter.eval_timeout)
         if res is None or not res.get("ok"):
             return None
         v = res.get("value")
@@ -344,7 +441,9 @@ def main(argv=None) -> int:
     evo_mod._eval_with_timeout = sandbox_eval
     eoh_mod._eval_with_timeout = sandbox_eval
 
-    problem = BPONLINE(capacity=100, timeout=EVAL_TIMEOUT)
+    problem = adapter.problem if a.task != "bp_online" else BPONLINE(capacity=100, timeout=EVAL_TIMEOUT)
+    if a.task == "bp_online" and a.objective == "noisy_c100":  # NOISY prereg: the generator is told the observation / overflow contract
+        problem.task_description, problem.template_program = adapter.noisy_prompt()
     remaining_calls = a.calls - (resume["prior_calls"] if resume else 0)
     remaining_samples = samples - (resume["samples_done"] if resume else 0)
     if resume:
@@ -374,24 +473,87 @@ def main(argv=None) -> int:
 
     eoh.evolution.evaluate_seeds = evaluate_seeds_sorted
 
-    if a.offline:
+    if a.replay_from:
+        from grant_evo.bench.replay_client import ReplayClient  # noqa: PLC0415
+        if a.samplers != 1 or a.evaluators != 1:
+            print("REFUSED: --replay-from requires --samplers 1 --evaluators 1 (recorded call order)")
+            return 2
+        cseed = a.client_seed
+        client = ReplayClient(a.replay_from, out)
+    elif a.offline:
         cseed = None
-        client = OfflineClient(variety=a.offline_variety)
+        client = OfflineClient(variety=a.offline_variety, task=a.task)
     else:
         from grant_evo.bench.clients import OpenRouterClient  # noqa: PLC0415
         P = PREREG_PARAMS
         cseed = a.client_seed if a.client_seed is not None else 40000 + a.seed
         client = OpenRouterClient(OP_MODEL, temperature=P["t_sample"], budget_usd=a.cap_usd,
                                   retries=P["transport_retries"], min_interval_s=P["min_interval_s"],
-                                  max_tokens=P["max_tokens"], price_in_usd_per_m=OP_PIN,
+                                  max_tokens=(a.max_tokens or P["max_tokens"]), price_in_usd_per_m=OP_PIN,
                                   price_out_usd_per_m=OP_POUT,
                                   max_input_bytes=P["max_input_bytes"],
                                   chat_overhead_tokens=P["chat_overhead_tokens"],
                                   provider_order=OP_PROV, allow_fallbacks=OP_FB,
-                                  seed=cseed)
+                                  seed=cseed, reasoning_effort=a.reasoning_effort)
     reg_state = {"seq": 0, "fh": open(out / "registration.jsonl", "w", encoding="utf-8", newline="\n")}
     shim = LLMShim(client, max(0, remaining_calls), out, a.no_think, version=lambda: reg_state["seq"])
     eoh.evolution.llm = shim  # injection point 1
+
+    repair = None
+    if a.host_repair != "none":  # HoxLM on the EoH loop: wrap the producer so the host repairs every offspring first
+        if a.offline or a.replay_from:
+            host_client = client
+        else:  # same model, provider pin and prices; only the output allowance differs (its own ledger counts the calls)
+            host_client = OpenRouterClient(OP_MODEL, temperature=P["t_sample"], budget_usd=a.cap_usd,
+                                           retries=P["transport_retries"], min_interval_s=P["min_interval_s"],
+                                           max_tokens=a.host_max_tokens, price_in_usd_per_m=OP_PIN, price_out_usd_per_m=OP_POUT,
+                                           max_input_bytes=P["max_input_bytes"], chat_overhead_tokens=P["chat_overhead_tokens"],
+                                           provider_order=OP_PROV, allow_fallbacks=OP_FB, seed=cseed + 500000,
+                                           reasoning_effort=a.reasoning_effort)
+        repair = {"shim": LLMShim(host_client, 10 ** 9, out, a.no_think, ledger_name="call_ledger_repair.jsonl", call_prefix="repair"),
+                  "fh": open(out / "repair_log.jsonl", "w", encoding="utf-8", newline="\n"), "lock": threading.Lock(),
+                  "n": 0, "thought_changed": 0, "code_changed": 0, "dropped": 0}
+        if a.host_repair.endswith("_eg"):
+            adapter.eg_log_path = str(out / "eg_log.jsonl")
+        if a.host_repair in ("oracle", "oracle_inject"):
+            if not Path(a.oracle_ref).exists():
+                print("REFUSED: --host-repair oracle needs --oracle-ref FILE (positive control only; not distributed)")
+                return 2
+            adapter.oracle_ref = json.loads(Path(a.oracle_ref).read_text(encoding="utf-8"))
+        _orig_generate = eoh.evolution.generate_code
+
+        def generate_code_repaired(population, operator):
+            if a.child_source == "mask":  # no operator call: thought of A + code of B, then the host reconstructs
+                ps = evo_mod.parent_selection(population, 2)
+                parents, code, algorithm = ps, ps[1]["code"], ps[0]["algorithm"]
+            else:
+                parents, code, algorithm = _orig_generate(population, operator)
+            if code is None:
+                return parents, code, algorithm
+            pre = {"thought": algorithm or "", "code": code}
+            plist = parents if isinstance(parents, list) else ([parents] if parents else [])
+            if hasattr(adapter, "host_repair"):  # measurement-driven kinds see the parents; alignment kinds ignore them
+                fb = ({"thought": plist[1]["algorithm"], "code": plist[1]["code"]} if a.child_source == "mask" else None)  # intact parent B
+                post, info = adapter.host_repair(dict(pre), plist, repair["shim"].get_response,
+                                                 mode=("mask" if a.child_source == "mask" else None), fallback=fb)
+            else:
+                post, info = adapter.integrity(dict(pre), random.Random(0), repair["shim"].get_response), {}
+            row = {"operator_seq": getattr(shim.tls, "seq", None), "operator": operator, "kind": a.host_repair,
+                   "dropped": post is None, "pre": pre, "post": post, **{k: v for k, v in info.items() if k != "kind"},
+                   "thought_changed": post is not None and post["thought"] != pre["thought"],
+                   "code_changed": post is not None and post["code"] != pre["code"]}
+            with repair["lock"]:
+                repair["n"] += 1
+                repair["dropped"] += row["dropped"]
+                repair["thought_changed"] += row["thought_changed"]
+                repair["code_changed"] += row["code_changed"]
+                repair["fh"].write(json.dumps(row, ensure_ascii=False) + "\n")
+                repair["fh"].flush()
+            if post is None:  # same rule as the generational engine: a failed align_code repair drops the child
+                return None, None, None
+            return parents, post["code"], post["thought"]
+
+        eoh.evolution.generate_code = generate_code_repaired
 
     # ── survival-rule swap ──────────
     survival_state = {"fatal": None, "rows_cache": {}, "trace_fh": None}
@@ -484,6 +646,8 @@ def main(argv=None) -> int:
                "snapshot_age": None if pv is None else reg_state["seq"] - 1 - pv,
                "thread": threading.current_thread().name, "n_in": len(pop), "ts": time.time(),
                "newcomer": {k: pop[-1].get(k) for k in ("code", "algorithm", "objective")} if pop else None,
+               "newcomer_noisy": (eval_state["noisy_meta"].get(hashlib.sha256(pop[-1]["code"].encode("utf-8")).hexdigest())
+                                  if (pop and a.objective == "noisy_c100") else None),
                "pop_after": [[x.get("objective"), hashlib.sha256(x["code"].encode("utf-8")).hexdigest()] for x in res]}
         if reg_state["seq"] == 1:
             rec["pop_in_full"] = [{k: x.get(k) for k in ("code", "algorithm", "objective")} for x in pop]
@@ -493,11 +657,17 @@ def main(argv=None) -> int:
 
     eoh_mod.population_management = registration_log
 
-    banks = {"c100": _load_bank("confirmation_bank.json"), "c500": _load_bank("confirmation_bank_c500.json")}
-    penalties = {k: _bank_penalty(b) for k, b in banks.items()}
+    if a.task in ("tsp_construct", "tsp_ga_crossover", "tsp_ga_suite"):
+        from grant_evo.bench.adapters.tsp_construct import load_bank as _load_tsp_bank  # noqa: PLC0415
+        banks = {"train50": _load_tsp_bank("train_bank.json"), "val50": _load_tsp_bank("validation_bank.json"),
+                 "transfer100": _load_tsp_bank("transfer_bank.json")}
+    else:
+        banks = {"c100": _load_bank("confirmation_bank.json"), "c500": _load_bank("confirmation_bank_c500.json")}
+    _pen = getattr(adapter, "bank_penalty", None) or _bank_penalty  # task-specific worst-case endpoint value
+    penalties = {k: _pen(b) for k, b in banks.items()}
     # the exclusion argument is applied only by the thermodynamic survival rule; record the rule actually used
     exclusion_eff = {"eoh": "level", "newest": "none", "thermo": a.exclusion}[a.survival]
-    design = {"arm": "EOH_official_commit_pinned", "label": a.label, "offline": a.offline, "seed": a.seed,
+    design = {"arm": "EOH_official_commit_pinned", "task": a.task, "label": a.label, "offline": a.offline, "seed": a.seed,
               "client_seed": cseed, "eoh_search_seed": "upstream random.seed(2024), fixed",
               "bank": bank["sha256"], "pop_size": a.pop_size, "logical_call_cap": a.calls,
               "sample_budget": samples, "no_think": a.no_think, "operators": cfg.operators,
@@ -517,11 +687,13 @@ def main(argv=None) -> int:
                                        "(constructor ping suppressed), replaced by the shim"],
               "upstream_commit": _git_head(REPO / "third_party/EoH"), "code_commit": _git_head(REPO),
               "model": None if a.offline else OP_MODEL, "operator_model_override": bool(a.model),
-              "execution": None if a.offline else {k: PREREG_PARAMS[k] for k in
-                                                   ("provider_order", "allow_fallbacks", "min_interval_s",
-                                                    "transport_retries", "max_tokens", "t_sample")},
+              "execution": None if a.offline else {
+                  **{k: PREREG_PARAMS[k] for k in ("min_interval_s", "transport_retries", "max_tokens", "t_sample")},
+                  # effective values: an operator-model override pins its own provider and prices
+                  "provider_order": OP_PROV, "allow_fallbacks": OP_FB,
+                  "price_in_usd_per_m": OP_PIN, "price_out_usd_per_m": OP_POUT, "reasoning_effort": a.reasoning_effort},
               "banks": {k: v.get("_sha256") for k, v in banks.items()}, "penalties_raw": penalties,
-              "sandbox_image": image_digest(), "sandbox_protocol": PROTOCOL, "cap_usd_per_run": a.cap_usd,
+              "sandbox_image": image_digest(), "sandbox_protocol": PROTOCOL, "cap_usd_per_run": a.cap_usd, "signature_mode": a.signature_mode, "max_tokens_override": a.max_tokens,
               "note": "commit-pinned EoH implementation connected to the common environment; "
                       "not a reproduction of the 2024 paper run",
               "survival": a.survival, "exclusion": a.exclusion, "temperature": a.temperature,
@@ -536,7 +708,16 @@ def main(argv=None) -> int:
               "forced_template": (a.forced_template if a.exclusion == "level2" else None),
               "selection_rule": "history best over valid evaluated samples + seeds (v2 #2); final-population best recorded as secondary",
               "neighbourhood_failure_rule": "one re-measure, then the run is stopped and marked aborted (v2 #4)",
-              "resume": resume}
+              "noise": ({"sigma": adapter.noise_sigma, "kappa": adapter.noise_kappa, "mode": adapter.noise_mode,
+                         "seed_base": adapter.noise_seed_base, "items_per_instance": a.noise_items, "panel_size": a.panel_size,
+                         "observation": "x = clip(round(w + eps), 1, 100), integer; valid mask on x; empty bins preallocated",
+                         "overflow": "bin closed (rem = -1), item stays, O += 1",
+                         "loss": "J = B + kappa * O; raw = mean over datasets of (mean J - L1 bound) / L1 bound",
+                         "prompt": "task_description/template_program replaced by BpOnlineAdapter.noisy_prompt()"}
+                        if a.objective == "noisy_c100" else None),
+              "resume": resume,
+              "host_repair": (None if repair is None else {"kind": a.host_repair, "child_source": a.child_source, "host_max_tokens": a.host_max_tokens, "ledger": "call_ledger_repair.jsonl",
+                              "log": "repair_log.jsonl", "calls": "added on top of --calls; the USD cap covers both"})}
     dpath = out / ("design_resume_" + stamp + ".json" if resume else "design.json")
     write_seal(dpath, _atomic_json(dpath, design))
 
@@ -546,6 +727,9 @@ def main(argv=None) -> int:
     finally:
         shim.close()
         reg_state["fh"].close()
+        if repair is not None:
+            repair["shim"].close()
+            repair["fh"].close()
         eoh_mod.population_management = _orig_pm  # restore the module globals (tests call main() repeatedly)
         if "orig_ps" in survival_state:
             evo_mod.parent_selection = survival_state["orig_ps"]
@@ -589,16 +773,48 @@ def main(argv=None) -> int:
                "train_raw_excess_best_unclipped": train_raw,
                "final_population_size": len(final),
                "final_population_objectives": [x.get("objective") for x in final],
-               "endpoint": endpoint, "generations_saved": len(pops)}
+               "endpoint": endpoint, "generations_saved": len(pops),
+               "host_repair": None if repair is None else {
+                   "kind": a.host_repair, "child_source": a.child_source, "offspring": repair["n"], "thought_changed": repair["thought_changed"],
+                   "code_changed": repair["code_changed"], "dropped": repair["dropped"],
+                   "calls": repair["shim"].calls, "call_failures": repair["shim"].failures, "usd": round(repair["shim"].usd, 6),
+                   "prompt_tokens": repair["shim"].prompt_tokens, "completion_tokens": repair["shim"].completion_tokens,
+                   "integrity_fallbacks": getattr(adapter, "integrity_fallbacks", None)}}
     write_seal(out / "summary.json", _atomic_json(out / "summary.json", summary))
     if genes is not None:
         write_seal(out / "selected.json", _atomic_json(out / "selected.json",
                    {"genes": genes, "endpoint": endpoint}))
+    if a.objective == "noisy_c100":  # NOISY prereg: fixed-seed panels on shared true weights (selection 9100xx, reporting 9200xx)
+        sel_seeds = [910000 + i for i in range(1, a.panel_size + 1)]
+        rep_seeds = [920000 + i for i in range(1, a.panel_size + 1)]
+        cands = {}
+        for x in finite:
+            cands.setdefault(hashlib.sha256(x["code"].encode("utf-8")).hexdigest(),
+                             {"code": x["code"], "train_objective": x.get("objective"), "source": "final_population"})
+        hb = None
+        if genes is not None:
+            hb = hashlib.sha256(genes["code"].encode("utf-8")).hexdigest()
+            cands.setdefault(hb, {"code": genes["code"], "train_objective": None if best is None else best.get("objective"), "source": "history_best"})
+        panel = {sha: {"source": c["source"], "train_objective": c["train_objective"],
+                       "selection": adapter.noisy_panel(c["code"], sel_seeds), "reporting": adapter.noisy_panel(c["code"], rep_seeds)}
+                 for sha, c in cands.items()}
+        ok = {s: p for s, p in panel.items() if p["selection"] is not None and p["reporting"] is not None}
+        by_panel = min(ok, key=lambda s: ok[s]["selection"]["raw_mean"]) if ok else None
+        pj = {"sigma": adapter.noise_sigma, "kappa": adapter.noise_kappa, "noise_mode": adapter.noise_mode, "panel_size": a.panel_size,
+              "selection_seeds": sel_seeds, "reporting_seeds": rep_seeds, "candidates": panel,
+              "history_best": hb, "selected_by_selection_panel": by_panel,
+              "reporting_raw_of_history_best": None if hb is None or hb not in ok else ok[hb]["reporting"]["raw_mean"],
+              "reporting_J_of_history_best": None if hb is None or hb not in ok else ok[hb]["reporting"]["J_mean"],
+              "reporting_raw_of_panel_selected": None if by_panel is None else ok[by_panel]["reporting"]["raw_mean"],
+              "reporting_J_of_panel_selected": None if by_panel is None else ok[by_panel]["reporting"]["J_mean"]}
+        write_seal(out / "noisy_panel.json", _atomic_json(out / "noisy_panel.json", pj))
+        summary["noisy_panel"] = {k: pj[k] for k in ("history_best", "selected_by_selection_panel", "reporting_raw_of_history_best",
+                                                     "reporting_J_of_history_best", "reporting_raw_of_panel_selected", "reporting_J_of_panel_selected")}
+        write_seal(out / "summary.json", _atomic_json(out / "summary.json", summary))
     print(json.dumps({k: summary[k] for k in ("logical_calls", "physical_attempts", "calls_refused_after_cap",
                                               "samples_recorded", "best_objective_rounded",
                                               "train_raw_excess_best_unclipped", "final_population_size",
-                                              "usd", "elapsed_s")} | {"c100": endpoint["c100"]["raw"],
-                                                                      "c500": endpoint["c500"]["raw"]}))
+                                              "usd", "elapsed_s")} | {k: v["raw"] for k, v in endpoint.items()}))
     audit_fh.close()
     if survival_state["trace_fh"] is not None:
         survival_state["trace_fh"].close()

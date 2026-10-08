@@ -204,3 +204,46 @@ and copyright notice (`third_party/EoH/LICENSE`).
   url           = {https://arxiv.org/abs/2609.12286}
 }
 ```
+
+## Version 2 (2026-10-08): host LLM step, level-based Fermi-type occupancy, temperature grid on sealed instances
+
+This section accompanies arXiv v2 of the paper. The v1.1 code paths and run records above are unchanged.
+
+**What changed in the code.** Both runners can attach a host LLM step to every proposed child (`scripts/run_v101_eoh.py --host-repair improve`, `scripts/run_v101.py --integrity-kind improve`): the host sees a domain card, the child's measured training excess, an execution probe, and the best parent, returns one revised explanation and code, and the revision is kept only if the training energy strictly improves. Host calls are charged to the same call budget as operator calls. In the steady-state runner, `--exclusion level` keeps one individual per recorded objective value (five decimals); this is EoH's rule and is what the paper calls Fermi-type occupancy. The generational runner's `--occupancy fermion` (genotype identity) is not used in v2. Zero prices are accepted only against an explicitly configured OpenAI-compatible endpoint (`TGADE_LLM_BASE_URL`).
+
+**Experiments (`experiments/hox_20261008/`).** All runs used gpt-oss-20b on a self-hosted vLLM server; the exact arguments are in `run_cohort.sh`, the registered design in `PREREG.md`.
+
+| Family | Arms | Calls per run | Seeds |
+|---|---|---|---|
+| steady-state Fermi-type + host | T = 0, 0.0003, 0.001, 0.003, 0.01, 0.03, 0.1 | 1600 operator + at most 1600 host | 84001-84010 |
+| EoH reference (same seeds) | one individual per objective value, no host | 3200 operator | 84001-84010 |
+| generational Bose-type + host | T = 0, 0.0003, 0.001, 0.003, 0.01, 0.03, 0.1 | 177 generations x (9 operator + 9 host) = 3186 | 85001-85010 |
+| reach-speed confirmation | A: EoH 800; B: T=0 + host; C: T=0.003 + host | 800; 400 + at most 400 | 86001-86010 |
+
+Run one arm (any OpenAI-compatible endpoint; the model id must be served by it):
+
+```bash
+export TGADE_LLM_BASE_URL=http://127.0.0.1:18000/v1
+bash experiments/hox_20261008/run_cohort.sh steady 0.003 84001 runs/my_cohort/h_improve_T0.003_cs84001
+bash experiments/hox_20261008/run_cohort.sh generational 0.001 85001 runs/my_cohort/b_T0.001_cs85001
+```
+
+Score finished runs on the sealed banks (CPU only; the banks were generated before the cohorts, hash-sealed, never read during search, and scored once per cohort after all runs had finished):
+
+```bash
+bash experiments/hox_20261008/score_sealed.sh steady runs/my_cohort out/my_cohort_sealed_c100.json
+bash experiments/hox_20261008/score_sealed.sh generational runs/my_cohort out/my_cohort_sealed_budgets_c100.json
+```
+
+Reproduce the paper's numbers from the released results (no LLM calls, no run records needed):
+
+```bash
+pip install -r requirements.txt
+python experiments/hox_20261008/analysis/paper_tables.py    # tables and pgfplots figures of the paper -> analysis/out/
+python experiments/hox_20261008/analysis/stats.py           # median / mean / SD / best / worst per arm
+python experiments/hox_20261008/analysis/restart_check.py   # post-hoc restart comparison (Section VI)
+```
+
+`readouts/` holds the sealed scoring result of every run at the budget points 200, 400, 800, 1600 and the endpoint; `derived/` holds the per-run training values, final-population diversity measures and lineage counts extracted from the run records. The run records themselves (registration ledgers, about 45 MB per cohort) are not distributed and are available from the authors on request. Expected key values: steady-state T=0 + host, sealed c100 endpoint median 0.672 %; generational T=0.001 + host, 0.652 %; confirmation cohort at 400 total calls, B 0.836 % against A 3.912 % (9 wins of 10 pairs, exact Wilcoxon p = 0.0039).
+
+The readouts were produced with a scorer that allowed one call of slack at a budget point (`lim > total + 1`); the distributed scorer uses `lim > total`. This does not change the preregistered primary endpoint (400 total calls) or any endpoint value.

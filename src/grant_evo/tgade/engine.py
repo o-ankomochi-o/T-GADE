@@ -794,6 +794,13 @@ class BenchRun:
         def run_i(t):
             ind = t["ind"]
             self._op_ctx(gen, "integrity", ind.id, [dg(ind.genes)], op_id=t["op_i"])
+            if callable(getattr(self.adapter, "host_repair", None)) and getattr(self.adapter, "integrity_kind", "") == "improve":
+                # hox5: the improve host sees the parents' code and training objective (as on the EoH loop)
+                par = [{"code": p.genes["code"], "objective": None if p.energy is None else 2.0 * p.energy}
+                       for p in pop if p.id in ind.parent_ids]
+                g2, info = self.adapter.host_repair(ind.genes, par, self._client(ind.host))
+                ind.meta["host_repair"] = {k: v for k, v in info.items() if k in ("result", "pre_pct", "post_pct", "best_parent_pct", "code_changed", "thought_changed")}
+                return g2
             return integrity(ind.genes, t["rng"], self._client(ind.host))
 
         for t, g in zip(itasks, self._run_tasks(run_i, itasks, W)):

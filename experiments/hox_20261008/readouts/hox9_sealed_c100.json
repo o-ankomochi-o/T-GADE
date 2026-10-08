@@ -1,0 +1,1339 @@
+{
+ "bank": "sealed_c100.json",
+ "bank_sha256": "f4f0318032acfde6eb7ba41d8712f7533035fdd0137ff339f3b27f426a64d660",
+ "worst_case": 1.4888450307081111,
+ "budgets": [
+  "200",
+  "400",
+  "800",
+  "end"
+ ],
+ "runs": [
+  {
+   "label": "hox9_bp_20261006_2222_eoh800_cs86001",
+   "arm": "eoh800",
+   "seed": 86001,
+   "calls_total": 800,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 98,
+     "train": 0.02686,
+     "registration": 96,
+     "code_sha256": "bc9d94f43448f04dbf00e460b6a7e2c6d82a333a4e0364b75a2d38176b484cf3",
+     "value": 0.03353759315486856,
+     "failed": false
+    },
+    "400": {
+     "calls": 353,
+     "train": 0.01227,
+     "registration": 345,
+     "code_sha256": "75708f0f8a569d81c5bca21268fbe8473da9832f76965a0c0703c3bd2fa386b1",
+     "value": 0.015026018810495517,
+     "failed": false
+    },
+    "800": {
+     "calls": 442,
+     "train": 0.01087,
+     "registration": 432,
+     "code_sha256": "15f1a3b46aa872b0679e96c7f6897ad1eb5e9efee878f40fe1c558e609843709",
+     "value": 0.014522211182554359,
+     "failed": false
+    },
+    "end": {
+     "calls": 442,
+     "train": 0.01087,
+     "registration": 432,
+     "code_sha256": "15f1a3b46aa872b0679e96c7f6897ad1eb5e9efee878f40fe1c558e609843709",
+     "value": 0.014522211182554359,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_eoh800_cs86002",
+   "arm": "eoh800",
+   "seed": 86002,
+   "calls_total": 800,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 62,
+     "train": 0.02666,
+     "registration": 58,
+     "code_sha256": "c1c57052d1c2481468032ff08743e36bae428b9e72ae923415353a1afc735150",
+     "value": 0.02757411982700737,
+     "failed": false
+    },
+    "400": {
+     "calls": 62,
+     "train": 0.02666,
+     "registration": 58,
+     "code_sha256": "c1c57052d1c2481468032ff08743e36bae428b9e72ae923415353a1afc735150",
+     "value": 0.02757411982700737,
+     "failed": false
+    },
+    "800": {
+     "calls": 644,
+     "train": 0.01298,
+     "registration": 628,
+     "code_sha256": "a3d0f51b532ae38a6fc534b4430eb573a17597ab9ce3f5b33d6691888041f693",
+     "value": 0.018699844448672166,
+     "failed": false
+    },
+    "end": {
+     "calls": 644,
+     "train": 0.01298,
+     "registration": 628,
+     "code_sha256": "a3d0f51b532ae38a6fc534b4430eb573a17597ab9ce3f5b33d6691888041f693",
+     "value": 0.018699844448672166,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_eoh800_cs86003",
+   "arm": "eoh800",
+   "seed": 86003,
+   "calls_total": 800,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 120,
+     "train": 0.03864,
+     "registration": 117,
+     "code_sha256": "185fc8a3c315a2ae7aa8627cb9dec00d64b618f2eba678113d3920a65dd653e8",
+     "value": 0.04161140364773259,
+     "failed": false
+    },
+    "400": {
+     "calls": 277,
+     "train": 0.03783,
+     "registration": 271,
+     "code_sha256": "fc34badf681953e8ecffc58dc15b68ff5a0b5cb7c185e704f25041849409ba85",
+     "value": 0.04101364060191947,
+     "failed": false
+    },
+    "800": {
+     "calls": 581,
+     "train": 0.03169,
+     "registration": 569,
+     "code_sha256": "4e2108d8df090d03ff51b030a63fffc4230e15d9a3e69522ce2b9c122c14e368",
+     "value": 0.0342422928640512,
+     "failed": false
+    },
+    "end": {
+     "calls": 581,
+     "train": 0.03169,
+     "registration": 569,
+     "code_sha256": "4e2108d8df090d03ff51b030a63fffc4230e15d9a3e69522ce2b9c122c14e368",
+     "value": 0.0342422928640512,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_eoh800_cs86004",
+   "arm": "eoh800",
+   "seed": 86004,
+   "calls_total": 800,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 165,
+     "train": 0.03783,
+     "registration": 161,
+     "code_sha256": "f908bf5d1e7dc5b49c9fe3c34e99075ba621532dd3c3b3ebf56916c2ddfe03f7",
+     "value": 0.04101364060191947,
+     "failed": false
+    },
+    "400": {
+     "calls": 165,
+     "train": 0.03783,
+     "registration": 161,
+     "code_sha256": "f908bf5d1e7dc5b49c9fe3c34e99075ba621532dd3c3b3ebf56916c2ddfe03f7",
+     "value": 0.04101364060191947,
+     "failed": false
+    },
+    "800": {
+     "calls": 165,
+     "train": 0.03783,
+     "registration": 161,
+     "code_sha256": "f908bf5d1e7dc5b49c9fe3c34e99075ba621532dd3c3b3ebf56916c2ddfe03f7",
+     "value": 0.04101364060191947,
+     "failed": false
+    },
+    "end": {
+     "calls": 165,
+     "train": 0.03783,
+     "registration": 161,
+     "code_sha256": "f908bf5d1e7dc5b49c9fe3c34e99075ba621532dd3c3b3ebf56916c2ddfe03f7",
+     "value": 0.04101364060191947,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_eoh800_cs86005",
+   "arm": "eoh800",
+   "seed": 86005,
+   "calls_total": 800,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 155,
+     "train": 0.01399,
+     "registration": 151,
+     "code_sha256": "09ec55af913dbd3fb0dc61aa3c14d876ea584531b3713d985464ae027ebeee97",
+     "value": 0.016817099831525587,
+     "failed": false
+    },
+    "400": {
+     "calls": 155,
+     "train": 0.01399,
+     "registration": 151,
+     "code_sha256": "09ec55af913dbd3fb0dc61aa3c14d876ea584531b3713d985464ae027ebeee97",
+     "value": 0.016817099831525587,
+     "failed": false
+    },
+    "800": {
+     "calls": 545,
+     "train": 0.00634,
+     "registration": 523,
+     "code_sha256": "efa83ae7ded40ea95af96773d8a8c919f9ca31751812eda3141e20d307c00003",
+     "value": 0.0070625664323535715,
+     "failed": false
+    },
+    "end": {
+     "calls": 545,
+     "train": 0.00634,
+     "registration": 523,
+     "code_sha256": "efa83ae7ded40ea95af96773d8a8c919f9ca31751812eda3141e20d307c00003",
+     "value": 0.0070625664323535715,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_eoh800_cs86006",
+   "arm": "eoh800",
+   "seed": 86006,
+   "calls_total": 800,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 116,
+     "train": 0.03693,
+     "registration": 113,
+     "code_sha256": "bcd38dd700d2475c9c393af391e72f191d0315717eacdaac57036971febac1d5",
+     "value": 0.039123314954554934,
+     "failed": false
+    },
+    "400": {
+     "calls": 116,
+     "train": 0.03693,
+     "registration": 113,
+     "code_sha256": "bcd38dd700d2475c9c393af391e72f191d0315717eacdaac57036971febac1d5",
+     "value": 0.039123314954554934,
+     "failed": false
+    },
+    "800": {
+     "calls": 737,
+     "train": 0.01811,
+     "registration": 727,
+     "code_sha256": "4b2c1a8840959df3723bc4f1865e9fbb805532abac5be0f3bd216075c597d209",
+     "value": 0.019595122103435697,
+     "failed": false
+    },
+    "end": {
+     "calls": 737,
+     "train": 0.01811,
+     "registration": 727,
+     "code_sha256": "4b2c1a8840959df3723bc4f1865e9fbb805532abac5be0f3bd216075c597d209",
+     "value": 0.019595122103435697,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_eoh800_cs86007",
+   "arm": "eoh800",
+   "seed": 86007,
+   "calls_total": 800,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 91,
+     "train": 0.03884,
+     "registration": 89,
+     "code_sha256": "596b645163b73948c32daa8fc145e5cdf727ed52b0632116659237634f9d93e9",
+     "value": 0.041615666016324604,
+     "failed": false
+    },
+    "400": {
+     "calls": 336,
+     "train": 0.03864,
+     "registration": 333,
+     "code_sha256": "bf08a046580607a9e914b07cfd9ed01c505c1a0af84fc16744cec04c53a76cff",
+     "value": 0.04181200121019542,
+     "failed": false
+    },
+    "800": {
+     "calls": 420,
+     "train": 0.03823,
+     "registration": 417,
+     "code_sha256": "97beb76ef5c80012995f22511438ab0a899c1184d5444992f76b99a0c0174688",
+     "value": 0.041115026645939745,
+     "failed": false
+    },
+    "end": {
+     "calls": 420,
+     "train": 0.03823,
+     "registration": 417,
+     "code_sha256": "97beb76ef5c80012995f22511438ab0a899c1184d5444992f76b99a0c0174688",
+     "value": 0.041115026645939745,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_eoh800_cs86008",
+   "arm": "eoh800",
+   "seed": 86008,
+   "calls_total": 800,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 69,
+     "train": 0.03884,
+     "registration": 65,
+     "code_sha256": "071630497bc8860f2d417b5927f8701153ccc94de6ca7439468a5ec3fb99526a",
+     "value": 0.041615666016324604,
+     "failed": false
+    },
+    "400": {
+     "calls": 69,
+     "train": 0.03884,
+     "registration": 65,
+     "code_sha256": "071630497bc8860f2d417b5927f8701153ccc94de6ca7439468a5ec3fb99526a",
+     "value": 0.041615666016324604,
+     "failed": false
+    },
+    "800": {
+     "calls": 625,
+     "train": 0.01298,
+     "registration": 610,
+     "code_sha256": "89249d80041fd79c60eb36d823f357b9a2e705f23cb9178c0101c8431206e2da",
+     "value": 0.018699844448672166,
+     "failed": false
+    },
+    "end": {
+     "calls": 625,
+     "train": 0.01298,
+     "registration": 610,
+     "code_sha256": "89249d80041fd79c60eb36d823f357b9a2e705f23cb9178c0101c8431206e2da",
+     "value": 0.018699844448672166,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_eoh800_cs86009",
+   "arm": "eoh800",
+   "seed": 86009,
+   "calls_total": 800,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 196,
+     "train": 0.00986,
+     "registration": 193,
+     "code_sha256": "bbb48b9c0746577e76a7286cc4a1f735b904f8940d5fbb457cd6842af40a515e",
+     "value": 0.009456380144171647,
+     "failed": false
+    },
+    "400": {
+     "calls": 375,
+     "train": 0.00815,
+     "registration": 370,
+     "code_sha256": "714fa8d9f70fcc4e783bd09b34bc3a624f12b7fa8fff453e8b8a0c481cae5d08",
+     "value": 0.006967579178147538,
+     "failed": false
+    },
+    "800": {
+     "calls": 516,
+     "train": 0.00755,
+     "registration": 510,
+     "code_sha256": "760d674198e8d87a5e4ad33c7425bff3c8287004a32e9528ddb14cc400e1db0e",
+     "value": 0.007266631921522453,
+     "failed": false
+    },
+    "end": {
+     "calls": 516,
+     "train": 0.00755,
+     "registration": 510,
+     "code_sha256": "760d674198e8d87a5e4ad33c7425bff3c8287004a32e9528ddb14cc400e1db0e",
+     "value": 0.007266631921522453,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_eoh800_cs86010",
+   "arm": "eoh800",
+   "seed": 86010,
+   "calls_total": 800,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 85,
+     "train": 0.03693,
+     "registration": 82,
+     "code_sha256": "29b13294828fda6ed79c8cabaf16465e416f5c0e07603964e9efe49f3c95f7f6",
+     "value": 0.039123314954554934,
+     "failed": false
+    },
+    "400": {
+     "calls": 85,
+     "train": 0.03693,
+     "registration": 82,
+     "code_sha256": "29b13294828fda6ed79c8cabaf16465e416f5c0e07603964e9efe49f3c95f7f6",
+     "value": 0.039123314954554934,
+     "failed": false
+    },
+    "800": {
+     "calls": 85,
+     "train": 0.03693,
+     "registration": 82,
+     "code_sha256": "29b13294828fda6ed79c8cabaf16465e416f5c0e07603964e9efe49f3c95f7f6",
+     "value": 0.039123314954554934,
+     "failed": false
+    },
+    "end": {
+     "calls": 85,
+     "train": 0.03693,
+     "registration": 82,
+     "code_sha256": "29b13294828fda6ed79c8cabaf16465e416f5c0e07603964e9efe49f3c95f7f6",
+     "value": 0.039123314954554934,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_T0.003_cs86001",
+   "arm": "h_improve_T0.003",
+   "seed": 86001,
+   "calls_total": 798,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 144,
+     "train": 0.00654,
+     "registration": 69,
+     "code_sha256": "b5ba2e787bd57493f94153ff9b8cb0d06d634a2c3ed843f95030eecef114e282",
+     "value": 0.007463067165418276,
+     "failed": false
+    },
+    "400": {
+     "calls": 144,
+     "train": 0.00654,
+     "registration": 69,
+     "code_sha256": "b5ba2e787bd57493f94153ff9b8cb0d06d634a2c3ed843f95030eecef114e282",
+     "value": 0.007463067165418276,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 583,
+     "train": 0.00634,
+     "registration": 287,
+     "code_sha256": "32d806938e66a12ceeaa76c287deebe43c2b02df0f7f8783d1a250568dfcfe89",
+     "value": 0.007063266784543019,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_T0.003_cs86002",
+   "arm": "h_improve_T0.003",
+   "seed": 86002,
+   "calls_total": 797,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 186,
+     "train": 0.01167,
+     "registration": 90,
+     "code_sha256": "37689f822c8da351f6de73778990f7c7050b0f748e0508d81810fb67be854533",
+     "value": 0.010352098601697076,
+     "failed": false
+    },
+    "400": {
+     "calls": 383,
+     "train": 0.00704,
+     "registration": 188,
+     "code_sha256": "471e0128ffb7f765c6e656cee314d2e38317f73cdb46951b0faf9fa968d2c59f",
+     "value": 0.00805791352554219,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 636,
+     "train": 0.00573,
+     "registration": 314,
+     "code_sha256": "10faad5df8e4eac83e3fc87074f88ce4074c093f283ccd6345f1386616e23280",
+     "value": 0.006365142123910632,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_T0.003_cs86003",
+   "arm": "h_improve_T0.003",
+   "seed": 86003,
+   "calls_total": 797,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 135,
+     "train": 0.02918,
+     "registration": 65,
+     "code_sha256": "43311e41e8c09a6be010b581d860a917fb3c48862c51faf50c8d93c0e2967414",
+     "value": 0.0343332421739689,
+     "failed": false
+    },
+    "400": {
+     "calls": 263,
+     "train": 0.00745,
+     "registration": 129,
+     "code_sha256": "36e52d407d19159193b37581eb6fd6b70ecc5e5f469827ee296495bf07bf253b",
+     "value": 0.011639109137094684,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 545,
+     "train": 0.00543,
+     "registration": 268,
+     "code_sha256": "bd765541878255840d6c04b86f0cb4f6708b1d2ec9076153faa6c3a356e192ae",
+     "value": 0.006664453692378192,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_T0.003_cs86004",
+   "arm": "h_improve_T0.003",
+   "seed": 86004,
+   "calls_total": 795,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 123,
+     "train": 0.01429,
+     "registration": 58,
+     "code_sha256": "f7b9613ccaa9c312822a123f1b5d62299f67ae3d64dbc155cecc74a34971d8db",
+     "value": 0.017015555012437678,
+     "failed": false
+    },
+    "400": {
+     "calls": 369,
+     "train": 0.00976,
+     "registration": 180,
+     "code_sha256": "ddc5a74f885c2c904458aeee19c39b220d4a3b8ab32f5226ad59294beafc7944",
+     "value": 0.00954948480578452,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 544,
+     "train": 0.00654,
+     "registration": 267,
+     "code_sha256": "bfbf9eeb01c6dbd053a8c81890cbb8e98fdf5f35ed741edae044ebd1b71d89b3",
+     "value": 0.007858810757154768,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_T0.003_cs86005",
+   "arm": "h_improve_T0.003",
+   "seed": 86005,
+   "calls_total": 796,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 26,
+     "train": 0.01388,
+     "registration": 11,
+     "code_sha256": "591ee7333679456694554ce993d6491e995d2ecb4616c32f2b86b1af16cb3f48",
+     "value": 0.01611891587930279,
+     "failed": false
+    },
+    "400": {
+     "calls": 388,
+     "train": 0.00644,
+     "registration": 191,
+     "code_sha256": "1f23b4d46cd4a228215dfc50b49b206d419773d012e3dcf6051e3bf4049a3b62",
+     "value": 0.008557201252695733,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 388,
+     "train": 0.00644,
+     "registration": 191,
+     "code_sha256": "1f23b4d46cd4a228215dfc50b49b206d419773d012e3dcf6051e3bf4049a3b62",
+     "value": 0.008557201252695733,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_T0.003_cs86006",
+   "arm": "h_improve_T0.003",
+   "seed": 86006,
+   "calls_total": 796,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 150,
+     "train": 0.02958,
+     "registration": 73,
+     "code_sha256": "a58b2572743f81ca1411495c6ff0387480049fdf910fcb8ec4df7131d498ef77",
+     "value": 0.03265047242261126,
+     "failed": false
+    },
+    "400": {
+     "calls": 313,
+     "train": 0.00795,
+     "registration": 154,
+     "code_sha256": "0889f52f01b079ad40a389b968baf2fd459c3f61e0d5a1b9372b7ec259186677",
+     "value": 0.009052167800592141,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 702,
+     "train": 0.00594,
+     "registration": 347,
+     "code_sha256": "2cca8493f4ac8aef1f64095b942f5eb20abacd6d2c8caf3a4bf9cdfdb74d269b",
+     "value": 0.007465981594345512,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_T0.003_cs86007",
+   "arm": "h_improve_T0.003",
+   "seed": 86007,
+   "calls_total": 798,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 52,
+     "train": 0.02304,
+     "registration": 24,
+     "code_sha256": "a31e4f13e186b79050b38165b95f1fd5dae8c704337fca64c8173440c950349b",
+     "value": 0.02667129626714975,
+     "failed": false
+    },
+    "400": {
+     "calls": 346,
+     "train": 0.00684,
+     "registration": 170,
+     "code_sha256": "07175ad80f511afe2da4c4e3c12b6db9b0bc17438e9e171fc23d330f314157ed",
+     "value": 0.006667579178147538,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 462,
+     "train": 0.00654,
+     "registration": 228,
+     "code_sha256": "84d48b0719f911652a73deeff405246cf9ca3492d622b6c6774a613b01233aa2",
+     "value": 0.007462917090380757,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_T0.003_cs86008",
+   "arm": "h_improve_T0.003",
+   "seed": 86008,
+   "calls_total": 796,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 176,
+     "train": 0.0163,
+     "registration": 86,
+     "code_sha256": "0d8b988a527bb9ee76b89f8fcebff143ab54058d9ca933ba0d507450b07a3161",
+     "value": 0.0211005079873888,
+     "failed": false
+    },
+    "400": {
+     "calls": 291,
+     "train": 0.01217,
+     "registration": 144,
+     "code_sha256": "e37e62ddbe3bd063f3cba5bd63cdad15d23497ce39fd5473514e484468921c51",
+     "value": 0.014526587778590361,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 674,
+     "train": 0.00563,
+     "registration": 333,
+     "code_sha256": "73bd47a50a42f1be4e6408a3529b67e5cb29d84062d2d3deda9307862eaa19e9",
+     "value": 0.008558611138030026,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_T0.003_cs86009",
+   "arm": "h_improve_T0.003",
+   "seed": 86009,
+   "calls_total": 797,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 159,
+     "train": 0.02254,
+     "registration": 77,
+     "code_sha256": "6411be79381caa77116fd3cb0bcc981a7d734b5574ea74a84dd520522b4922fe",
+     "value": 0.02677535901863138,
+     "failed": false
+    },
+    "400": {
+     "calls": 267,
+     "train": 0.00694,
+     "registration": 129,
+     "code_sha256": "fa6a30fa48e8fbdd891b5354007c9dd5727973b6e6b6e1063b17bd5156f811ad",
+     "value": 0.00815577936108193,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 420,
+     "train": 0.00604,
+     "registration": 204,
+     "code_sha256": "a549b2a402c5a17a75d579a57deb766485368d76bd04cbbdab7a2a2926a5a580",
+     "value": 0.006962417321180977,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_T0.003_cs86010",
+   "arm": "h_improve_T0.003",
+   "seed": 86010,
+   "calls_total": 797,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 191,
+     "train": 0.00845,
+     "registration": 91,
+     "code_sha256": "98aa1469935f5d3c55d1886b5c8beefe5f07fedb17781231f4e9651aa3b64e48",
+     "value": 0.01064481079736073,
+     "failed": false
+    },
+    "400": {
+     "calls": 302,
+     "train": 0.00684,
+     "registration": 146,
+     "code_sha256": "233346766f39cb581feaf71bd8e61ba3bdd39c330d4738b50259393487c70c71",
+     "value": 0.008656409067571747,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 637,
+     "train": 0.00523,
+     "registration": 312,
+     "code_sha256": "658558deb75291ab83e575513e6658e8b5671748ba2c654068ab6e777d0755d0",
+     "value": 0.0061681735199834685,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_cs86001",
+   "arm": "h_improve",
+   "seed": 86001,
+   "calls_total": 792,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 145,
+     "train": 0.00724,
+     "registration": 69,
+     "code_sha256": "23b1247b7da53404c8f28e831970870151c322b5a052b76b3d2eca3817b33e12",
+     "value": 0.008159279431814982,
+     "failed": false
+    },
+    "400": {
+     "calls": 145,
+     "train": 0.00724,
+     "registration": 69,
+     "code_sha256": "23b1247b7da53404c8f28e831970870151c322b5a052b76b3d2eca3817b33e12",
+     "value": 0.008159279431814982,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 145,
+     "train": 0.00724,
+     "registration": 69,
+     "code_sha256": "23b1247b7da53404c8f28e831970870151c322b5a052b76b3d2eca3817b33e12",
+     "value": 0.008159279431814982,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_cs86002",
+   "arm": "h_improve",
+   "seed": 86002,
+   "calls_total": 796,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 12,
+     "train": 0.01429,
+     "registration": 4,
+     "code_sha256": "3adc0c9accc74720c528e016bebc7ac94e42a5917bbe1756ef552112c21fbf17",
+     "value": 0.017015555012437678,
+     "failed": false
+    },
+    "400": {
+     "calls": 12,
+     "train": 0.01429,
+     "registration": 4,
+     "code_sha256": "3adc0c9accc74720c528e016bebc7ac94e42a5917bbe1756ef552112c21fbf17",
+     "value": 0.017015555012437678,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 408,
+     "train": 0.00795,
+     "registration": 200,
+     "code_sha256": "129d6f7871bcd27573296a0ce5767f8acd120a904f06bc9209e1e0b9575b6cc0",
+     "value": 0.00796371104932707,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_cs86003",
+   "arm": "h_improve",
+   "seed": 86003,
+   "calls_total": 799,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 184,
+     "train": 0.00694,
+     "registration": 90,
+     "code_sha256": "c0165174fe1a7148d6b84f0e151120ae3e54bd39c1cd23c3f9cfafa88d0343bb",
+     "value": 0.007263211763066932,
+     "failed": false
+    },
+    "400": {
+     "calls": 392,
+     "train": 0.00674,
+     "registration": 194,
+     "code_sha256": "2834c2fc2d009e1d91ab2d56f7bf0550634eaac6dbbca6eb9b7fe3b5a2636a8c",
+     "value": 0.007164250852626557,
+     "failed": false
+    },
+    "800": {
+     "calls": 799,
+     "train": 0.00644,
+     "registration": 397,
+     "code_sha256": "6142f05d53738627b08eb3c22d873e2f549c68c21ab39c521f82a6b9f31aaa02",
+     "value": 0.007262722467719595,
+     "failed": false
+    },
+    "end": {
+     "calls": 799,
+     "train": 0.00644,
+     "registration": 397,
+     "code_sha256": "6142f05d53738627b08eb3c22d873e2f549c68c21ab39c521f82a6b9f31aaa02",
+     "value": 0.007262722467719595,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_cs86004",
+   "arm": "h_improve",
+   "seed": 86004,
+   "calls_total": 797,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 156,
+     "train": 0.00755,
+     "registration": 76,
+     "code_sha256": "ac92a5224013e5ef735df0a50fb84a2764d1b11fd78ea754f8e5c074ab3b31be",
+     "value": 0.009652397787907191,
+     "failed": false
+    },
+    "400": {
+     "calls": 326,
+     "train": 0.00684,
+     "registration": 160,
+     "code_sha256": "5a71a503502375d0f4e0b6ce7e10c00dec4548a656fdd22e1c16b1e716ee2d31",
+     "value": 0.007061483278109946,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 788,
+     "train": 0.00634,
+     "registration": 390,
+     "code_sha256": "4e05807b6faeb3b13f37b800a2586f93f41a0a26ddbcc863da2b11f35e527e89",
+     "value": 0.0070625664323535715,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_cs86005",
+   "arm": "h_improve",
+   "seed": 86005,
+   "calls_total": 794,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 171,
+     "train": 0.00644,
+     "registration": 83,
+     "code_sha256": "554d7eb2be295b0396e0883d1d1e266a378ba8c2100eb61b06bdf19f41545028",
+     "value": 0.008557201252695733,
+     "failed": false
+    },
+    "400": {
+     "calls": 171,
+     "train": 0.00644,
+     "registration": 83,
+     "code_sha256": "554d7eb2be295b0396e0883d1d1e266a378ba8c2100eb61b06bdf19f41545028",
+     "value": 0.008557201252695733,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 171,
+     "train": 0.00644,
+     "registration": 83,
+     "code_sha256": "554d7eb2be295b0396e0883d1d1e266a378ba8c2100eb61b06bdf19f41545028",
+     "value": 0.008557201252695733,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_cs86006",
+   "arm": "h_improve",
+   "seed": 86006,
+   "calls_total": 798,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 142,
+     "train": 0.02455,
+     "registration": 69,
+     "code_sha256": "64d17830925d6d31207698b4126da5e6a1c04dbe46f24df7d880fa4892578a2a",
+     "value": 0.029162177669055076,
+     "failed": false
+    },
+    "400": {
+     "calls": 299,
+     "train": 0.00714,
+     "registration": 147,
+     "code_sha256": "d92b33615411148fd8c17baf11553c88ebe0c69bb22ca45b2370d5f8a715cdfc",
+     "value": 0.007763861607304232,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 666,
+     "train": 0.00594,
+     "registration": 331,
+     "code_sha256": "7824b248bbd1a06a61fc5ae661cbeacf283c54bbeee653914042ef48a8e64475",
+     "value": 0.007956124058780613,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_cs86007",
+   "arm": "h_improve",
+   "seed": 86007,
+   "calls_total": 799,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 168,
+     "train": 0.02817,
+     "registration": 82,
+     "code_sha256": "9443225135092c1a34163b96090017edde1efc953a46e94c2dda7ebd98e13669",
+     "value": 0.032449124482946484,
+     "failed": false
+    },
+    "400": {
+     "calls": 356,
+     "train": 0.02696,
+     "registration": 176,
+     "code_sha256": "65b8800a8567a907812aa072ea1760866ac0d1d27319dbfa9a0eeb134ebd599f",
+     "value": 0.03115354610954577,
+     "failed": false
+    },
+    "800": {
+     "calls": 770,
+     "train": 0.00714,
+     "registration": 382,
+     "code_sha256": "abbe5f56d4b886156f05f02bc7df2ec2eb32257a216d558def9b3a207e5fc282",
+     "value": 0.007763861607304232,
+     "failed": false
+    },
+    "end": {
+     "calls": 770,
+     "train": 0.00714,
+     "registration": 382,
+     "code_sha256": "abbe5f56d4b886156f05f02bc7df2ec2eb32257a216d558def9b3a207e5fc282",
+     "value": 0.007763861607304232,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_cs86008",
+   "arm": "h_improve",
+   "seed": 86008,
+   "calls_total": 798,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 149,
+     "train": 0.02656,
+     "registration": 72,
+     "code_sha256": "78e44bde7591545a6fe03a611772a40f5e691248f835cdfb920b72830b9f0590",
+     "value": 0.030457415048323642,
+     "failed": false
+    },
+    "400": {
+     "calls": 351,
+     "train": 0.01318,
+     "registration": 172,
+     "code_sha256": "be139f97b36fe230fb38ec5669e03eec2c154faa74b74c7c07215c77d3f257c4",
+     "value": 0.012840746270042414,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 601,
+     "train": 0.01268,
+     "registration": 297,
+     "code_sha256": "57ee5b711e7aebc551a336f913586f840a9b68ed790e4a21af7c55d52329ded8",
+     "value": 0.012343271936586967,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_cs86009",
+   "arm": "h_improve",
+   "seed": 86009,
+   "calls_total": 796,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 175,
+     "train": 0.00694,
+     "registration": 85,
+     "code_sha256": "064c94453196b2c7ee2cffe23b88a2e40e2d239bc6d43f8d1f396c1ec2418f32",
+     "value": 0.007362122648494802,
+     "failed": false
+    },
+    "400": {
+     "calls": 326,
+     "train": 0.00654,
+     "registration": 161,
+     "code_sha256": "2a70e608cdbe11a6cbdd9d884475afcdb50a03df1a65f6ac38c4f63fb49d1067",
+     "value": 0.007360886679512046,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 326,
+     "train": 0.00654,
+     "registration": 161,
+     "code_sha256": "2a70e608cdbe11a6cbdd9d884475afcdb50a03df1a65f6ac38c4f63fb49d1067",
+     "value": 0.007360886679512046,
+     "failed": false
+    }
+   }
+  },
+  {
+   "label": "hox9_bp_20261006_2222_h_improve_cs86010",
+   "arm": "h_improve",
+   "seed": 86010,
+   "calls_total": 798,
+   "done": true,
+   "at": {
+    "200": {
+     "calls": 72,
+     "train": 0.0167,
+     "registration": 34,
+     "code_sha256": "dc01820cf9bfbfeb21cecf4dccee78f4a1cb3b36c5b6d6eafc161fa183a8e1c1",
+     "value": 0.019006832429951236,
+     "failed": false
+    },
+    "400": {
+     "calls": 378,
+     "train": 0.00714,
+     "registration": 187,
+     "code_sha256": "5dde6a1cbb4b9b8a777ca1c8899ddec60ad27d12a6e6220768ce659c2fb1cf51",
+     "value": 0.009254717394073214,
+     "failed": false
+    },
+    "800": null,
+    "end": {
+     "calls": 515,
+     "train": 0.00644,
+     "registration": 256,
+     "code_sha256": "412c128d5ea2ab3de7a025608a7bedeb3cb70e65b4490f591d8f256da5b6eb33",
+     "value": 0.008557201252695733,
+     "failed": false
+    }
+   }
+  }
+ ],
+ "tests": [
+  {
+   "pair": "eoh800 vs h_improve",
+   "budget": "200",
+   "n": 10,
+   "wins": 0,
+   "losses": 10,
+   "median_diff_pct": 1.0858,
+   "p": 0.001953125,
+   "median_x_pct": 3.9123,
+   "median_y_pct": 1.3334
+  },
+  {
+   "pair": "eoh800 vs h_improve",
+   "budget": "400",
+   "n": 10,
+   "wins": 1,
+   "losses": 9,
+   "median_diff_pct": 1.9717,
+   "p": 0.00390625,
+   "median_x_pct": 3.9123,
+   "median_y_pct": 0.8358
+  },
+  {
+   "pair": "eoh800 vs h_improve",
+   "budget": "800",
+   "n": 2,
+   "wins": 0,
+   "losses": 2,
+   "median_diff_pct": 3.0165,
+   "p": 0.5,
+   "median_x_pct": 3.7679,
+   "median_y_pct": 0.7513
+  },
+  {
+   "pair": "eoh800 vs h_improve",
+   "budget": "end",
+   "n": 10,
+   "wins": 2,
+   "losses": 8,
+   "median_diff_pct": 1.1188,
+   "p": 0.009765625,
+   "median_x_pct": 1.9147,
+   "median_y_pct": 0.796
+  },
+  {
+   "pair": "eoh800 vs h_improve_T0.003",
+   "budget": "200",
+   "n": 10,
+   "wins": 1,
+   "losses": 9,
+   "median_diff_pct": 1.6083,
+   "p": 0.02734375,
+   "median_x_pct": 3.9123,
+   "median_y_pct": 1.9058
+  },
+  {
+   "pair": "eoh800 vs h_improve_T0.003",
+   "budget": "400",
+   "n": 10,
+   "wins": 1,
+   "losses": 9,
+   "median_diff_pct": 2.8232,
+   "p": 0.00390625,
+   "median_x_pct": 3.9123,
+   "median_y_pct": 0.8607
+  },
+  {
+   "pair": "eoh800 vs h_improve_T0.003",
+   "budget": "end",
+   "n": 10,
+   "wins": 1,
+   "losses": 9,
+   "median_diff_pct": 1.2232,
+   "p": 0.005859375,
+   "median_x_pct": 1.9147,
+   "median_y_pct": 0.7263
+  },
+  {
+   "pair": "h_improve vs eoh800",
+   "budget": "200",
+   "n": 10,
+   "wins": 10,
+   "losses": 0,
+   "median_diff_pct": -1.0858,
+   "p": 0.001953125,
+   "median_x_pct": 1.3334,
+   "median_y_pct": 3.9123
+  },
+  {
+   "pair": "h_improve vs eoh800",
+   "budget": "400",
+   "n": 10,
+   "wins": 9,
+   "losses": 1,
+   "median_diff_pct": -1.9717,
+   "p": 0.00390625,
+   "median_x_pct": 0.8358,
+   "median_y_pct": 3.9123
+  },
+  {
+   "pair": "h_improve vs eoh800",
+   "budget": "800",
+   "n": 2,
+   "wins": 2,
+   "losses": 0,
+   "median_diff_pct": -3.0165,
+   "p": 0.5,
+   "median_x_pct": 0.7513,
+   "median_y_pct": 3.7679
+  },
+  {
+   "pair": "h_improve vs eoh800",
+   "budget": "end",
+   "n": 10,
+   "wins": 8,
+   "losses": 2,
+   "median_diff_pct": -1.1188,
+   "p": 0.009765625,
+   "median_x_pct": 0.796,
+   "median_y_pct": 1.9147
+  },
+  {
+   "pair": "h_improve vs h_improve_T0.003",
+   "budget": "200",
+   "n": 10,
+   "wins": 5,
+   "losses": 5,
+   "median_diff_pct": -0.1396,
+   "p": 0.6953125,
+   "median_x_pct": 1.3334,
+   "median_y_pct": 1.9058
+  },
+  {
+   "pair": "h_improve vs h_improve_T0.003",
+   "budget": "400",
+   "n": 10,
+   "wins": 5,
+   "losses": 4,
+   "median_diff_pct": -0.0397,
+   "p": 0.8203125,
+   "median_x_pct": 0.8358,
+   "median_y_pct": 0.8607
+  },
+  {
+   "pair": "h_improve vs h_improve_T0.003",
+   "budget": "end",
+   "n": 10,
+   "wins": 1,
+   "losses": 8,
+   "median_diff_pct": 0.0544,
+   "p": 0.0390625,
+   "median_x_pct": 0.796,
+   "median_y_pct": 0.7263
+  },
+  {
+   "pair": "h_improve_T0.003 vs eoh800",
+   "budget": "200",
+   "n": 10,
+   "wins": 9,
+   "losses": 1,
+   "median_diff_pct": -1.6083,
+   "p": 0.02734375,
+   "median_x_pct": 1.9058,
+   "median_y_pct": 3.9123
+  },
+  {
+   "pair": "h_improve_T0.003 vs eoh800",
+   "budget": "400",
+   "n": 10,
+   "wins": 9,
+   "losses": 1,
+   "median_diff_pct": -2.8232,
+   "p": 0.00390625,
+   "median_x_pct": 0.8607,
+   "median_y_pct": 3.9123
+  },
+  {
+   "pair": "h_improve_T0.003 vs eoh800",
+   "budget": "end",
+   "n": 10,
+   "wins": 9,
+   "losses": 1,
+   "median_diff_pct": -1.2232,
+   "p": 0.005859375,
+   "median_x_pct": 0.7263,
+   "median_y_pct": 1.9147
+  },
+  {
+   "pair": "h_improve_T0.003 vs h_improve",
+   "budget": "200",
+   "n": 10,
+   "wins": 5,
+   "losses": 5,
+   "median_diff_pct": 0.1396,
+   "p": 0.6953125,
+   "median_x_pct": 1.9058,
+   "median_y_pct": 1.3334
+  },
+  {
+   "pair": "h_improve_T0.003 vs h_improve",
+   "budget": "400",
+   "n": 10,
+   "wins": 4,
+   "losses": 5,
+   "median_diff_pct": 0.0397,
+   "p": 0.8203125,
+   "median_x_pct": 0.8607,
+   "median_y_pct": 0.8358
+  },
+  {
+   "pair": "h_improve_T0.003 vs h_improve",
+   "budget": "end",
+   "n": 10,
+   "wins": 8,
+   "losses": 1,
+   "median_diff_pct": -0.0544,
+   "p": 0.0390625,
+   "median_x_pct": 0.7263,
+   "median_y_pct": 0.796
+  }
+ ]
+}

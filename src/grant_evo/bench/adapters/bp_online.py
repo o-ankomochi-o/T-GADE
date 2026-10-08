@@ -132,8 +132,17 @@ class BpOnlineAdapter:
                  objective: str = "train_c100", integrity_kind: str = "syntax",
                  hybrid_weights: "tuple | None" = None, probe_len: int = PROBE_LEN,
                  eval_seed: "int | None" = None, eval_timeout: "float | None" = None,
-                 signature_source: str = "probe", deterministic_only: bool = False):
+                 signature_source: str = "probe", deterministic_only: bool = False,
+                 noise_sigma: float = 5.0, noise_kappa: float = 5.0, noise_mode: str = "sto",
+                 noise_seed_base: int = 900000):
         EV, EoHConfig, LLMConfig, BPONLINE = _lazy_imports()
+        # NOISY prereg (2026-10-01): objective "noisy_c100" = noisy-observation online bin packing on the
+        # train items (sandbox op energy_noisy). noise_mode "sto" draws a new noise seed per evaluation
+        # (noise_seed_base + evaluation counter); "det" fixes noise_seed_base. Seeds are recorded per evaluation.
+        if noise_mode not in ("sto", "det"):
+            raise ValueError(f"unknown noise_mode: {noise_mode!r}")
+        self.noise_sigma, self.noise_kappa, self.noise_mode = float(noise_sigma), float(noise_kappa), noise_mode
+        self.noise_seed_base, self._noise_counter = int(noise_seed_base), 0
         self._ev = EV
         # V101 D3: which official EoH mutation template Step 5 uses. "m1" =
         # new algorithm of a different form (canonical so far); "m2" = keep the
@@ -167,9 +176,13 @@ class BpOnlineAdapter:
         # "regime_max" = robust two-capacity objective Q = max(mean excess on the
         # sealed regime train bank C=100, mean excess on the C=500 bank), raw
         # then clipped like energy(). Components are kept in self.last_components.
-        if objective not in ("train_c100", "regime_max"):
+        if objective not in ("train_c100", "regime_max", "noisy_c100"):
             raise ValueError(f"unknown objective: {objective!r}")
         self.objective = objective
+        if objective == "noisy_c100":
+            self.energy_spec = (f"E = min(raw, {RAW_MAX}) / {RAW_MAX}; raw = mean over datasets of (mean J - L1 bound) / L1 bound, "
+                                f"J = bins + {self.noise_kappa} * overflows, integer observation x = clip(round(w + N(0, {self.noise_sigma}^2)), 1, 100), "
+                                f"noise_mode={noise_mode}, seed base {self.noise_seed_base}")
         # Step 6 integrity: the repair the host model must own is
         # description<->code coherence, not syntax. "syntax" = legacy syntax-only
         # code repair (thought untouched); "align_thought" = the individual's host
@@ -179,7 +192,8 @@ class BpOnlineAdapter:
         # description is stored in genes["thought_meas"] and feeds ONLY the NL
         # diversity carrier; genes["thought"] (what operators see) and the
         # loci digest stay untouched. Repairs are cached by code sha.
-        if integrity_kind not in ("syntax", "align_thought", "align_thought_meas", "align_code"):
+        if integrity_kind not in ("syntax", "align_thought", "align_thought_meas", "align_code", "align_thought_eg", "align_code_eg",
+                                  "improve", "improve_nocard", "oracle", "oracle_inject"):
             raise ValueError(f"unknown integrity_kind: {integrity_kind!r}")
         self.integrity_kind = integrity_kind
         self.integrity_fallbacks = 0
@@ -251,8 +265,8 @@ class BpOnlineAdapter:
         # (fill, tightness-rank) of EVERY step of train instance 0, no extra execution.
         if signature_source not in ("probe", "energy"):
             raise ValueError(f"unknown signature_source: {signature_source!r}")
-        if signature_source == "energy" and objective != "train_c100":
-            raise ValueError("signature_source='energy' needs the train_c100 objective")
+        if signature_source == "energy" and objective not in ("train_c100", "noisy_c100"):
+            raise ValueError("signature_source='energy' needs the train_c100 or noisy_c100 objective")
         self.signature_source = signature_source
         self._sig_cache: "dict[str, np.ndarray | None]" = {}
         self.deterministic_only = bool(deterministic_only)
@@ -335,7 +349,7 @@ class BpOnlineAdapter:
             if self._repair_cache[ck] is None:
                 self.integrity_fallbacks += 1
             return self._align_result(genes, self._repair_cache[ck])
-        prompt = ALIGN_THOUGHT_PROMPT + genes["code"]
+        prompt = getattr(self, "ALIGN_THOUGHT_PROMPT_TASK", ALIGN_THOUGHT_PROMPT) + genes["code"]  # task override (TSP)
         # repair is a deterministic re-description, so it
         # runs at sampling temperature 0 (the static G-2 diagnosis setting), not
         # the operator client default (0.8). Runs before this fix used 0.8.
@@ -396,15 +410,228 @@ class BpOnlineAdapter:
         prompt = self.evo._build_prompt(template or rng.choice(["e1", "e2"]), parents)
         return self._extract(llm("/no_think\n" + prompt))
 
+    # ── execution-grounded HoxLM: the host sees what the code actually does ──
+    EXEC_PROBE_LEN = 64
+    INTERFACE_SPEC = ("def score(item: int, bins: np.ndarray) -> np.ndarray; `bins` holds the remaining capacities of the "
+                      "feasible bins (all >= item); return one float score per bin (same length as bins); the bin with the "
+                      "highest score receives the item; numpy is available as np; no randomness")
+
+    def _exec_probe(self, code: str) -> dict:
+        """Run the candidate on a fixed 64-item probe in the sandbox (never on the host; the host only compiles it).
+        Returns {"ok": bool, "summary": str} for the host prompt and for the keep-original rule."""
+        from grant_evo.bench.sandbox import run_sandboxed  # noqa: PLC0415
+        try:
+            compile(code, "<candidate>", "exec")
+        except SyntaxError as exc:
+            return {"ok": False, "summary": f"the code does not compile: {exc.msg} (line {exc.lineno})"}
+        if self.deterministic_only and uses_randomness(code):
+            return {"ok": False, "summary": "the code calls a randomness API, which the evaluator rejects"}
+        items = [int(x) for x in list(self._probe)[: self.EXEC_PROBE_LEN]]
+        res = run_sandboxed({"op": "signature", "code": code, "capacity": 100, "items": items, "ties": True},
+                            timeout=min(90.0, self.eval_timeout))
+        if res is None or not res.get("ok"):
+            err = (res or {}).get("error") or "timeout or abnormal exit"
+            what = ("the function could not be defined (import or definition error)" if "initialise" in err else
+                    "calling score(item, bins) failed: it raised an exception or did not return one score per feasible bin")
+            return {"ok": False, "summary": f"{what} on a {len(items)}-item probe"}
+        feat = [float(x) for x in res["value"]]
+        fills, ranks = feat[0::2], feat[1::2]
+        n = max(1, len(ranks))
+        tie = res.get("ties", 0) / max(1, res.get("choices", 0))  # share of the steps with a real choice
+        if res.get("choices", 0) and tie >= 0.99:  # a constant score expresses no preference; say only what decided the placement
+            return {"ok": True, "tie_share": tie, "summary": (
+                f"it runs on a {len(ranks)}-item probe, but its score was the same for every feasible bin at almost every "
+                "step with a real choice, so those placements were decided by tie-breaking (the first feasible bin in bin order), not by the score")}
+        tight = sum(1 for r in ranks if r <= 1e-9) / n
+        new_bin = sum(1 for f, it in zip(fills, items) if abs(f - round(it / 100.0, 4)) < 1e-6) / n
+        tie_txt = (f"; in {tie:.0%} of the steps with bins of different remaining capacity, several of them shared the top score and the placement was decided by "
+                   "tie-breaking (the first such bin in bin order)") if tie > 0 else ""
+        return {"ok": True, "tie_share": tie, "summary": (
+            f"it runs on a {len(ranks)}-item probe; observed placements: the tightest feasible bin in {tight:.0%} of steps, "
+            f"an empty bin in {new_bin:.0%}; mean fill after placement {sum(fills) / n:.2f}{tie_txt}")}
+
+    def _eg_record(self, row: dict) -> None:
+        """Minimal EG evidence with candidate identity (the eg_log is persisted, never in-memory only)."""
+        self.eg_log = getattr(self, "eg_log", [])
+        self.eg_log.append(row)
+        path = getattr(self, "eg_log_path", None)
+        if path:
+            with self._keylock("eg", "log"), open(path, "a", encoding="utf-8", newline="\n") as fh:
+                fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+    def _integrity_eg(self, genes: dict, llm) -> dict:
+        """align_thought_eg: redescribe the code given its measured behaviour (code kept).
+        align_code_eg: repair the code given the interface and execution feedback; keep the ORIGINAL if the repair fails
+        the probe or returns no code (an invalid repair never removes a child; a valid repair can still score worse,
+        which only the training evaluations of original and repair show)."""
+        import re as _re  # noqa: PLC0415
+        from grant_evo.tgade.engine import loci_canonical_digest as _dig  # noqa: PLC0415
+        probe = self._exec_probe(genes["code"])
+        row = {"kind": self.integrity_kind, "pre_digest": _dig(self.loci_view(genes)), "probe_ok": probe["ok"],
+               "tie_share": probe.get("tie_share"), "probe": probe["summary"]}
+        if self.integrity_kind == "align_thought_eg":
+            base = getattr(self, "ALIGN_THOUGHT_PROMPT_TASK", ALIGN_THOUGHT_PROMPT)
+            prompt = (base.rstrip() + f"\nMeasured behaviour from running the code: {probe['summary']}. The sentence must be "
+                      "consistent with this measured behaviour.\n\n" + genes["code"])
+            out = llm(prompt, temperature=0.0, call_id=f"repair-eg-thought-{hashlib.sha256(genes['code'].encode('utf-8')).hexdigest()[:32]}")
+            text = out if isinstance(out, str) else (getattr(out, "text", None) or "")
+            m = _re.search(r"\{(.*?)\}", text or "", _re.S)
+            new_t = " ".join(m.group(1).split()) if (m and m.group(1).strip()) else None
+            out_g = {"thought": new_t if new_t is not None else genes["thought"], "code": genes["code"]}
+            self._eg_record({**row, "result": "redescribed" if new_t is not None else "no_sentence_kept_original",
+                             "post_digest": _dig(self.loci_view(out_g))})
+            return out_g
+        rule = getattr(self, "ALIGN_CODE_RULE", "scoring rule")
+        prompt = (f"/no_think\nThe description below states the intended {rule}; the code must implement exactly that {rule} "
+                  f"and must run. Interface: {self.INTERFACE_SPEC}. Execution feedback for the current code: {probe['summary']}. "
+                  "If the code already implements the description and runs, return it unchanged; otherwise minimally change it "
+                  "so that it does. Keep the function name, inputs and outputs; return the full function in a ```python code block.\n\n"
+                  f"Description: {genes['thought']}\n\nCode:\n{genes['code']}")
+        out = llm(prompt)
+        text = out if isinstance(out, str) else (getattr(out, "text", None) or "")
+        _, code = self.evo._extract(text)
+        if not code:
+            self._eg_record({**row, "result": "no_code_kept_original", "post_digest": row["pre_digest"]})
+            return dict(genes)
+        new_code = self.evo._prepend_imports(code[0])
+        after = self._exec_probe(new_code)
+        ok_valid, _ = self.validate({"thought": genes["thought"], "code": new_code})
+        if not (after["ok"] and ok_valid):
+            self._eg_record({**row, "result": "repair_failed_kept_original", "post_digest": row["pre_digest"],
+                             "repair_probe": after["summary"]})
+            return dict(genes)
+        out_g = {"thought": genes["thought"], "code": new_code}
+        self._eg_record({**row, "result": "repaired" if new_code != genes["code"] else "unchanged",
+                         "post_digest": _dig(self.loci_view(out_g)), "repair_probe": after["summary"]})
+        return out_g
+
+    # ── HoxLM "improve" host ─────────────────────────────
+    # The host is the ONLY component that sees measurement: the child's training score, its execution probe and the
+    # parents' scores (EoH operators see descriptions and code only). keep-best: the repaired code is evaluated and
+    # replaces the child only when it scores strictly better, so on the training objective the host never harms.
+    DOMAIN_CARD_BP = (
+        "Domain knowledge used by strong online bin packing heuristics:\n"
+        "1. Best fit (prefer the feasible bin with the SMALLEST remaining capacity after placement, i.e. smallest bins - item) "
+        "is the baseline; strong heuristics are best fit plus corrections. Scores that grow with the remaining capacity "
+        "(worst fit) or that are the same for every bin (then the first bin is always taken) are weak.\n"
+        "2. What matters is the residual capacity AFTER placement (bins - item), not bins itself. Residual 0 (exact fit) is "
+        "ideal and deserves a large bonus. A small positive residual that no future item can use is wasted space: penalise "
+        "residuals that are below the smallest common item size. Residuals large enough to hold a typical item are fine.\n"
+        "3. Training instances: capacity 100, item sizes are integers 1-94 with median 39, quartiles 29-50 and 5th-95th "
+        "percentile 16-65 (Weibull-shaped). Hence residuals below about 15 are almost never reusable, residuals of 30-50 are "
+        "easy to reuse, and an empty bin (residual 100 - item) is reusable but opening it costs a bin.\n"
+        "4. Do not open an empty bin while a partially filled bin fits the item, unless every partially filled bin would be "
+        "left with an unusable residual.\n"
+        "5. Index preferences (earlier bins first) only as a tie-breaker with a tiny weight; large index terms overfit the "
+        "instance size and transfer badly to other capacities.\n"
+        "6. The function must return one float per bin, deterministic, vectorised numpy, no randomness, no NaN or inf "
+        "(add a small epsilon before dividing).")
+
+    def host_repair(self, genes: dict, parents: "list | None", llm, mode: "str | None" = None,
+                    fallback: "dict | None" = None) -> "tuple[dict, dict]":
+        """kinds improve / improve_nocard / oracle: measurement-driven development of the child with keep-best on the
+        training objective; oracle_inject: no LLM, returns the reference
+        candidate for the first three children (pipeline positive control); other kinds -> integrity().
+        mode="mask": the child is thought(parent A) + code(parent B) and the host reconstructs one coherent child; the
+        runner passes the intact parent B as `fallback`, so an unreconstructed hybrid never enters the population (
+        review 01:08). A proposal with new code but no braced description is not accepted either (joint update rule).
+        Returns (genes, info); the improve kinds never return None genes (keep-best falls back to `fallback` or the child)."""
+        kind = self.integrity_kind
+        fb = dict(fallback) if fallback else dict(genes)
+        if kind == "oracle_inject":
+            with self._keylock("host", "inject"):
+                self._inject_n = getattr(self, "_inject_n", 0) + 1
+                n = self._inject_n
+            if n <= 3 and getattr(self, "oracle_ref", None):
+                return ({"thought": self.oracle_ref["thought"], "code": self.oracle_ref["code"]},
+                        {"kind": kind, "result": "injected", "inject_index": n})
+            return dict(genes), {"kind": kind, "result": "passthrough", "inject_index": n}
+        if kind not in ("improve", "improve_nocard", "oracle"):
+            out = self.integrity(genes, random.Random(0), llm)
+            return out, {"kind": kind}
+        pct = lambda e: None if e is None else round(200.0 * e, 3)  # energy = raw/2 -> raw excess in %  # noqa: E731
+        pre_e = self.energy(genes)
+        probe = self._exec_probe(genes["code"])
+        par = [p for p in (parents or []) if isinstance(p, dict) and p.get("code")]
+        scored = [p for p in par if p.get("objective") is not None]
+        best_par = min(scored, key=lambda p: p["objective"]) if scored else None
+        task = getattr(self.problem, "task_description", "") or ""
+        meas = (f"training excess over the lower bound = {pct(pre_e)} % (lower is better; best fit scores 3.984 %)"
+                if pre_e is not None else "it FAILED on the training instances (exception, timeout, invalid output or randomness)")
+        parts = ["/no_think", "You develop a candidate heuristic inside an evolutionary search for online bin packing. " + task.strip(),
+                 f"Interface: {self.INTERFACE_SPEC}."]
+        if kind != "improve_nocard":
+            parts.append(self.DOMAIN_CARD_BP + "\nThis knowledge is a menu of options, not a recipe: do not turn every candidate into "
+                         "plain best fit, and do not add exact-fit rewards, residual penalties and reservation of space all at once.")
+        if kind == "oracle" and getattr(self, "oracle_ref", None):
+            ref = self.oracle_ref
+            parts.append(f"Reference heuristic known to score {round(100 * ref['train_raw_excess'], 3)} % on these training instances "
+                         f"(you may use any of its ideas or adopt it entirely):\n```python\n{ref['code']}\n```")
+        if mode == "mask":
+            parts.append("The candidate below was assembled from two parents: its description comes from parent A and its code from "
+                         "parent B, so they do not match yet. Reconstruct ONE coherent candidate that keeps the strongest idea of each.")
+        else:
+            parts.append("The candidate below was produced by a crossover or mutation step.")
+        parts.append(f"Measured on the TRAINING instances: {meas}. Execution probe: {probe['summary']}.")
+        if best_par is not None:
+            parts.append(f"Its best parent scores {round(100 * float(best_par['objective']), 3)} %:\n```python\n{best_par['code']}\n```")
+        parts.append(f"Candidate description: {genes['thought']}\n\nCandidate code:\n```python\n{genes['code']}\n```")
+        if kind == "oracle" and getattr(self, "oracle_ref", None):  # the generic one-change rule conflicted with adoption
+            parts.append("Task: the reference heuristic above is known to be better on the training instances. Adopt it fully or "
+                         "combine it with the candidate; full replacement is allowed and preferred when the candidate is weaker. Keep "
+                         "the exact interface. Return one sentence describing the resulting algorithm inside braces, then the complete "
+                         "function in one ```python code block.")
+        else:
+            parts.append("Task: preserve the candidate's useful principle and the exact interface. Repair any inconsistency between the "
+                         "description and the code, and make ONE specific change that is likely to reduce the number of bins, justified by "
+                         "the training evidence above (state which measured weakness it addresses). If the description itself encodes the "
+                         "defect, update the description and the code together; matching a bad description is not the objective. Do not "
+                         "copy the function template, and do not rewrite working code without a concrete reason. Return one sentence "
+                         "describing the resulting algorithm inside braces, then the complete function in one ```python code block.")
+        prompt = "\n\n".join(parts)
+        info = {"kind": kind, "mode": mode, "pre_energy": pre_e, "pre_pct": pct(pre_e), "probe_ok": probe["ok"],
+                "tie_share": probe.get("tie_share"),
+                "best_parent_pct": None if best_par is None else round(100 * float(best_par["objective"]), 3)}
+        out = llm(prompt)
+        text = out if isinstance(out, str) else (getattr(out, "text", None) or "")
+        alg, code = self.evo._extract(text)
+        if not code:
+            return fb, {**info, "result": "no_code_kept_fallback", "post_energy": None}
+        new_code = self.evo._prepend_imports(code[0])
+        unchanged = new_code.strip() == genes["code"].strip()  # the extractor strips the block: compare without trailing bytes
+        if unchanged:
+            new_code = genes["code"]  # keep the exact bytes (digest and cache stability)
+        has_desc = bool(alg and alg[0].strip())
+        new_thought = " ".join(alg[0].split())[:2000] if has_desc else genes["thought"]
+        info.update(code_changed=not unchanged, thought_changed=new_thought != genes["thought"], has_description=has_desc)
+        if not unchanged and not has_desc:  # new code must come with its description (joint update)
+            return fb, {**info, "result": "no_description_kept_fallback", "post_energy": None}
+        cand = {"thought": new_thought, "code": new_code}
+        if unchanged:
+            if has_desc and new_thought != genes["thought"]:  # description-only reconstruction: same bytes, same energy
+                return cand, {**info, "result": "redescribed", "post_energy": pre_e, "post_pct": pct(pre_e)}
+            return fb, {**info, "result": "unchanged_kept_fallback", "post_energy": pre_e, "post_pct": pct(pre_e)}
+        ok_valid, _ = self.validate(cand)
+        post_e = self.energy(cand) if ok_valid else None
+        info.update(post_energy=post_e, post_pct=pct(post_e))
+        if post_e is not None and (pre_e is None or post_e < pre_e):
+            return cand, {**info, "result": "repaired_better"}
+        return fb, {**info, "result": "repair_not_better_kept_fallback" if post_e is not None else "repair_invalid_kept_fallback"}
+
     def integrity(self, genes: dict, rng: random.Random,
                   llm: LLMClient) -> "dict | None":
         import re as _re  # noqa: PLC0415
+        if self.integrity_kind in ("improve", "improve_nocard", "oracle", "oracle_inject"):
+            return self.host_repair(genes, None, llm)[0]
+        if self.integrity_kind in ("align_thought_eg", "align_code_eg"):
+            return self._integrity_eg(genes, llm)
         if self.integrity_kind in ("align_thought", "align_thought_meas"):
             ck = hashlib.sha256(genes["code"].encode("utf-8")).hexdigest()
             with self._keylock("repair", ck):
                 return self._align_thought_cached(ck, genes, llm)
         if self.integrity_kind == "align_code":
-            prompt = ("/no_think\nThe description below states the intended scoring rule; the code must implement exactly that rule. "
+            rule = getattr(self, "ALIGN_CODE_RULE", "scoring rule")  # task override (TSP)
+            prompt = (f"/no_think\nThe description below states the intended {rule}; the code must implement exactly that {rule}. "
                       "If the code already implements it, return it unchanged; otherwise minimally change the code so that it does. "
                       "Keep the function name, inputs and outputs; return the full function in a ```python code block.\n\n"
                       f"Description: {genes['thought']}\n\nCode:\n{genes['code']}")
@@ -485,11 +712,15 @@ class BpOnlineAdapter:
             return float(min(max(comp.values()), RAW_MAX) / RAW_MAX)
         from grant_evo.bench.sandbox import run_sandboxed  # noqa: PLC0415
         inst, lb = self._instances_payload()
-        res = run_sandboxed({"op": "energy", "code": genes["code"],
-                             "capacity": 100, "instances": inst, "lb": lb,
-                             **({"eval_seed": self.eval_seed} if self.eval_seed is not None else {}),
-                             **({"signature": True} if self.signature_source == "energy" else {})},
-                            timeout=self.eval_timeout)
+        if self.objective == "noisy_c100":
+            res = run_sandboxed(self.noisy_payload(genes["code"], self.next_noise_seed(),
+                                                   signature=self.signature_source == "energy"), timeout=self.eval_timeout)
+        else:
+            res = run_sandboxed({"op": "energy", "code": genes["code"],
+                                 "capacity": 100, "instances": inst, "lb": lb,
+                                 **({"eval_seed": self.eval_seed} if self.eval_seed is not None else {}),
+                                 **({"signature": True} if self.signature_source == "energy" else {})},
+                                timeout=self.eval_timeout)
         if res is None or not res.get("ok"):
             return None
         if self.signature_source == "energy":
@@ -498,6 +729,62 @@ class BpOnlineAdapter:
         if raw is None or not np.isfinite(raw) or raw < 0:
             return None
         return float(min(raw, RAW_MAX) / RAW_MAX)
+
+    # ── NOISY prereg (2026-10-01) ──────────
+    def next_noise_seed(self) -> int:
+        """sto: a new seed per evaluation (base + counter); det: the fixed base."""
+        if self.noise_mode == "det":
+            return self.noise_seed_base
+        with self._keylock("noise", "counter"):
+            self._noise_counter += 1
+            return self.noise_seed_base + self._noise_counter
+
+    def noisy_payload(self, code: str, noise_seed: int, signature: bool = False) -> dict:
+        inst, lb = self._instances_payload()
+        return {"op": "energy_noisy", "code": code, "capacity": 100, "instances": inst, "lb": lb,
+                "sigma": self.noise_sigma, "kappa": self.noise_kappa, "noise_seed": int(noise_seed),
+                **({"signature": True} if signature else {})}
+
+    def noisy_panel(self, code: str, seeds: "list[int]", workers: int = 4) -> "dict | None":
+        """Fixed-seed panel: raw (excess-loss ratio) and per-instance [B, O, J] for every seed; None if any fails."""
+        from concurrent.futures import ThreadPoolExecutor  # noqa: PLC0415
+        from grant_evo.bench.sandbox import run_sandboxed  # noqa: PLC0415
+        with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
+            outs = list(ex.map(lambda s: run_sandboxed(self.noisy_payload(code, s), timeout=self.eval_timeout), seeds))
+        if any(o is None or not o.get("ok") or o.get("value") is None for o in outs):
+            return None
+        raws = [float(o["value"]) for o in outs]
+        return {"seeds": [int(s) for s in seeds], "raw": raws, "raw_mean": float(np.mean(raws)),
+                "per_instance": [o.get("per_instance") for o in outs],
+                "J_mean": float(np.mean([np.mean([v[2] for v in o["per_instance"].values()]) for o in outs])),
+                "B_mean": float(np.mean([np.mean([v[0] for v in o["per_instance"].values()]) for o in outs])),
+                "O_mean": float(np.mean([np.mean([v[1] for v in o["per_instance"].values()]) for o in outs]))}
+
+    def noisy_prompt(self) -> "tuple[str, str]":
+        """(task_description, template_program) shown to the generator for the noisy task; the
+        evaluator contract (observed integer item, observed-x valid mask, empty bins, overflow rule) is stated."""
+        s, k = self.noise_sigma, self.noise_kappa
+        task = ("Design a novel score function that scores a set of bins to assign an item in ONLINE bin packing "
+                "with NOISY item sizes. The size you see is an integer observation of the true size: "
+                f"observed = clip(round(true + noise), 1, 100) with noise ~ Normal(0, sigma^2), sigma = {s:g} (known). "
+                "In each step the item is assigned to the bin with the maximum score among bins whose remaining "
+                "capacity is >= the observed size; bins with remaining capacity 100 are empty bins (choosing one "
+                "opens a new bin; an empty bin never overflows). After placement the true size is applied: if it "
+                "exceeds the bin's remaining capacity the bin OVERFLOWS, is closed for good, and a penalty of "
+                f"{k:g} bins is added. The final goal is to minimize J = (number of used bins) + {k:g} * (number of overflows).")
+        template = f'''
+def score(item: int, bins: np.ndarray) -> np.ndarray:
+    """Score each bin for assigning the current item. Higher score = preferred bin.
+
+    Args:
+        item: OBSERVED integer size of the current item (true size = item + noise, noise ~ Normal(0, {s:g}^2))
+        bins: remaining capacities of bins with remaining capacity >= observed size (bins equal to 100 are empty)
+    Returns:
+        scores: priority scores for each bin
+    """
+    return bins
+'''
+        return task, template
 
     def endpoint_raw(self, genes: dict, bank: dict) -> "dict | None":
         """E4 endpoint: UNCLIPPED raw excess of one program PER INSTANCE of a
